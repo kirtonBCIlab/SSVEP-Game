@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Camera))]
 public class CameraAligner : MonoBehaviour
 {
-    public GridGenerator gridGenerator;
-    public float padding = 1f;
+    public Tilemap tilemap;          // Reference to the Tilemap
+    public float padding = 1f;       // Extra padding around the grid
 
     private void Start()
     {
@@ -13,25 +14,32 @@ public class CameraAligner : MonoBehaviour
 
     public void AlignCamera()
     {
-        if (gridGenerator == null)
+        if (tilemap == null)
         {
-            Debug.LogError("FanGenerator reference is not set.");
+            Debug.LogError("Tilemap reference is not set.");
             return;
         }
 
-        // Get grid dimensions
-        float width = (gridGenerator.columns - 1) * gridGenerator.spacing;
-        float height = (gridGenerator.rows - 1) * gridGenerator.spacing;
+        // Get the bounds of the tilemap in cell coordinates
+        BoundsInt bounds = tilemap.cellBounds;
+        Vector3 cellSize = tilemap.layoutGrid.cellSize;
 
-        // Calculate center point of the grid
-        Vector3 gridCenter = new Vector3(0, 3, 0); // Your grid is centered at origin already
+        int columns = bounds.size.x;
+        int rows = bounds.size.y;
 
-        // Set camera position to look at center
-        transform.position = new Vector3(gridCenter.x, gridCenter.y, 10f); // Z = -10 for 2D camera
+        // Calculate total width and height in world units
+        float width = columns * cellSize.x;
+        float height = rows * cellSize.y;
+
+        // Find center in world space
+        Vector3 centerCell = new Vector3(bounds.x + columns / 2f, bounds.y + rows / 2f, 0);
+        Vector3 gridCenter = tilemap.layoutGrid.CellToWorld(Vector3Int.FloorToInt(centerCell)) + (Vector3)cellSize / 2f;
+
+        // Move camera to look at center
+        transform.position = new Vector3(gridCenter.x, gridCenter.y, -10f);
         transform.rotation = Quaternion.identity;
-        transform.rotation = Quaternion.Euler(0, 180, 0); // Reset rotation
 
-        // Adjust orthographic size to fit grid height (and width, maintaining aspect ratio)
+        // Adjust orthographic size to fit entire grid
         Camera cam = GetComponent<Camera>();
         if (cam.orthographic)
         {
