@@ -5,51 +5,50 @@ using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
-
-    private PlayerMovement playerMovement;
-
     [SerializeField]
     private Tilemap ground_tilemap;
 
-    [SerializeField]
-    private Tilemap collision_tilemap;
+    private Vector3Int currentGridPos;
 
-
-    private void Awake()
+    private void Start()
     {
-        playerMovement = new PlayerMovement();
+        currentGridPos = ground_tilemap.WorldToCell(transform.position);
+        transform.position = ground_tilemap.GetCellCenterWorld(currentGridPos);
     }
 
-    private void OnEnable()
+    private void Update()
     {
-        playerMovement.Enable();
-    }
+        Vector2Int moveDirection = Vector2Int.zero;
 
-    private void OnDisable()
-    {
-        playerMovement.Disable();
-    }
-    
-    void Start()
-    {
-        playerMovement.Main.Movement.performed += ctx => Move(ctx.ReadValue<Vector2>());   
-    }
+        if (Input.GetKeyDown(KeyCode.W)) // Up-Right
+            moveDirection = new Vector2Int(1, 1);
+        else if (Input.GetKeyDown(KeyCode.A)) // Up-Left
+            moveDirection = new Vector2Int(-1, 1);
+        else if (Input.GetKeyDown(KeyCode.S)) // Down-Right
+            moveDirection = new Vector2Int(1, -1);
+        else if (Input.GetKeyDown(KeyCode.D)) // Down-Left
+            moveDirection = new Vector2Int(-1, -1);
 
-    private void Move(Vector2 direction)
-    {
-        if (CanMove(direction))
+        if (moveDirection != Vector2Int.zero)
         {
-
-            transform.position += (Vector3)direction;
+            Move(moveDirection);
         }
     }
 
-    private bool CanMove(Vector3 direction)
+    private void Move(Vector2Int direction)
     {
-       Vector3Int gridPosition = ground_tilemap.WorldToCell(transform.position + (Vector3)direction);
-       if(!ground_tilemap.HasTile(gridPosition) || collision_tilemap.HasTile(gridPosition))
-           return false;
-        return true;
+        Vector3Int targetGridPos = currentGridPos + new Vector3Int(direction.x, direction.y, 0);
+
+        if (CanMove(targetGridPos))
+        {
+            currentGridPos = targetGridPos;
+            transform.position = ground_tilemap.GetCellCenterWorld(currentGridPos);
+        }
     }
 
+    private bool CanMove(Vector3Int targetGridPos)
+    {
+        TileBase tile = ground_tilemap.GetTile(targetGridPos);
+        return tile != null;
+    }
 }
