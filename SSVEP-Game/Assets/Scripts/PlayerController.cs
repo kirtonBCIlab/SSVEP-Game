@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private List<TileBase> collectedTiles;
 
+    [SerializeField]
+    private List<GameObject> stickers;
+
     private Dictionary<TileBase, TileBase> gemToCollectedMap;
 
     private Vector3Int currentGridPos;
@@ -112,19 +115,26 @@ public class PlayerController : MonoBehaviour
         return ground_tilemap.HasTile(targetGridPos) && !collision_tilemap.HasTile(targetGridPos);
     }
 
-
     private void CollectGem(Vector3Int gridPos)
     {
         TileBase gemTile = gem_tilemap.GetTile(gridPos);
 
         if (gemToCollectedMap.TryGetValue(gemTile, out TileBase collectedTile))
         {
-            //change tile to the critter tile
+            // Replace the tile visually
             gem_tilemap.SetTile(gridPos, collectedTile);
+
+            // Find index of this gem tile to activate corresponding sticker
+            int index = gemTiles.IndexOf(gemTile);
+            if (index >= 0 && index < stickers.Count && stickers[index] != null)
+            {
+                stickers[index].SetActive(true);
+            }
         }
         else
         {
             Debug.LogWarning("Gem tile found, but no replacement defined.");
         }
     }
+
 }

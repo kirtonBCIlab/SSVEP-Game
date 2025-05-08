@@ -58,10 +58,10 @@ namespace BCIEssentials.ControllerBehaviors
             // Define hardcoded positions for each SPO
             Vector3[] hardcodedPositions = new Vector3[]
             {
-                new Vector3(1316, 60, -998),
-                new Vector3(680, 707, -998),
-                new Vector3(-610, -560, -998),
-                new Vector3(37, -1210, -998),
+                new Vector3(1617, 157, -998),
+                new Vector3(775, 1000, -998),
+                new Vector3(-893, -662, -998),
+                new Vector3(-57, -1495, -998),
             };
 
             Quaternion sharedRotation = Quaternion.Euler(0, 0, 45); // Same rotation for all
