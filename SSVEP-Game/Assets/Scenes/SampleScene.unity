@@ -2742,6 +2742,9 @@ MonoBehaviour:
   - 20
   - 25
   realFlashingFrequencies: []
+  _stimulusType: 0
+  _contrastLevel: 0
+  _size: 2
 --- !u!1 &592651988
 GameObject:
   m_ObjectHideFlags: 0
@@ -4554,6 +4557,10 @@ PrefabInstance:
       value: 0.07075471
       objectReference: {fileID: 0}
     - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 913608665}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 309137325}
@@ -4562,8 +4569,44 @@ PrefabInstance:
       value: MoveDown
       objectReference: {fileID: 0}
     - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 913608665}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSetAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 913608665}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusEndTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 913608665}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnRemovedAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 913608665}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSetAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusEndTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnRemovedAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4579,6 +4622,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &913608665 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3398809357666757070, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+  m_PrefabInstance: {fileID: 913608663}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216dabf1b51d5ec4aa81581e57ec73a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &917031317
@@ -10337,6 +10391,10 @@ PrefabInstance:
       value: 0.07075471
       objectReference: {fileID: 0}
     - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1727397572}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 309137325}
@@ -10345,14 +10403,61 @@ PrefabInstance:
       value: MoveRight
       objectReference: {fileID: 0}
     - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1727397572}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSetAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1727397572}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusEndTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1727397572}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnRemovedAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1727397572}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSetAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusEndTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnRemovedAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+--- !u!114 &1727397572 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3398809357666757070, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+  m_PrefabInstance: {fileID: 1727397569}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216dabf1b51d5ec4aa81581e57ec73a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!213 &1741703024
 Sprite:
   m_ObjectHideFlags: 0
@@ -10692,6 +10797,10 @@ PrefabInstance:
       value: 0.07075471
       objectReference: {fileID: 0}
     - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1766413590}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 309137325}
@@ -10700,8 +10809,48 @@ PrefabInstance:
       value: MoveUp
       objectReference: {fileID: 0}
     - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1766413590}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSetAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1766413590}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusEndTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1766413590}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetOn
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnRemovedAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1766413590}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSetAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusEndTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnRemovedAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10717,6 +10866,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1766413590 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3398809357666757070, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+  m_PrefabInstance: {fileID: 1766413588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216dabf1b51d5ec4aa81581e57ec73a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1838654316
@@ -11132,6 +11292,10 @@ PrefabInstance:
       value: 0.07075471
       objectReference: {fileID: 0}
     - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1970587573}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 309137325}
@@ -11140,8 +11304,44 @@ PrefabInstance:
       value: MoveLeft
       objectReference: {fileID: 0}
     - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1970587573}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSetAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1970587573}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusEndTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1970587573}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnRemovedAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1970587573}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSetAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnStimulusEndTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnRemovedAsTrainingTarget.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BCIEssentials.StimulusEffects.Custom_ColorFlashEffect, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11157,6 +11357,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58dafbcfd2f661d438f57f8ab612995a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1970587573 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3398809357666757070, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+  m_PrefabInstance: {fileID: 1970587571}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216dabf1b51d5ec4aa81581e57ec73a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2072051343

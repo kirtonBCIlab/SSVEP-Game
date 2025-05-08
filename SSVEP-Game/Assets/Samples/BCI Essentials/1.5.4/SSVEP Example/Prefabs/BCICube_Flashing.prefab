@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 1048484350530938657}
   - component: {fileID: 1048484350530938662}
   - component: {fileID: 7639228323464969584}
-  - component: {fileID: 1898853191072348654}
+  - component: {fileID: 2132429472168003798}
+  - component: {fileID: 3398809357666757070}
   m_Layer: 0
   m_Name: BCICube_Flashing
   m_TagString: BCI
@@ -123,7 +124,7 @@ MonoBehaviour:
   OnStimulusTriggered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1898853191072348654}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
           Bci4Kids.BciEssentials.Runtime
         m_MethodName: SetOn
@@ -139,7 +140,7 @@ MonoBehaviour:
   OnStimulusEndTriggered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1898853191072348654}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
           Bci4Kids.BciEssentials.Runtime
         m_MethodName: SetOff
@@ -167,7 +168,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1898853191072348654}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
           Bci4Kids.BciEssentials.Runtime
         m_MethodName: Play
@@ -180,7 +181,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1898853191072348654}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
           Bci4Kids.BciEssentials.Runtime
         m_MethodName: Play
@@ -196,7 +197,7 @@ MonoBehaviour:
   OnSetAsTrainingTarget:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1898853191072348654}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
           Bci4Kids.BciEssentials
         m_MethodName: Play
@@ -212,7 +213,7 @@ MonoBehaviour:
   OnRemovedAsTrainingTarget:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1898853191072348654}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BCIEssentials.StimulusEffects.ColorFlashEffect,
           Bci4Kids.BciEssentials
         m_MethodName: SetOff
@@ -225,7 +226,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1898853191072348654
+--- !u!114 &2132429472168003798
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -234,12 +235,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1048484350530938663}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7720a1dc0ec4493980b36fef8105f94a, type: 3}
+  m_Script: {fileID: 11500000, guid: e52758ce1112a354fb661b88011dd9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3398809357666757070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048484350530938663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 216dabf1b51d5ec4aa81581e57ec73a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1048484350530938657}
-  _flashOnColor: {r: 1, g: 0, b: 0, a: 1}
-  _flashOffColor: {r: 1, g: 1, b: 1, a: 1}
-  _startOn: 0
-  _flashDurationSeconds: 0.2
-  _flashAmount: 3
+  materialList: {fileID: 2100000, guid: 890018638d54c6048999363caa73ad14, type: 2}
+  _contrastLevel: 0
+  _size: 0
