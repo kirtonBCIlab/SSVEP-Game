@@ -62,7 +62,6 @@ namespace BCIEssentials.ControllerBehaviors
                 new Vector3(680, 707, -998),
                 new Vector3(-610, -560, -998),
                 new Vector3(37, -1210, -998),
-                // Add more as needed
             };
 
             Quaternion sharedRotation = Quaternion.Euler(0, 0, 45); // Same rotation for all

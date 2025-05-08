@@ -2302,7 +2302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ToggleStimulusRunBinding:
-    BoundKey: 115
+    BoundKey: 112
   StartAutomatedTrainingBinding:
     BoundKey: 116
   StartIterativeTrainingBinding:
@@ -4037,6 +4037,18 @@ PrefabInstance:
     - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: _flashOffColor.r
       value: 0.07075471
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 309137325}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: MoveDown
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9622,6 +9634,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: _flashOnColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: _flashOnColor.r
+      value: 0.27607453
+      objectReference: {fileID: 0}
+    - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: _flashOffColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -9632,6 +9652,18 @@ PrefabInstance:
     - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: _flashOffColor.r
       value: 0.07075471
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 309137325}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: MoveRight
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9848,6 +9880,50 @@ Sprite:
   m_PhysicsShape: []
   m_Bones: []
   m_SpriteID: 
+--- !u!1 &1751985504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1751985506}
+  - component: {fileID: 1751985505}
+  m_Layer: 0
+  m_Name: PlayerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1751985505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751985504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54652d81d76c694bae88dfdca4302d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1751985506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751985504}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 350, y: -250, z: -998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1766413588
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9917,6 +9993,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: _flashOnColor.b
+      value: 0.78845596
+      objectReference: {fileID: 0}
+    - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: _flashOffColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -9927,6 +10007,18 @@ PrefabInstance:
     - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: _flashOffColor.r
       value: 0.07075471
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 309137325}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: MoveUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10257,6 +10349,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: _flashOnColor.g
+      value: 0.7466958
+      objectReference: {fileID: 0}
+    - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: _flashOffColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -10267,6 +10363,18 @@ PrefabInstance:
     - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: _flashOffColor.r
       value: 0.07075471
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 309137325}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: MoveLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639228323464969584, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: OnSelected.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10296,3 +10404,4 @@ SceneRoots:
   - {fileID: 1437642891}
   - {fileID: 309137324}
   - {fileID: 578684631}
+  - {fileID: 1751985506}
