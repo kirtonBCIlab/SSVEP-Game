@@ -5,18 +5,9 @@ using BCIEssentials.StimulusEffects;
 
 namespace BCIEssentials.ControllerBehaviors
 {
-    public class Custom_SSVEPControllerBehavior : FrequencyStimulusControllerBehaviour
+    public class Custom_SSVEPControllerBehavior : SSVEPControllerBehavior
     {
         public override BCIBehaviorType BehaviorType => BCIBehaviorType.SSVEP;
-        
-        [StartFoldoutGroup("Stimulus Frequencies")]
-        [SerializeField]
-        [Tooltip("User-defined set of target stimulus frequencies [Hz]")]
-        private float[] requestedFlashingFrequencies;
-        [SerializeField, EndFoldoutGroup, InspectorReadOnly]
-        [Tooltip("Calculated best-match achievable frequencies based on the application framerate [Hz]")]
-        private float[] realFlashingFrequencies;
-
         public enum StimulusType
         {
             BW,
@@ -50,28 +41,6 @@ namespace BCIEssentials.ControllerBehaviors
             // Move all SPOs in view of the camera at the start
             MoveAllSPOsInViewOfCamera();
         }
-
-        protected override void SendTrainingMarker(int trainingIndex)
-        => MarkerWriter.PushSSVEPTrainingMarker(
-            SPOCount, trainingIndex, epochLength, realFlashingFrequencies
-        );
-
-        protected override void SendClassificationMarker()
-        => MarkerWriter.PushSSVEPClassificationMarker(
-            SPOCount, epochLength, realFlashingFrequencies
-        );
-
-
-        protected override void UpdateObjectListConfiguration()
-        {
-            realFlashingFrequencies = new float[SPOCount];
-            base.UpdateObjectListConfiguration();
-        }
-
-        protected override float GetRequestedFrequency(int index)
-        => requestedFlashingFrequencies[index];
-        protected override void SetRealFrequency(int index, float value)
-        => realFlashingFrequencies[index] = value;
 
        public void MoveAllSPOsInViewOfCamera()
         {
@@ -158,7 +127,5 @@ namespace BCIEssentials.ControllerBehaviors
                 }
             }
         }
-
-       
     }
 }
