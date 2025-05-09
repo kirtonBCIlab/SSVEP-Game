@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ad1403850a9f8354bbb96c77c42ec6bc
+guid: 646688c38c8ecc245a93e98f0d0f4323
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: critters_0
+      name: stickers_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b3671ee0f1aa163428bab1a3fc6b3f25
-      internalID: 618979637
+      spriteID: 5dbe29b2f7a7c314588258a02e79dc1e
+      internalID: 499417813
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_1
+      name: stickers_1
       rect:
         serializedVersion: 2
         x: 144
@@ -145,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4df5f4b5ddef0904181dd0d9f3eecc17
-      internalID: -1743230645
+      spriteID: b64bcd14f56bc5341ae99372c6f3bcce
+      internalID: 1268304369
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_2
+      name: stickers_2
       rect:
         serializedVersion: 2
         x: 288
@@ -166,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 373815a93d129af4b9cf0dcec525585f
-      internalID: -1812507969
+      spriteID: 0a4b1fb9efcb3524caf7f072a72b74cb
+      internalID: -562825320
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_3
+      name: stickers_3
       rect:
         serializedVersion: 2
         x: 432
@@ -187,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9d9e818b3b73c842857c6a58143bfc1
-      internalID: 1346949063
+      spriteID: e4c23dd6e3179f640ab43b1ed8817b9e
+      internalID: 1389200997
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_4
+      name: stickers_4
       rect:
         serializedVersion: 2
         x: 576
@@ -208,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8e96f5044469ab942a2ee392b1b4340e
-      internalID: -500031299
+      spriteID: 015fbb1bdbe797d439159c47c522203a
+      internalID: 1676520846
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_5
+      name: stickers_5
       rect:
         serializedVersion: 2
         x: 0
@@ -229,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5639d37c0448734cac0c160aae572f5
-      internalID: -683100717
+      spriteID: e7af4ed5bd5fb8f4fac0b526657f386f
+      internalID: -5515160
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_6
+      name: stickers_6
       rect:
         serializedVersion: 2
         x: 144
@@ -250,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7847cc1ecefc7c548b36f97fdd3f10a6
-      internalID: -2105017462
+      spriteID: 4b398da3aef771f4ea7bb68e14f7b1e9
+      internalID: 1469735609
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_7
+      name: stickers_7
       rect:
         serializedVersion: 2
         x: 288
@@ -271,14 +271,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8beb2a4e3239394286eaf838045b28b
-      internalID: 732355869
+      spriteID: 073bb717223df114ba010efae78a3408
+      internalID: -1974170573
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_8
+      name: stickers_8
       rect:
         serializedVersion: 2
         x: 432
@@ -292,14 +292,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0475bebfa782bda4796c997746a51ea2
-      internalID: -727043131
+      spriteID: c61d7defe82b1c64c9e6aa82a7c516cf
+      internalID: 1725855396
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: critters_9
+      name: stickers_9
       rect:
         serializedVersion: 2
         x: 576
@@ -313,8 +313,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c7830814b8540604a8a6e9e0cca96204
-      internalID: -159649903
+      spriteID: 91fabe4995905ed4ab8b8a0bdc10c510
+      internalID: -953009261
       vertices: []
       indices: 
       edges: []
@@ -322,7 +322,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5c4bf7e0c47903a49b60309841882103
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -330,16 +330,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      critters_0: 618979637
-      critters_1: -1743230645
-      critters_2: -1812507969
-      critters_3: 1346949063
-      critters_4: -500031299
-      critters_5: -683100717
-      critters_6: -2105017462
-      critters_7: 732355869
-      critters_8: -727043131
-      critters_9: -159649903
+      stickers_0: 499417813
+      stickers_1: 1268304369
+      stickers_2: -562825320
+      stickers_3: 1389200997
+      stickers_4: 1676520846
+      stickers_5: -5515160
+      stickers_6: 1469735609
+      stickers_7: -1974170573
+      stickers_8: 1725855396
+      stickers_9: -953009261
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
