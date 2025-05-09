@@ -37,44 +37,6 @@ namespace BCIEssentials.ControllerBehaviors
         {
             SetStimType();
             base.ExecuteSelfRegistration(); //this is to keep the same behavior as BCIControllerBehavior
-
-            // Move all SPOs in view of the camera at the start
-            MoveAllSPOsInViewOfCamera();
-        }
-
-       public void MoveAllSPOsInViewOfCamera()
-        {
-            // Get the main camera
-            Camera mainCamera = Camera.main;
-            if (mainCamera == null)
-            {
-                Debug.LogWarning("Main camera not found.");
-                return;
-            }
-
-            // Define hardcoded positions for each SPO
-            Vector3[] hardcodedPositions = new Vector3[]
-            {
-                new Vector3(1617, 157, -998),
-                new Vector3(775, 1000, -998),
-                new Vector3(-893, -662, -998),
-                new Vector3(-57, -1495, -998),
-            };
-
-            Quaternion sharedRotation = Quaternion.Euler(0, 0, 45); // Same rotation for all
-
-            int count = Mathf.Min(_selectableSPOs.Count, hardcodedPositions.Length);
-
-            for (int i = 0; i < count; i++)
-            {
-                var spo = _selectableSPOs[i];
-                if (spo == null) continue;
-
-                spo.transform.position = hardcodedPositions[i];
-                spo.transform.rotation = sharedRotation;
-
-                Debug.Log($"SPO {i} moved to {spo.transform.position}");
-            }
         }
 
         private void SetStimType()
