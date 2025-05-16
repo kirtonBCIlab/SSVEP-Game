@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Corner3Sprite
+  m_Name: Path2SpriteThick
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 3286163911610860551, guid: 5fe713e0711479e41b14e399450a4112, type: 3}
+  m_Sprite: {fileID: 3286163911610860551, guid: 8fb182b3c9baf5545a54c83f6a4726ac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
