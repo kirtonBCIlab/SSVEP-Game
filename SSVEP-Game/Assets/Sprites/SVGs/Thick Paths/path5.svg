@@ -7,8 +7,8 @@
    viewBox="0 0 72 72"
    version="1.1"
    id="svg1"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
-   sodipodi:docname="Corner4.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="path5.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,32 +24,32 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showguides="true"
-     inkscape:zoom="6.178708"
-     inkscape:cx="42.646457"
-     inkscape:cy="47.74461"
-     inkscape:window-width="1440"
-     inkscape:window-height="727"
-     inkscape:window-x="1"
-     inkscape:window-y="25"
-     inkscape:window-maximized="0"
+     inkscape:zoom="5.8511223"
+     inkscape:cx="50.759493"
+     inkscape:cy="52.212205"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      inkscape:current-layer="layer1">
     <sodipodi:guide
-       position="19.976172,44.523749"
-       orientation="1,0"
+       position="22.645228,20.001429"
+       orientation="0,-1"
        id="guide1"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="19.976172,52.023828"
-       orientation="0,-1"
+       position="20.017527,26.218185"
+       orientation="1,0"
        id="guide2"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="51.978546,45.882279"
+       position="51.998571,26.239548"
        orientation="1,0"
        id="guide3"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="40.610915,20.000047"
+       position="40.077781,51.918383"
        orientation="0,-1"
        id="guide4"
        inkscape:locked="false" />
@@ -61,19 +61,23 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.850629;stroke-linecap:square"
-       id="rect2"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.76287;stroke-linecap:square;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect6"
        width="72"
        height="72"
        x="0"
        y="0" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.863088;stroke-linecap:square"
-       d="M 20.431544,71.568456 V 20.431544 h 51.136912"
+       style="fill:none;stroke:#000000;stroke-width:1.96161;stroke-linecap:square;stroke-opacity:1;paint-order:fill markers stroke"
+       d="M 0.98055404,52.98106 H 71.019446"
        id="path4" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.860707;stroke-linecap:square"
-       d="M 52.430353,71.569646 V 52.430353 h 19.139292"
+       style="fill:none;stroke:#000000;stroke-width:1.83281;stroke-linecap:square;stroke-opacity:1;paint-order:fill markers stroke"
+       d="M 0.9164003,19.083595 H 19.083599 V 0.9164003"
        id="path5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.78398;stroke-linecap:square;stroke-opacity:1;paint-order:fill markers stroke"
+       d="M 52.891988,0.8919881 V 19.108012 h 18.216024"
+       id="path6" />
   </g>
 </svg>

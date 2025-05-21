@@ -142,22 +142,22 @@ namespace BCIEssentials.StimulusEffects
             {
                 case Size.Size1:
                     //newSize = new Vector3(150 / 325f, 150f / 325f, 150f / 325f); // this scaling gives stim of 3.6cm on the screen
-                    newSize = new Vector3(1,1,1);
+                   // newSize = new Vector3(1,1,1);
                     break;
 
                 case Size.Size2:
                     //newSize = new Vector3(255f / 325f, 255f / 325f, 255f / 325f); // this scaling gives stim of 6.1cm on the screen
-                    newSize = new Vector3(1,1,1);
+                    //newSize = new Vector3(1,1,1);
                     break;
 
                 case Size.Size3:
                     //newSize = new Vector3(355f / 325f, 355f / 325f, 355f / 325f); // this scaling gives stim of 8.5cm on the screen
-                    newSize = new Vector3(1,1,1);
+                   // newSize = new Vector3(1,1,1);
                     break;
             }
 
             // Apply the size change
-            transform.localScale = newSize;
+           // transform.localScale = newSize;
         }
 
         public int ConvertContrastLevel(ContrastLevel _contrastLevel)

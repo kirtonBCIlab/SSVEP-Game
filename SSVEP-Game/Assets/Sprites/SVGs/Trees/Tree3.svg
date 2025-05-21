@@ -24,8 +24,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      inkscape:zoom="4.1373683"
-     inkscape:cx="29.487344"
-     inkscape:cy="-14.622822"
+     inkscape:cx="29.487343"
+     inkscape:cy="-14.864521"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -47,29 +47,30 @@
        y="0" />
     <g
        id="g2"
-       transform="matrix(1.2395322,0,0,1.2395394,-10.783576,-13.032251)">
+       transform="matrix(1.2124264,0,0,1.2400418,-9.9558968,-12.151585)"
+       style="stroke-width:1.61351;stroke-dasharray:none">
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.498898;stroke-linecap:square;stroke-opacity:1"
+         style="fill:none;stroke:#000000;stroke-width:1.61351;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
          d="M 37.311284,61.149049 63.192485,33.354863"
          id="path1" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.498898;stroke-linecap:square;stroke-opacity:1"
+         style="fill:none;stroke:#000000;stroke-width:1.61351;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
          d="m 48.178896,49.646274 13.891175,14.18465 4.35322,-4.499958 -15.016164,-12.961835"
          id="path2" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.498898;stroke-linecap:square;stroke-opacity:1"
+         style="fill:none;stroke:#000000;stroke-width:1.61351;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
          d="M 36.999933,61.393716 8.9179643,10.656717 41.001266,56.546275"
          id="path3" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.498898;stroke-linecap:square;stroke-opacity:1"
+         style="fill:none;stroke:#000000;stroke-width:1.61351;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
          d="M 46.082825,51.527199 9.1809451,11.163195 50.599527,46.635028"
          id="path4" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.498898;stroke-linecap:square;stroke-opacity:1"
+         style="fill:none;stroke:#000000;stroke-width:1.61351;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
          d="M 55.19,41.62724 9.1809451,10.954537 59.553144,36.922949"
          id="path5" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.498898;stroke-linecap:square;stroke-opacity:1"
+         style="fill:none;stroke:#000000;stroke-width:1.61351;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1"
          d="M 9.2638223,10.851906 63.394919,33.033138"
          id="path6" />
     </g>
