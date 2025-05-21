@@ -90,7 +90,15 @@ public class PlayerController : MonoBehaviour
         {
             currentGridPos = targetGridPos;
             PlayerControllerManager.Instance.SavedGridPosition = currentGridPos;
-            transform.position = ground_tilemap.GetCellCenterWorld(currentGridPos);
+            
+            Vector3 cellCenter = ground_tilemap.GetCellCenterWorld(currentGridPos);
+
+            if (gem_tilemap.HasTile(currentGridPos))
+            {
+                cellCenter.x -= 3f; //moves player to the left of the gem/critter
+            }
+
+            transform.position = cellCenter;
 
             if (gem_tilemap.HasTile(currentGridPos))
             {
@@ -122,9 +130,6 @@ public class PlayerController : MonoBehaviour
             }
 
             Destroy(effect, 1f);
-
-            // Delay tile replacement
-           // StartCoroutine(ReplaceTileAndStickerAfterDelay(gridPos, collectedTile, 1f));
 
             // Add to collected gem set
             collectedGemSet.Add(gemTile);
