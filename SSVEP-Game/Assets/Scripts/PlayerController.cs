@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private List<GameObject> stickers;
 
     [SerializeField]
-    private GameObject endScreenCanvas; // UI element to display when all gems are collected
+    private GameObject endScreenCanvas;
 
     [SerializeField]
     private GameObject gemExplosionPrefab;
@@ -124,17 +124,15 @@ public class PlayerController : MonoBehaviour
             Destroy(effect, 1f);
 
             // Delay tile replacement
-            StartCoroutine(ReplaceTileAfterDelay(gridPos, collectedTile, 1f));
+           // StartCoroutine(ReplaceTileAndStickerAfterDelay(gridPos, collectedTile, 1f));
 
             // Add to collected gem set
             collectedGemSet.Add(gemTile);
 
             // Activate corresponding sticker
             int index = gemTiles.IndexOf(gemTile);
-            if (index >= 0 && index < stickers.Count && stickers[index] != null)
-            {
-                stickers[index].SetActive(true);
-            }
+
+            StartCoroutine(ReplaceTileAndStickerAfterDelay(gridPos, collectedTile, 1f, index));
 
             // Trigger event if all gems collected
             if (!eventTriggered && collectedGemSet.Count == gemTiles.Count)
@@ -149,10 +147,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private IEnumerator ReplaceTileAfterDelay(Vector3Int gridPos, TileBase collectedTile, float delay)
+    private IEnumerator ReplaceTileAndStickerAfterDelay(Vector3Int gridPos, TileBase collectedTile, float delay, int index)
     {
         yield return new WaitForSeconds(delay);
         gem_tilemap.SetTile(gridPos, collectedTile);
+
+        if (index >= 0 && index < stickers.Count && stickers[index] != null)
+        {
+            stickers[index].SetActive(true);
+        }
     }
 
 
