@@ -26,9 +26,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject endScreenCanvas; // UI element to display when all gems are collected
 
+    [SerializeField]
+    private GameObject gemExplosionPrefab;
     private Dictionary<TileBase, TileBase> gemToCollectedMap;
-    private HashSet<TileBase> collectedGemSet; // Tracks collected gem types
-    private bool eventTriggered = false; // Prevents multiple event triggers
+    private HashSet<TileBase> collectedGemSet;
+    private bool eventTriggered = false;
     private Vector3Int currentGridPos;
 
     private void Start()
@@ -108,8 +110,21 @@ public class PlayerController : MonoBehaviour
 
         if (gemToCollectedMap.TryGetValue(gemTile, out TileBase collectedTile))
         {
-            // Replace the tile visually
-            gem_tilemap.SetTile(gridPos, collectedTile);
+            // Spawn smoke effect
+            Vector3 worldPos = gem_tilemap.GetCellCenterWorld(gridPos);
+            worldPos.z = -1f;
+            GameObject effect = Instantiate(gemExplosionPrefab, worldPos, Quaternion.identity);
+
+            ParticleSystem ps = effect.GetComponentInChildren<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Play();
+            }
+
+            Destroy(effect, 1f);
+
+            // Delay tile replacement
+            StartCoroutine(ReplaceTileAfterDelay(gridPos, collectedTile, 1f));
 
             // Add to collected gem set
             collectedGemSet.Add(gemTile);
@@ -133,6 +148,14 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("Gem tile found, but no replacement defined.");
         }
     }
+
+    private IEnumerator ReplaceTileAfterDelay(Vector3Int gridPos, TileBase collectedTile, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        gem_tilemap.SetTile(gridPos, collectedTile);
+    }
+
+
 
     private void TriggerEndEvent()
     {
