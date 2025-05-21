@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private Tilemap ground_tilemap;
-    
+
     [SerializeField]
     private Tilemap collision_tilemap;
 
@@ -23,8 +23,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private List<GameObject> stickers;
 
-    private Dictionary<TileBase, TileBase> gemToCollectedMap;
+    [SerializeField]
+    private GameObject endScreenCanvas; // UI element to display when all gems are collected
 
+    private Dictionary<TileBase, TileBase> gemToCollectedMap;
+    private HashSet<TileBase> collectedGemSet; // Tracks collected gem types
+    private bool eventTriggered = false; // Prevents multiple event triggers
     private Vector3Int currentGridPos;
 
     private void Start()
@@ -38,8 +42,8 @@ public class PlayerController : MonoBehaviour
             currentGridPos = ground_tilemap.WorldToCell(transform.position);
             Debug.Log("PlayerControllerManager instance not found or no saved position. Using default position.");
         }
+
         // Snap player to nearest grid cell
-        //currentGridPos = ground_tilemap.WorldToCell(transform.position);
         transform.position = ground_tilemap.GetCellCenterWorld(currentGridPos);
 
         // Build mapping between gem tiles and collected replacements
@@ -48,49 +52,33 @@ public class PlayerController : MonoBehaviour
         {
             gemToCollectedMap[gemTiles[i]] = collectedTiles[i];
         }
+
+        // Initialize collected gem set
+        collectedGemSet = new HashSet<TileBase>();
+
+        // Ensure end screen is hidden at start
+        if (endScreenCanvas != null)
+        {
+            endScreenCanvas.SetActive(false);
+        }
     }
 
-    //private void Update()
-    //{
-        //Vector2Int moveDirection = Vector2Int.zero;
-
-        //if (Input.GetKeyDown(KeyCode.W))        // Up
-        //    moveDirection = new Vector2Int(0, 1);
-        //else if (Input.GetKeyDown(KeyCode.A))   // Left
-        //    moveDirection = new Vector2Int(-1, 0);
-        //else if (Input.GetKeyDown(KeyCode.S))   // Down
-        //    moveDirection = new Vector2Int(0, -1);
-        //else if (Input.GetKeyDown(KeyCode.D))   // Right
-        //    moveDirection = new Vector2Int(1, 0);
-
-        //if (moveDirection != Vector2Int.zero)
-        //{
-        //    Move(moveDirection);
-        //}
-    //}
-
-    public void MoveUp()
+    private void Update()
     {
-        Move(new Vector2Int(0, 1));
-        Debug.Log("Up key pressed");
-    } 
-    public void MoveDown()
-    {
-        Move(new Vector2Int(0, -1));
-        Debug.Log("Down key pressed");
-    }
-    public void MoveLeft() 
-    {
-        Move(new Vector2Int(-1, 0));
-        Debug.Log("Left key pressed");
+        if (Input.GetKeyDown(KeyCode.W))
+            MoveUp();
+        else if (Input.GetKeyDown(KeyCode.A))
+            MoveLeft();
+        else if (Input.GetKeyDown(KeyCode.S)) 
+            MoveDown();
+        else if (Input.GetKeyDown(KeyCode.D))
+            MoveRight();
     }
 
-    public void MoveRight()
-    {
-        Move(new Vector2Int(1, 0));
-        Debug.Log("Right key pressed");
-    }
-
+    public void MoveUp() => Move(new Vector2Int(0, 1));
+    public void MoveDown() => Move(new Vector2Int(0, -1));
+    public void MoveLeft() => Move(new Vector2Int(-1, 0));
+    public void MoveRight() => Move(new Vector2Int(1, 0));
 
     public void Move(Vector2Int direction)
     {
@@ -99,8 +87,7 @@ public class PlayerController : MonoBehaviour
         if (CanMove(targetGridPos))
         {
             currentGridPos = targetGridPos;
-            PlayerControllerManager.Instance.SavedGridPosition = currentGridPos; // Save
-            Debug.Log("PlayerControllerManager instance found. Saved position updated.");
+            PlayerControllerManager.Instance.SavedGridPosition = currentGridPos;
             transform.position = ground_tilemap.GetCellCenterWorld(currentGridPos);
 
             if (gem_tilemap.HasTile(currentGridPos))
@@ -109,9 +96,9 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     private bool CanMove(Vector3Int targetGridPos)
     {
-        // Ensure the tile exists on the ground tilemap and there's no collision
         return ground_tilemap.HasTile(targetGridPos) && !collision_tilemap.HasTile(targetGridPos);
     }
 
@@ -124,11 +111,21 @@ public class PlayerController : MonoBehaviour
             // Replace the tile visually
             gem_tilemap.SetTile(gridPos, collectedTile);
 
-            // Find index of this gem tile to activate corresponding sticker
+            // Add to collected gem set
+            collectedGemSet.Add(gemTile);
+
+            // Activate corresponding sticker
             int index = gemTiles.IndexOf(gemTile);
             if (index >= 0 && index < stickers.Count && stickers[index] != null)
             {
                 stickers[index].SetActive(true);
+            }
+
+            // Trigger event if all gems collected
+            if (!eventTriggered && collectedGemSet.Count == gemTiles.Count)
+            {
+                TriggerEndEvent();
+                eventTriggered = true;
             }
         }
         else
@@ -137,4 +134,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void TriggerEndEvent()
+    {
+        if (endScreenCanvas != null)
+        {
+            endScreenCanvas.SetActive(true);
+        }
+    }
 }
