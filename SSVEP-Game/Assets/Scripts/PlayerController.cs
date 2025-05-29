@@ -211,7 +211,7 @@ public class PlayerController : MonoBehaviour
             // Trigger event if all gems collected
             if (!eventTriggered && collectedGemSet.Count == gemTiles.Count)
             {
-                TriggerEndEvent();
+                StartCoroutine(ShowEndScreenAfterDelay(2f));
                 eventTriggered = true;
             }
         }
@@ -232,8 +232,10 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    private void TriggerEndEvent()
+    private IEnumerator ShowEndScreenAfterDelay(float delay)
     {
+        yield return new WaitForSeconds(delay);
+
         if (endScreenCanvas != null)
         {
             endScreenCanvas.SetActive(true);
