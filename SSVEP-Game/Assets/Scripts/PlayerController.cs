@@ -94,43 +94,43 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator UpdateTilesCoroutine()
     {
-    while (true)
-        {
-        UpdateTileBasedOnPlayerPosition();
-        yield return null; // Wait for the next frame
-        }
+        while (true)
+            {
+            UpdateTileBasedOnPlayerPosition();
+            yield return null; // Wait for the next frame
+            }
     }
 
     private void UpdateTileBasedOnPlayerPosition()
     {
-    // Get the player's current grid position
-    Vector3Int playerGridPos = gem_tilemap.WorldToCell(transform.position);
+        // Get the player's current grid position
+        Vector3Int playerGridPos = gem_tilemap.WorldToCell(transform.position);
 
-    // Iterate through all tiles in the gem_tilemap
-    foreach (Vector3Int gridPos in gem_tilemap.cellBounds.allPositionsWithin)
-    {
-        if (!gem_tilemap.HasTile(gridPos)) continue;
-
-        TileBase currentTile = gem_tilemap.GetTile(gridPos);
-
-        // Check if the player is standing on this tile
-        if (gridPos == playerGridPos)
+        // Iterate through all tiles in the gem_tilemap
+        foreach (Vector3Int gridPos in gem_tilemap.cellBounds.allPositionsWithin)
         {
-            // Change to the smaller tile if the player is on it
-            if (collectedToSmallMap.TryGetValue(currentTile, out TileBase smallTile))
+            if (!gem_tilemap.HasTile(gridPos)) continue;
+
+            TileBase currentTile = gem_tilemap.GetTile(gridPos);
+
+            // Check if the player is standing on this tile
+            if (gridPos == playerGridPos)
             {
-                gem_tilemap.SetTile(gridPos, smallTile);
+                // Change to the smaller tile if the player is on it
+                if (collectedToSmallMap.TryGetValue(currentTile, out TileBase smallTile))
+                {
+                    gem_tilemap.SetTile(gridPos, smallTile);
+                }
+            }
+            else
+            {
+                // Change to the collected tile if the player is not on it
+                if (smallToCollectedMap.TryGetValue(currentTile, out TileBase collectedTile))
+                {
+                    gem_tilemap.SetTile(gridPos, collectedTile);
+                }
             }
         }
-        else
-        {
-            // Change to the collected tile if the player is not on it
-            if (smallToCollectedMap.TryGetValue(currentTile, out TileBase collectedTile))
-            {
-                gem_tilemap.SetTile(gridPos, collectedTile);
-            }
-        }
-    }
     }
 
 
@@ -175,7 +175,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
 
     private bool CanMove(Vector3Int targetGridPos)
     {

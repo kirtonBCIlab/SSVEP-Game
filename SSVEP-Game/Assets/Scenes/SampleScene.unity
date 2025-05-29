@@ -320,6 +320,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: da270d7159b4d134e8d928e221598578, type: 2}
   - {fileID: 11400000, guid: f35c0bc781632ff44aadc70c90a68435, type: 2}
   - {fileID: 11400000, guid: 62d72991c91126c498bfd7fdf3b74034, type: 2}
+  smallTiles:
+  - {fileID: 11400000, guid: 0b9ca8e0795bb436991ea55f923f044a, type: 2}
+  - {fileID: 11400000, guid: 77997763da90d4f73bc8e863e0d0c81e, type: 2}
+  - {fileID: 11400000, guid: 17aa8d5afcff54a989a4c145cca27135, type: 2}
+  - {fileID: 11400000, guid: d2eb50be133834bb6880eaa425e84284, type: 2}
+  - {fileID: 11400000, guid: 1265d217064024d739c52119a5e62d17, type: 2}
+  - {fileID: 11400000, guid: 057243abc443448bfaacb4785f560d02, type: 2}
+  - {fileID: 11400000, guid: b0dea4cf7b7ac4b469a7b20cccf68cd5, type: 2}
+  - {fileID: 11400000, guid: 02044934e403349e98c345dd2b5a6b3c, type: 2}
+  - {fileID: 11400000, guid: 819c699f8e4c5485ba1fa5c649616eaf, type: 2}
+  - {fileID: 11400000, guid: f7fdb511efad54827b9acfc8ef99e8ab, type: 2}
   stickers:
   - {fileID: 725912657}
   - {fileID: 1386597981}
