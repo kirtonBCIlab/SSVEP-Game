@@ -121,7 +121,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "2.2.0",
+      "version": "2.7.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -152,7 +152,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.feature.2d": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -167,7 +167,7 @@
       }
     },
     "com.unity.feature.development": {
-      "version": "1.0.1",
+      "version": "1.0.2",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -206,7 +206,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.7.0",
+      "version": "1.14.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -283,17 +283,8 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.textmeshpro": {
-      "version": "3.0.6",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.timeline": {
-      "version": "1.7.6",
+      "version": "1.8.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -305,7 +296,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ugui": {
-      "version": "1.0.0",
+      "version": "2.0.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {
@@ -333,7 +324,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.visualscripting": {
-      "version": "1.9.1",
+      "version": "1.9.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {
