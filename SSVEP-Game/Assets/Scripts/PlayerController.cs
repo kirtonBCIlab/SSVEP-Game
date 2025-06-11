@@ -333,8 +333,7 @@ public class PlayerController : MonoBehaviour
         if (direction == Vector3Int.down) return 1;
         if (direction == Vector3Int.left) return 2;
         if (direction == Vector3Int.up) return 3;
-        if (direction == Vector3Int.right) return 4;
-        return 0;
+        if (direction == Vector3Int.right) return 4; 
     }
     
 
