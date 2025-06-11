@@ -65,6 +65,11 @@ public class PlayerController : MonoBehaviour
     private Vector3Int currentGridPos;
     private Vector3Int previousGridPos;
 
+    private string[] SPOOrder = new string[] { "SPO1", "SPO2", "SPO3", "SPO4",
+        "SPO1", "SPO2", "SPO3", "SPO4",
+        "SPO1", "SPO2", "SPO3", "SPO4",
+        "SPO1", "SPO2", "SPO3", "SPO4"};
+
     private void Start()
     {
         GameObject selectedGrid = selectedMap == MapSelection.Map1 ? grid1 : grid2;
@@ -135,9 +140,22 @@ public class PlayerController : MonoBehaviour
         while (true)
         {
             UpdateTileBasedOnPlayerPosition();
-            yield return null;
+            yield return null; // Wait for the next frame
         }
     }
+
+    /*
+      private IEnumerator UpdateSPO()
+      {
+          while (true)
+          {
+              if (NextToGem(currentGridPos))
+              {
+
+              }
+          }
+      }
+      */
 
     private void UpdateTileBasedOnPlayerPosition()
     {
@@ -195,7 +213,8 @@ public class PlayerController : MonoBehaviour
 
             transform.position = cellCenter;
 
-            if (gem_tilemap.HasTile(currentGridPos))
+            if (gem_tilemap.HasTile(currentGridPos)) // checks if the gem is being picked up
+            {
                 CollectGem(currentGridPos);
         }
     }
@@ -255,4 +274,68 @@ public class PlayerController : MonoBehaviour
             endScreenCanvas.SetActive(true);
         }
     }
+
+    private bool NextToGem(Vector3Int gridPos)
+    {
+        // Check if the player is next to a gem tile
+        Vector3Int[] adjacentPositions = new Vector3Int[]
+        {
+            gridPos + Vector3Int.up,
+            gridPos + Vector3Int.down,
+            gridPos + Vector3Int.left,
+            gridPos + Vector3Int.right
+        };
+
+        foreach (var pos in adjacentPositions) // checks if gem hasn't been collected
+        {
+            if (gem_tilemap.HasTile(pos))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // If gem is next to player, return the direction vector.
+    private Vector3Int GetGemDirection(Vector3Int gridPos)
+    {
+        if (NextToGem(gridPos))
+        {
+            Vector3Int[] adjacentPositions = new Vector3Int[]
+            {
+                gridPos + Vector3Int.up,
+                gridPos + Vector3Int.down,
+                gridPos + Vector3Int.left,
+                gridPos + Vector3Int.right
+            };
+
+            foreach (var pos in adjacentPositions)
+            {
+                if (gem_tilemap.HasTile(pos))
+                {
+                    return pos - gridPos; // Return the direction vector
+                }
+            }
+
+        }
+        return Vector3Int.zero; // No gem found next to the player
+    }
+
+
+    // Converting the direction vector to indices.
+    // bottomLeft = 1 (moving down)
+    // topLeft = 2 (moving left)
+    // topRight = 3 (moving up)
+    // bottomRight = 4 (moving right)
+    private int DirectionToIndex(Vector3Int direction)
+    {
+        if (direction == Vector3Int.down) return 1;
+        if (direction == Vector3Int.left) return 2;
+        if (direction == Vector3Int.up) return 3;
+        if (direction == Vector3Int.right) return 4;
+        return 0;
+    }
+    
+
 }
