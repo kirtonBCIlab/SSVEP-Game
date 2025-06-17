@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -64,10 +65,10 @@ public class PlayerController : MonoBehaviour
     private bool eventTriggered = false;
     private Vector3Int currentGridPos;
 
-    private Vector3 leftPos;
-    private Vector3 rightPos;
-    private Vector3 upPos;
-    private Vector3 downPos;
+    private Vector3 topleftPos;
+    private Vector3 toprightPos;
+    private Vector3 bottomleftPos;
+    private Vector3 bottomrightPos;
 
     private Vector3Int previousGridPos;
 
@@ -76,14 +77,13 @@ public class PlayerController : MonoBehaviour
     private GameObject SPO3;
     private GameObject SPO4;
     private HashSet<TileBase> assignedSPOGemSet = new HashSet<TileBase>();
-    private BoundsInt bounds;
 
 
     private Queue<string> SPOOrder = new Queue<string>(new[] {
-        "SPO1", "SPO2", "SPO3", "SPO4",
-        "SPO1", "SPO2", "SPO3", "SPO4",
-        "SPO1", "SPO2", "SPO3", "SPO4",
-        "SPO1", "SPO2", "SPO3", "SPO4"
+        "SPO 1", "SPO 2", "SPO 3", "SPO 4",
+        "SPO 1", "SPO 2", "SPO 3", "SPO 4",
+        "SPO 1", "SPO 2", "SPO 3", "SPO 4",
+        "SPO 1", "SPO 2", "SPO 3", "SPO 4"
     });
 
     private Dictionary<Vector3Int, string> directionToSPO = new Dictionary<Vector3Int, string>();
@@ -105,13 +105,11 @@ public class PlayerController : MonoBehaviour
         collision_tilemap = selectedGrid.transform.Find("Tilemap Collision").GetComponent<Tilemap>();
         gem_tilemap = selectedGrid.transform.Find("Tilemap Gems").GetComponent<Tilemap>();
 
-        // Use saved position if available, else use the start tile
-        bounds = ground_tilemap.cellBounds;
         // Initialize SPO GameObjects
-        SPO1 = GameObject.Find("SPO1");
-        SPO2 = GameObject.Find("SPO2");
-        SPO3 = GameObject.Find("SPO3");
-        SPO4 = GameObject.Find("SPO4");
+        SPO1 = GameObject.Find("SPO 1");
+        SPO2 = GameObject.Find("SPO 2");
+        SPO3 = GameObject.Find("SPO 3");
+        SPO4 = GameObject.Find("SPO 4");
 
         // Check if SPO GameObjects are found
         if (SPO1 == null || SPO2 == null || SPO3 == null || SPO4 == null)
@@ -119,10 +117,10 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("One or more SPO GameObjects not found in the scene.");
         }
 
-        leftPos = new Vector3(-784, -141, 0);
-        rightPos = ground_tilemap.GetCellCenterWorld(new Vector3Int(bounds.xMax, bounds.yMin, 0));
-        upPos = ground_tilemap.GetCellCenterWorld(new Vector3Int(bounds.xMax - 1, bounds.yMax - 1, 0));
-        downPos = ground_tilemap.GetCellCenterWorld(new Vector3Int(bounds.xMin, bounds.yMin, 0));
+        topleftPos = new Vector3(16, 16, 0);
+        toprightPos = new Vector3(130, 16, 0);
+        bottomleftPos = new Vector3(16, -36, 0);
+        bottomrightPos = new Vector3(130, -36, 0);
 
         if (PlayerControllerManager.Instance != null && PlayerControllerManager.Instance.SavedGridPosition != Vector3Int.zero)
         {
@@ -221,16 +219,20 @@ public class PlayerController : MonoBehaviour
             assignedSPOGemSet.Add(uncollectedGemTile);
         }
 
-        if (Input.GetKeyDown(KeyCode.W)) MoveUp();
-        else if (Input.GetKeyDown(KeyCode.A)) MoveLeft();
-        else if (Input.GetKeyDown(KeyCode.S)) MoveDown();
-        else if (Input.GetKeyDown(KeyCode.D)) MoveRight();
+        if (Input.GetKeyDown(KeyCode.W))
+            MoveTopRight();
+        else if (Input.GetKeyDown(KeyCode.A))
+            MoveTopLeft();
+        else if (Input.GetKeyDown(KeyCode.S))
+            MoveBottomLeft();
+        else if (Input.GetKeyDown(KeyCode.D))
+            MoveBottomRight();
     }
 
-    public void MoveUp() => Move(new Vector2Int(0, 1));
-    public void MoveDown() => Move(new Vector2Int(0, -1));
-    public void MoveLeft() => Move(new Vector2Int(-1, 0));
-    public void MoveRight() => Move(new Vector2Int(1, 0));
+    public void MoveTopRight() => Move(new Vector2Int(0, 1));
+    public void MoveTopLeft() => Move(new Vector2Int(0, -1));
+    public void MoveBottomLeft() => Move(new Vector2Int(-1, 0));
+    public void MoveBottomRight() => Move(new Vector2Int(1, 0));
 
     public void Move(Vector2Int direction)
     {
@@ -370,22 +372,22 @@ public class PlayerController : MonoBehaviour
             if (gem_tilemap.HasTile(gridPos + Vector3Int.up))
             {
                 Debug.Log("Gem found above player");
-                return "up";
+                return "topright";
             }
             if (gem_tilemap.HasTile(gridPos + Vector3Int.down))
             {
                 Debug.Log("Gem found below player");
-                return "down";
+                return "bottomleft";
             }
             if (gem_tilemap.HasTile(gridPos + Vector3Int.left))
             {
                 Debug.Log("Gem found to the left of player");
-                return "left";
+                return "topleft";
             }
             if (gem_tilemap.HasTile(gridPos + Vector3Int.right))
             {
                 Debug.Log("Gem found to the right of player");
-                return "right";
+                return "bottomright";
             }
         }
         return null; // No gem found next to the player
@@ -433,10 +435,10 @@ public class PlayerController : MonoBehaviour
         // Determine direction name based on the uncollected gem position
         Vector3Int dir = uncollectedGemPos.Value - currentGridPos;
         string dirName = null;
-        if (dir == Vector3Int.up) dirName = "up";
-        else if (dir == Vector3Int.down) dirName = "down";
-        else if (dir == Vector3Int.left) dirName = "left";
-        else if (dir == Vector3Int.right) dirName = "right";
+        if (dir == Vector3Int.up) dirName = "topright";
+        else if (dir == Vector3Int.down) dirName = "bottomleft";
+        else if (dir == Vector3Int.left) dirName = "topleft";
+        else if (dir == Vector3Int.right) dirName = "bottomright";
 
         if (dirName == null)
         {
@@ -447,20 +449,20 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPos;
         switch (dirName)
         {
-            case "up":
-                targetPos = upPos;
+            case "topright":
+                targetPos = toprightPos;
                 nextSPO.transform.position = targetPos;
                 break;
-            case "down":
-                targetPos = downPos;
+            case "bottomleft":
+                targetPos = bottomleftPos;
                 nextSPO.transform.position = targetPos;
                 break;
-            case "left":
-                targetPos = leftPos;
+            case "topleft":
+                targetPos = topleftPos;
                 nextSPO.transform.position = targetPos;
                 break;
-            case "right":
-                targetPos = rightPos;
+            case "bottomright":
+                targetPos = bottomrightPos;
                 nextSPO.transform.position = targetPos;
                 break;
             default:
