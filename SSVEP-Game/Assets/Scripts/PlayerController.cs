@@ -42,15 +42,50 @@ public class PlayerController : MonoBehaviour
     private bool eventTriggered = false;
     private Vector3Int currentGridPos;
 
+    private Vector3 leftPos;
+    private Vector3 rightPos;
+    private Vector3 upPos;
+    private Vector3 downPos;
+
     private Vector3Int previousGridPos;
 
-    private string[] SPOOrder = new string[] { "SPO1", "SPO2", "SPO3", "SPO4",
+    private GameObject SPO1;
+    private GameObject SPO2;
+    private GameObject SPO3;
+    private GameObject SPO4;
+    private HashSet<TileBase> assignedSPOGemSet = new HashSet<TileBase>();
+    private BoundsInt bounds;
+
+
+    private Queue<string> SPOOrder = new Queue<string>(new[] {
         "SPO1", "SPO2", "SPO3", "SPO4",
         "SPO1", "SPO2", "SPO3", "SPO4",
-        "SPO1", "SPO2", "SPO3", "SPO4"};
+        "SPO1", "SPO2", "SPO3", "SPO4",
+        "SPO1", "SPO2", "SPO3", "SPO4"
+    });
+
+    private Dictionary<Vector3Int, string> directionToSPO = new Dictionary<Vector3Int, string>();
 
     private void Start()
     {
+        bounds = ground_tilemap.cellBounds;
+        // Initialize SPO GameObjects
+        SPO1 = GameObject.Find("SPO1");
+        SPO2 = GameObject.Find("SPO2");
+        SPO3 = GameObject.Find("SPO3");
+        SPO4 = GameObject.Find("SPO4");
+
+        // Check if SPO GameObjects are found
+        if (SPO1 == null || SPO2 == null || SPO3 == null || SPO4 == null)
+        {
+            Debug.LogError("One or more SPO GameObjects not found in the scene.");
+        }
+
+        leftPos = new Vector3(-784, -141, 0);
+        rightPos = ground_tilemap.GetCellCenterWorld(new Vector3Int(bounds.xMax, bounds.yMin, 0));
+        upPos = ground_tilemap.GetCellCenterWorld(new Vector3Int(bounds.xMax - 1, bounds.yMax - 1, 0));
+        downPos = ground_tilemap.GetCellCenterWorld(new Vector3Int(bounds.xMin, bounds.yMin, 0));
+
         if (PlayerControllerManager.Instance != null && PlayerControllerManager.Instance.SavedGridPosition != Vector3Int.zero)
         {
             currentGridPos = PlayerControllerManager.Instance.SavedGridPosition;
@@ -106,19 +141,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*
-      private IEnumerator UpdateSPO()
-      {
-          while (true)
-          {
-              if (NextToGem(currentGridPos))
-              {
-
-              }
-          }
-      }
-      */
-
     private void UpdateTileBasedOnPlayerPosition()
     {
         // Get the player's current grid position
@@ -150,10 +172,21 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-
     private void Update()
     {
+        var uncollectedGemPos = GetUncollectedAdjacentGem(currentGridPos);
+        TileBase uncollectedGemTile = uncollectedGemPos != null ? gem_tilemap.GetTile(uncollectedGemPos.Value) : null;
+
+        // Only assign if next to a real, uncollected gem tile
+        if (uncollectedGemTile != null 
+            && gemTiles.Contains(uncollectedGemTile)
+            && !collectedGemSet.Contains(uncollectedGemTile)
+            && !assignedSPOGemSet.Contains(uncollectedGemTile))
+        {
+            MoveNextSPOToGemCorner();
+            assignedSPOGemSet.Add(uncollectedGemTile);
+        }
+
         if (Input.GetKeyDown(KeyCode.W))
             MoveUp();
         else if (Input.GetKeyDown(KeyCode.A))
@@ -220,6 +253,7 @@ public class PlayerController : MonoBehaviour
 
             // Add to collected gem set
             collectedGemSet.Add(gemTile);
+            assignedSPOGemSet.Remove(gemTile); // Remove from assigned SPO set
 
             // Activate corresponding sticker
             int index = gemTiles.IndexOf(gemTile);
@@ -287,6 +321,7 @@ public class PlayerController : MonoBehaviour
     {
         if (NextToGem(gridPos))
         {
+            GetGemDirectionName(gridPos); // Call to log the direction name
             Vector3Int[] adjacentPositions = new Vector3Int[]
             {
                 gridPos + Vector3Int.up,
@@ -299,6 +334,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (gem_tilemap.HasTile(pos))
                 {
+                    Debug.Log($"[GEM DIRECTION] Gem found at {pos} next to player at {gridPos}");
                     return pos - gridPos; // Return the direction vector
                 }
             }
@@ -307,19 +343,134 @@ public class PlayerController : MonoBehaviour
         return Vector3Int.zero; // No gem found next to the player
     }
 
-
-    // Converting the direction vector to indices.
-    // bottomLeft = 1 (moving down)
-    // topLeft = 2 (moving left)
-    // topRight = 3 (moving up)
-    // bottomRight = 4 (moving right)
-    private int DirectionToIndex(Vector3Int direction)
+    // If gem is next to player, return the direction name.
+    private string GetGemDirectionName(Vector3Int gridPos)
     {
-        if (direction == Vector3Int.down) return 1;
-        if (direction == Vector3Int.left) return 2;
-        if (direction == Vector3Int.up) return 3;
-        if (direction == Vector3Int.right) return 4; 
+        if (NextToGem(gridPos))
+        {
+            if (gem_tilemap.HasTile(gridPos + Vector3Int.up))
+            {
+                Debug.Log("Gem found above player");
+                return "up";
+            }
+            if (gem_tilemap.HasTile(gridPos + Vector3Int.down))
+            {
+                Debug.Log("Gem found below player");
+                return "down";
+            }
+            if (gem_tilemap.HasTile(gridPos + Vector3Int.left))
+            {
+                Debug.Log("Gem found to the left of player");
+                return "left";
+            }
+            if (gem_tilemap.HasTile(gridPos + Vector3Int.right))
+            {
+                Debug.Log("Gem found to the right of player");
+                return "right";
+            }
+        }
+        return null; // No gem found next to the player
     }
-    
 
+    private GameObject findSPOByName(string name)
+    {
+        GameObject[] allSPOs = { SPO1, SPO2, SPO3, SPO4 };
+        foreach (GameObject spo in allSPOs)
+        {
+            if (spo != null && spo.name == name)
+            {
+                return spo;
+            }
+        }
+        return null; // No SPO found with the given name
+    }
+
+
+    public string GetSPOForDirection(Vector3Int direction)
+    {
+        if (directionToSPO.TryGetValue(direction, out string spoName))
+        {
+            return spoName;
+        }
+        return null; // No SPO assigned for this direction
+    }
+
+   private void MoveNextSPOToGemCorner()
+    {
+        // Only proceed if next to an uncollected gem
+        var uncollectedGemPos = GetUncollectedAdjacentGem(currentGridPos);
+        if (uncollectedGemPos == null) return;
+
+        if (SPOOrder.Count == 0) return;
+
+        string nextSPOName = SPOOrder.Dequeue(); // Get and remove the first SPO
+        GameObject nextSPO = findSPOByName(nextSPOName);
+        if (nextSPO == null)
+        {
+            Debug.LogWarning($"[SPO MOVE] SPO GameObject '{nextSPOName}' not found.");
+            return;
+        }
+
+        // Determine direction name based on the uncollected gem position
+        Vector3Int dir = uncollectedGemPos.Value - currentGridPos;
+        string dirName = null;
+        if (dir == Vector3Int.up) dirName = "up";
+        else if (dir == Vector3Int.down) dirName = "down";
+        else if (dir == Vector3Int.left) dirName = "left";
+        else if (dir == Vector3Int.right) dirName = "right";
+
+        if (dirName == null)
+        {
+            Debug.LogWarning("[SPO MOVE] No valid direction to uncollected gem.");
+            return;
+        }
+
+        Vector3 targetPos;
+        switch (dirName)
+        {
+            case "up":
+                targetPos = upPos;
+                nextSPO.transform.position = targetPos;
+                break;
+            case "down":
+                targetPos = downPos;
+                nextSPO.transform.position = targetPos;
+                break;
+            case "left":
+                targetPos = leftPos;
+                nextSPO.transform.position = targetPos;
+                break;
+            case "right":
+                targetPos = rightPos;
+                nextSPO.transform.position = targetPos;
+                break;
+            default:
+                Debug.LogWarning("[SPO MOVE] Invalid direction name.");
+                return;
+        }
+
+        Debug.Log($"[SPO MOVE] Moved {nextSPOName} to {dirName} corner at {targetPos}");
+    }
+
+    private Vector3Int? GetUncollectedAdjacentGem(Vector3Int gridPos)
+    {
+        Vector3Int[] adjacentPositions = new Vector3Int[]
+        {
+            gridPos + Vector3Int.up,
+            gridPos + Vector3Int.down,
+            gridPos + Vector3Int.left,
+            gridPos + Vector3Int.right
+        };
+
+        foreach (var pos in adjacentPositions)
+        {
+            TileBase tile = gem_tilemap.GetTile(pos);
+            if (tile != null && !collectedGemSet.Contains(tile))
+            {
+                return pos;
+            }
+        }
+        return null;
+    }
+        
 }
