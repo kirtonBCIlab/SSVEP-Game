@@ -197,8 +197,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public void MoveTopRight() => Move(new Vector2Int(0, 1));
-    public void MoveTopLeft() => Move(new Vector2Int(0, -1));
-    public void MoveBottomLeft() => Move(new Vector2Int(-1, 0));
+    public void MoveBottomLeft() => Move(new Vector2Int(0, -1));
+    public void MoveTopLeft() => Move(new Vector2Int(-1, 0));
     public void MoveBottomRight() => Move(new Vector2Int(1, 0));
 
     public void Move(Vector2Int direction)
@@ -425,23 +425,37 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 targetPos;
+        Vector3 prevPos;
+        GameObject SPOToSwitch;
         switch (dirName)
         {
             case "topright":
                 targetPos = toprightPos;
+                prevPos = nextSPO.transform.position; // store the next spo positions temporarily
+                SPOToSwitch = GetSPOInPosition(targetPos);
                 nextSPO.transform.position = targetPos;
+                SPOToSwitch.transform.position = prevPos;
                 break;
             case "bottomleft":
                 targetPos = bottomleftPos;
+                prevPos = nextSPO.transform.position;
+                SPOToSwitch = GetSPOInPosition(targetPos);
                 nextSPO.transform.position = targetPos;
+                SPOToSwitch.transform.position = prevPos;
                 break;
             case "topleft":
                 targetPos = topleftPos;
+                prevPos = nextSPO.transform.position;
+                SPOToSwitch = GetSPOInPosition(targetPos);
                 nextSPO.transform.position = targetPos;
+                SPOToSwitch.transform.position = prevPos;
                 break;
             case "bottomright":
-                targetPos = bottomrightPos;
+                targetPos = bottomrightPos; 
+                prevPos = nextSPO.transform.position;
+                SPOToSwitch = GetSPOInPosition(targetPos);
                 nextSPO.transform.position = targetPos;
+                SPOToSwitch.transform.position = prevPos;
                 break;
             default:
                 Debug.LogWarning("[SPO MOVE] Invalid direction name.");
@@ -449,6 +463,37 @@ public class PlayerController : MonoBehaviour
         }
 
         Debug.Log($"[SPO MOVE] Moved {nextSPOName} to {dirName} corner at {targetPos}");
+    }
+
+    private GameObject GetSPOInPosition(Vector3 position)
+    {
+        Vector3 bottomLeftPos = SPO4.transform.position;
+        Vector3 topRightPos = SPO3.transform.position;
+        Vector3 topLeftPos = SPO2.transform.position;
+        Vector3 bottomRightPos = SPO1.transform.position;
+
+        if (position == bottomLeftPos)
+        {
+            Debug.Log("SPO 4 found");
+            return GameObject.Find("SPO 4");
+        }
+        else if (position == topRightPos)
+        {
+            Debug.Log("SPO 3 found");
+            return GameObject.Find("SPO 3");
+        }
+        else if (position == topLeftPos)
+        {
+            Debug.Log("SPO 2 found");
+            return GameObject.Find("SPO 2");
+        }
+        else if (position == bottomRightPos)
+        {
+            Debug.Log("SPO 1 found");
+            return GameObject.Find("SPO 1");
+        }
+        Debug.Log("No SPO replacement found...");
+        return null;
     }
 
     private Vector3Int? GetUncollectedAdjacentGem(Vector3Int gridPos)
