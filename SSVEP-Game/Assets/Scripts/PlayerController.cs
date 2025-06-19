@@ -255,6 +255,7 @@ public class PlayerController : MonoBehaviour
                 CollectGem(currentGridPos);
             }
         }
+    }
 
     private bool CanMove(Vector3Int targetGridPos)
     {
