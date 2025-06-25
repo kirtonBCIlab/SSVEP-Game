@@ -304,7 +304,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 306c17e4391b7fb4e8b1c68e0192606f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18150310a24990e40bf6bce7ed45bf8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedMap: 0
+  selectedMap: 1
   grid1: {fileID: 1437642889}
   grid2: {fileID: 200940148}
   ground_tilemap: {fileID: 1399968567}
@@ -1336,7 +1336,9 @@ CompositeCollider2D:
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths: []
+  m_ColliderPaths:
+  - m_Collider: {fileID: 727279997}
+    m_ColliderPaths: []
   m_CompositePaths:
     m_Paths: []
   m_VertexDistance: 0.0005
@@ -5316,7 +5318,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &1437642890
 Grid:
   m_ObjectHideFlags: 0
@@ -7004,3 +7006,4 @@ SceneRoots:
   - {fileID: 1766413588}
   - {fileID: 1970587571}
   - {fileID: 913608663}
+  - {fileID: 1975832402}
