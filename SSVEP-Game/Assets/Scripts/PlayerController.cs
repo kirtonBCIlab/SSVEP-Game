@@ -22,8 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject grid2;
 
-    // private Vector3Int gridPos1;
-    private Vector3Int gridPos2;
+    private Vector3Int gridPos;
 
     [Header("Tilemaps")]
     [SerializeField]
@@ -101,16 +100,14 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Map 1 Selected!");
             selectedGrid = grid1;
-            // gridPos1 = new Vector3Int(8, 7, 0);
-            gridPos2 = new Vector3Int(8, 11, 0);
+            gridPos = new Vector3Int(8, 11, 0);
             spawnTilemap = spawn_tilemap1;
         }
         else if (selectedMap == MapSelection.Map2)
         {
             Debug.Log("Map 2 Selected!");
             selectedGrid = grid2;
-            // gridPos1 = new Vector3Int(7, 3, 0);
-            gridPos2 = new Vector3Int(13, 6, 0);
+            gridPos= new Vector3Int(13, 6, 0);
             spawnTilemap = spawn_tilemap2;
         }
         else
@@ -292,7 +289,7 @@ public class PlayerController : MonoBehaviour
                 CollectGem(currentGridPos);
             }
 
-            // check if player is on either the 2 spots (gridPos1 or gridPos2)
+            // check if player is on gridPos
             checkInPosition();
         }
     }
@@ -361,12 +358,7 @@ public class PlayerController : MonoBehaviour
     {
         if (selectedMap == MapSelection.Map1)
         {
-            // if (currentGridPos == gridPos1)
-            // {
-            //     Debug.Log("Found in Position 1");
-            //     MoveSPOToCorner("topright");
-            // }
-            if (currentGridPos == gridPos2)
+            if (currentGridPos == gridPos)
             {
                 Debug.Log("Found in Position 2");
                 MoveSPOToCorner("bottomleft");
@@ -378,12 +370,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (selectedMap == MapSelection.Map2)
         {
-            // if (currentGridPos == gridPos1)
-            // {
-            //     Debug.Log("Found in Position 1");
-            //     MoveSPOToCorner("topright");
-            // }
-            if (currentGridPos == gridPos2)
+            if (currentGridPos == gridPos)
             {
                 Debug.Log("Found in Position 2");
                 MoveSPOToCorner("topleft");
