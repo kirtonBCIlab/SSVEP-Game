@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject grid2;
 
-    private Vector3Int gridPos1;
+    // private Vector3Int gridPos1;
     private Vector3Int gridPos2;
 
     [Header("Tilemaps")]
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Map 1 Selected!");
             selectedGrid = grid1;
-            gridPos1 = new Vector3Int(8, 7, 0);
+            // gridPos1 = new Vector3Int(8, 7, 0);
             gridPos2 = new Vector3Int(8, 11, 0);
             spawnTilemap = spawn_tilemap1;
         }
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Map 2 Selected!");
             selectedGrid = grid2;
-            gridPos1 = new Vector3Int(7, 3, 0);
+            // gridPos1 = new Vector3Int(7, 3, 0);
             gridPos2 = new Vector3Int(13, 6, 0);
             spawnTilemap = spawn_tilemap2;
         }
@@ -154,10 +154,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            currentGridPos = gridPos1;
+            currentGridPos = GetStartTilePosition(spawnTilemap);
         }
 
         transform.position = ground_tilemap.GetCellCenterWorld(currentGridPos);
+        moveSPOAtSpawn();
 
         // Initialize mappings
         gemToCollectedMap = new Dictionary<TileBase, TileBase>();
@@ -355,39 +356,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool NextToGem(Vector3Int gridPos)
-    {
-        // Check if the player is next to a gem tile
-        Vector3Int[] adjacentPositions = new Vector3Int[]
-        {
-            gridPos + Vector3Int.up,
-            gridPos + Vector3Int.down,
-            gridPos + Vector3Int.left,
-            gridPos + Vector3Int.right
-        };
-
-        foreach (var pos in adjacentPositions) // checks if gem hasn't been collected
-        {
-            if (gem_tilemap.HasTile(pos))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     // checks if player is in the 2 positions of the grid
     private void checkInPosition()
     {
         if (selectedMap == MapSelection.Map1)
         {
-            if (currentGridPos == gridPos1)
-            {
-                MoveSPOToCorner("topright");
-                Debug.Log("Found in Position 1");
-            }
-            else if (currentGridPos == gridPos2)
+            // if (currentGridPos == gridPos1)
+            // {
+            //     Debug.Log("Found in Position 1");
+            //     MoveSPOToCorner("topright");
+            // }
+            if (currentGridPos == gridPos2)
             {
                 Debug.Log("Found in Position 2");
                 MoveSPOToCorner("bottomleft");
@@ -399,12 +378,12 @@ public class PlayerController : MonoBehaviour
         }
         else if (selectedMap == MapSelection.Map2)
         {
-            if (currentGridPos == gridPos1)
-            {
-                Debug.Log("Found in Position 1");
-                MoveSPOToCorner("topright");
-            }
-            else if (currentGridPos == gridPos2)
+            // if (currentGridPos == gridPos1)
+            // {
+            //     Debug.Log("Found in Position 1");
+            //     MoveSPOToCorner("topright");
+            // }
+            if (currentGridPos == gridPos2)
             {
                 Debug.Log("Found in Position 2");
                 MoveSPOToCorner("topleft");
@@ -414,6 +393,11 @@ public class PlayerController : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private void moveSPOAtSpawn()
+    {
+        MoveSPOToCorner("topright");
     }
 
     private GameObject findSPOByName(string name)
