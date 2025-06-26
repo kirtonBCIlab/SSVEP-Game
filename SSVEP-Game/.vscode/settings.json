@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "SSVEP-Game.sln"
+    "dotnet.defaultSolution": "SSVEP-Game.sln",
+    "editor.inlineSuggest.enabled": false,
 }
