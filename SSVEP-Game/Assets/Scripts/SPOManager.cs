@@ -1,0 +1,107 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+using System.Linq;
+
+public class SPOManager : MonoBehaviour
+{
+    private GameObject SPO1, SPO2, SPO3, SPO4;
+    private HashSet<TileBase> assignedTiles = new HashSet<TileBase>();
+    private Queue<string> spoQueue = new Queue<string>();
+    private Dictionary<string, Vector3> positions = new Dictionary<string, Vector3>();
+
+    public void Initialize()
+    {
+        SPO1 = GameObject.Find("SPO 1");
+        SPO2 = GameObject.Find("SPO 2");
+        SPO3 = GameObject.Find("SPO 3");
+        SPO4 = GameObject.Find("SPO 4");
+
+        if (!SPO1 || !SPO2 || !SPO3 || !SPO4)
+        {
+            Debug.LogError("SPOs not found in scene.");
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            spoQueue.Enqueue("SPO 1");
+            spoQueue.Enqueue("SPO 2");
+            spoQueue.Enqueue("SPO 3");
+            spoQueue.Enqueue("SPO 4");
+        }
+
+        positions["topleft"] = new Vector3(16, 16, 0);
+        positions["topright"] = new Vector3(130, 16, 0);
+        positions["bottomleft"] = new Vector3(16, -36, 0);
+        positions["bottomright"] = new Vector3(130, -36, 0);
+
+        //This is the first of the hardcoded positions, it is top right for both of the maps
+        ForceMoveSPO("topright");
+    }
+
+    public void TryMoveSPO(TileBase tile, Vector3Int direction)
+    {
+        if (assignedTiles.Contains(tile)) return;
+
+        string dir = DirectionToName(direction);
+        if (string.IsNullOrEmpty(dir)) return;
+
+        ForceMoveSPO(dir);
+        assignedTiles.Add(tile);
+        Debug.Log("assigned tiles: [" + string.Join(", ", assignedTiles.Select(t => t != null ? t.name : "null")) + "]");
+    }
+
+    public void ForceMoveSPO(string dir)
+    {
+        if (spoQueue.Count == 0 || !positions.ContainsKey(dir)) return;
+
+        string spoName = spoQueue.Dequeue();
+        Debug.Log($"SPO '{spoName}' next in queue");
+        GameObject movingSPO = GameObject.Find(spoName);
+        Vector3 targetPos = positions[dir];
+
+        GameObject swapSPO = FindSPOAt(targetPos);
+        if (movingSPO && swapSPO)
+        {
+            Vector3 temp = movingSPO.transform.position;
+            movingSPO.transform.position = targetPos;
+            swapSPO.transform.position = temp;
+        }
+    }
+
+    private GameObject FindSPOAt(Vector3 pos)
+    {
+        foreach (var name in new[] { "SPO 1", "SPO 2", "SPO 3", "SPO 4" })
+        {
+            GameObject spo = GameObject.Find(name);
+            if (spo && spo.transform.position == pos)
+                return spo;
+        }
+        return null;
+    }
+
+    private string DirectionToName(Vector3Int dir)
+    {
+        if (dir == Vector3Int.up) return "topright";
+        if (dir == Vector3Int.down) return "bottomleft";
+        if (dir == Vector3Int.left) return "topleft";
+        if (dir == Vector3Int.right) return "bottomright";
+        return null;
+    }
+
+    public string GetSPOCorner(GameObject spo)
+    {
+        if (spo == null) return null;
+
+        foreach (var kvp in positions)
+        {
+            if (spo.transform.position == kvp.Value)
+            {
+                return kvp.Key;
+            }
+        }
+
+        return null; // SPO is not in a defined corner
+    }
+}
