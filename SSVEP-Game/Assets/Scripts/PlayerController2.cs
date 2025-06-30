@@ -52,7 +52,7 @@ public class PlayerController2 : MonoBehaviour
         gemManager = GetComponent<GemManager>();
         if (gemManager != null)
         {
-            gemManager.Initialize(gem_tilemap, transform); // assume GemManager has this method
+            gemManager.Initialize(gem_tilemap, transform, spoManager); // assume GemManager has this method
         }
 
         if (PlayerControllerManager.Instance != null && PlayerControllerManager.Instance.SavedGridPosition != Vector3Int.zero)
@@ -170,6 +170,7 @@ public class PlayerController2 : MonoBehaviour
         {
             string dir = selectedMap == MapSelection.Map1 ? "bottomleft" : "topleft";
             spoManager?.ForceMoveSPO(dir);
+            //NEED TO TELL SPO THAT THIS MOVEMENT WAS COMPLETED (USUALLY TRIGGERED BY SUCCESSFULLY COLLECTING A GEM)
         }
     }
 }

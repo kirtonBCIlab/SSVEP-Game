@@ -6,8 +6,6 @@ using UnityEngine;
 public class PlayerControllerManager : MonoBehaviour
 {
     public static PlayerControllerManager Instance { get; private set; }
-    public static bool eventTriggered = false;
-
     public Vector3Int SavedGridPosition { get; set; }
 
     private void Awake()

@@ -10,6 +10,8 @@ public class SPOManager : MonoBehaviour
     private Queue<string> spoQueue = new Queue<string>();
     private Dictionary<string, Vector3> positions = new Dictionary<string, Vector3>();
 
+    private string currentSPOName = null; // NEW: currently active SPO
+
     public void Initialize()
     {
         SPO1 = GameObject.Find("SPO 1");
@@ -36,7 +38,6 @@ public class SPOManager : MonoBehaviour
         positions["bottomleft"] = new Vector3(16, -36, 0);
         positions["bottomright"] = new Vector3(130, -36, 0);
 
-        //This is the first of the hardcoded positions, it is top right for both of the maps
         ForceMoveSPO("topright");
     }
 
@@ -47,26 +48,62 @@ public class SPOManager : MonoBehaviour
         string dir = DirectionToName(direction);
         if (string.IsNullOrEmpty(dir)) return;
 
-        ForceMoveSPO(dir);
-        assignedTiles.Add(tile);
-        Debug.Log("assigned tiles: [" + string.Join(", ", assignedTiles.Select(t => t != null ? t.name : "null")) + "]");
+        if (currentSPOName == null)
+        {
+            if (spoQueue.Count == 0) return;
+            currentSPOName = spoQueue.Dequeue();
+        }
+
+        MoveCurrentSPOTo(dir);
     }
+
+    public void AssignCurrentSPO(TileBase collectedTile)
+    {
+        if (currentSPOName == null)
+        {
+            return;
+        }
+
+        Debug.Log($"Assigning gem to SPO: {currentSPOName}");
+        assignedTiles.Add(collectedTile);
+        currentSPOName = null;
+    }
+
 
     public void ForceMoveSPO(string dir)
     {
         if (spoQueue.Count == 0 || !positions.ContainsKey(dir)) return;
 
         string spoName = spoQueue.Dequeue();
-        Debug.Log($"SPO '{spoName}' next in queue");
+        currentSPOName = null; // override tracking, used for manual override
+
+        MoveSPOTo(spoName, dir);
+    }
+
+    private void MoveCurrentSPOTo(string dir)
+    {
+        if (string.IsNullOrEmpty(currentSPOName)) return;
+        MoveSPOTo(currentSPOName, dir);
+    }
+
+    private void MoveSPOTo(string spoName, string dir)
+    {
+        if (!positions.ContainsKey(dir)) return;
+
         GameObject movingSPO = GameObject.Find(spoName);
         Vector3 targetPos = positions[dir];
 
         GameObject swapSPO = FindSPOAt(targetPos);
-        if (movingSPO && swapSPO)
+        if (movingSPO && swapSPO && movingSPO != swapSPO)
         {
             Vector3 temp = movingSPO.transform.position;
             movingSPO.transform.position = targetPos;
             swapSPO.transform.position = temp;
+            Debug.Log($"Moving SPO '{currentSPOName}' to {dir}");
+        }
+        else if (movingSPO)
+        {
+            movingSPO.transform.position = targetPos;
         }
     }
 
@@ -97,11 +134,9 @@ public class SPOManager : MonoBehaviour
         foreach (var kvp in positions)
         {
             if (spo.transform.position == kvp.Value)
-            {
                 return kvp.Key;
-            }
         }
 
-        return null; // SPO is not in a defined corner
+        return null;
     }
 }

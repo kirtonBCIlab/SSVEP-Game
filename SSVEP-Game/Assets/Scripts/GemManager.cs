@@ -15,6 +15,7 @@ public class GemManager : MonoBehaviour
 
     private Tilemap gemTilemap;
     private Transform playerTransform;
+    private SPOManager spoManager; // NEW
 
     private Dictionary<TileBase, TileBase> gemToCollectedMap = new();
     private Dictionary<TileBase, TileBase> collectedToSmallMap = new();
@@ -24,11 +25,11 @@ public class GemManager : MonoBehaviour
 
     public static bool eventTriggered = false;
 
-
-    public void Initialize(Tilemap tilemap, Transform player)
+    public void Initialize(Tilemap tilemap, Transform player, SPOManager spo)
     {
         gemTilemap = tilemap;
         playerTransform = player;
+        spoManager = spo;
 
         gemToCollectedMap.Clear();
         collectedToSmallMap.Clear();
@@ -62,7 +63,7 @@ public class GemManager : MonoBehaviour
     private void UpdateTileBasedOnPlayerPosition()
     {
         if (playerTransform == null || gemTilemap == null) return;
-        
+
         Vector3Int playerGridPos = gemTilemap.WorldToCell(playerTransform.position);
 
         foreach (Vector3Int gridPos in gemTilemap.cellBounds.allPositionsWithin)
@@ -94,6 +95,8 @@ public class GemManager : MonoBehaviour
 
         if (gemToCollectedMap.TryGetValue(gemTile, out TileBase smallTile))
         {
+            Debug.Log($"Gem tile '{gemTile.name}' collected. Will trigger SPO assignment.");
+
             Vector3 worldPos = gemTilemap.GetCellCenterWorld(gridPos);
             worldPos.z = -1f;
             GameObject effect = Instantiate(gemExplosionPrefab, worldPos, Quaternion.identity);
@@ -103,6 +106,10 @@ public class GemManager : MonoBehaviour
             Destroy(effect, 1f);
 
             collectedGemSet.Add(gemTile);
+            
+            // Notify SPOManager that the current SPO has completed a task
+            spoManager?.AssignCurrentSPO(gemTile);
+
             // Activate corresponding sticker
             int index = gemTiles.IndexOf(gemTile);
             StartCoroutine(ReplaceTileAndStickerAfterDelay(gridPos, smallTile, 1f, index));
