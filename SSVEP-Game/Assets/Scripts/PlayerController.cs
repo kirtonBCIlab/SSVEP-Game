@@ -7,7 +7,7 @@ public enum MapSelection
     Map2
 }
 
-public class PlayerController2 : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Map Selection")]
     [SerializeField] private MapSelection selectedMap;
