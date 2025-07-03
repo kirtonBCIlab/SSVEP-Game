@@ -15,7 +15,7 @@ public class GemManager : MonoBehaviour
 
     private Tilemap gemTilemap;
     private Transform playerTransform;
-    private SPOManager spoManager; // NEW
+    private SPOManager spoManager; 
 
     private Dictionary<TileBase, TileBase> gemToCollectedMap = new();
     private Dictionary<TileBase, TileBase> collectedToSmallMap = new();
@@ -106,7 +106,7 @@ public class GemManager : MonoBehaviour
             Destroy(effect, 1f);
 
             collectedGemSet.Add(gemTile);
-            
+
             // Notify SPOManager that the current SPO has completed a task
             spoManager?.AssignCurrentSPO(gemTile);
 

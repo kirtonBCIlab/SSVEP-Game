@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 
 public class SPOManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class SPOManager : MonoBehaviour
     private Dictionary<string, Vector3> positions = new Dictionary<string, Vector3>();
 
     private string currentSPOName = null; // NEW: currently active SPO
+
+    private bool specialPosFlag;
 
     public void Initialize()
     {
@@ -69,15 +72,43 @@ public class SPOManager : MonoBehaviour
         currentSPOName = null;
     }
 
+    public void AssignCurrentSpecialSPO()
+    {
+        if (currentSPOName == null)
+        {
+            return;
+        }
+
+        Debug.Log($"Special movement completed, used {currentSPOName}");
+        currentSPOName = null;
+    }
+
 
     public void ForceMoveSPO(string dir)
     {
         if (spoQueue.Count == 0 || !positions.ContainsKey(dir)) return;
 
         string spoName = spoQueue.Dequeue();
-        currentSPOName = null; // override tracking, used for manual override
+        if (dir == "topright")
+        {
+            Debug.Log("first position, SPO 1 to topright");
+        }
 
-        MoveSPOTo(spoName, dir);
+        if (dir == "bottomleft")
+        {
+            specialPosFlag = true;
+            currentSPOName = spoName;
+            MoveCurrentSPOTo(dir);
+        }
+
+
+        if (!specialPosFlag)
+        {
+            currentSPOName = null; // override tracking, used for manual override
+            MoveSPOTo(spoName, dir);
+        }
+
+        //MoveSPOTo(spoName, dir);
     }
 
     private void MoveCurrentSPOTo(string dir)
@@ -99,6 +130,7 @@ public class SPOManager : MonoBehaviour
             Vector3 temp = movingSPO.transform.position;
             movingSPO.transform.position = targetPos;
             swapSPO.transform.position = temp;
+           
             Debug.Log($"Moving SPO '{currentSPOName}' to {dir}");
         }
         else if (movingSPO)

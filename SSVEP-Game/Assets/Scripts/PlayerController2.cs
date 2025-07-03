@@ -15,6 +15,8 @@ public class PlayerController2 : MonoBehaviour
     [SerializeField] private GameObject grid2;
 
     private Vector3Int gridPos;
+    private Vector3Int nextPos;
+    private bool usedGridPos = false;
     private Vector3Int currentGridPos;
 
     private Vector3Int previousGridPos;
@@ -34,6 +36,7 @@ public class PlayerController2 : MonoBehaviour
         GameObject selectedGrid = selectedMap == MapSelection.Map1 ? grid1 : grid2;
         Tilemap spawnTilemap = selectedMap == MapSelection.Map1 ? spawn_tilemap1 : spawn_tilemap2;
         gridPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 11, 0) : new Vector3Int(13, 6, 0);
+        nextPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 10, 0) : new Vector3Int(12, 6, 0);
 
         if (selectedGrid == null || spawnTilemap == null)
         {
@@ -91,6 +94,8 @@ public class PlayerController2 : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.A)) MoveTopLeft();
         else if (Input.GetKeyDown(KeyCode.S)) MoveBottomLeft();
         else if (Input.GetKeyDown(KeyCode.D)) MoveBottomRight();
+
+        CheckSpecialMovement();
     }
 
     public void MoveToSPO1() => MoveToSPO("SPO 1");
@@ -170,7 +175,21 @@ public class PlayerController2 : MonoBehaviour
         {
             string dir = selectedMap == MapSelection.Map1 ? "bottomleft" : "topleft";
             spoManager?.ForceMoveSPO(dir);
+            usedGridPos = true;
+
             //NEED TO TELL SPO THAT THIS MOVEMENT WAS COMPLETED (USUALLY TRIGGERED BY SUCCESSFULLY COLLECTING A GEM)
+            //CheckSpecialMovement();
+        }
+    }
+
+    private void CheckSpecialMovement()
+    {
+        if (currentGridPos == nextPos && usedGridPos)
+        {
+            Debug.Log("moved");
+
+            //tell SPO manager to use next SPO
+            spoManager?.AssignCurrentSpecialSPO();
         }
     }
 }
