@@ -10,10 +10,7 @@ public class SPOManager : MonoBehaviour
     private HashSet<TileBase> assignedTiles = new HashSet<TileBase>();
     private Queue<string> spoQueue = new Queue<string>();
     private Dictionary<string, Vector3> positions = new Dictionary<string, Vector3>();
-
-    private string currentSPOName = null; // NEW: currently active SPO
-
-    private bool specialPosFlag;
+    private string currentSPOName = null;
 
     public void Initialize()
     {
@@ -41,7 +38,7 @@ public class SPOManager : MonoBehaviour
         positions["bottomleft"] = new Vector3(16, -36, 0);
         positions["bottomright"] = new Vector3(130, -36, 0);
 
-        ForceMoveSPO("topright");
+        ForceMoveSPO("topright"); // First position for both maps
     }
 
     public void TryMoveSPO(TileBase tile, Vector3Int direction)
@@ -89,26 +86,19 @@ public class SPOManager : MonoBehaviour
         if (spoQueue.Count == 0 || !positions.ContainsKey(dir)) return;
 
         string spoName = spoQueue.Dequeue();
-        if (dir == "topright")
-        {
-            Debug.Log("first position, SPO 1 to topright");
-        }
 
-        if (dir == "bottomleft")
+        if (dir == "topright") // This is the starting step in both maps
         {
-            specialPosFlag = true;
-            currentSPOName = spoName;
-            MoveCurrentSPOTo(dir);
-        }
-
-
-        if (!specialPosFlag)
-        {
-            currentSPOName = null; // override tracking, used for manual override
+            Debug.Log("First position, SPO 1 to topright");
+            currentSPOName = null; 
             MoveSPOTo(spoName, dir);
         }
 
-        //MoveSPOTo(spoName, dir);
+        if (dir == "bottomleft" || dir == "topleft") // These are the special movements for maps 1 and 2 respectively
+        {
+            currentSPOName = spoName;
+            MoveCurrentSPOTo(dir);
+        }
     }
 
     private void MoveCurrentSPOTo(string dir)

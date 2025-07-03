@@ -176,20 +176,20 @@ public class PlayerController2 : MonoBehaviour
             string dir = selectedMap == MapSelection.Map1 ? "bottomleft" : "topleft";
             spoManager?.ForceMoveSPO(dir);
             usedGridPos = true;
-
-            //NEED TO TELL SPO THAT THIS MOVEMENT WAS COMPLETED (USUALLY TRIGGERED BY SUCCESSFULLY COLLECTING A GEM)
-            //CheckSpecialMovement();
         }
     }
 
     private void CheckSpecialMovement()
     {
-        if (currentGridPos == nextPos && usedGridPos)
+        if (currentGridPos == nextPos && usedGridPos) //In the position after completing the special movement
         {
-            Debug.Log("moved");
-
-            //tell SPO manager to use next SPO
+            // Tell SPO manager that the special movement SPO was used and now it can dequeue the next SPO
             spoManager?.AssignCurrentSpecialSPO();
+        }
+
+        if (usedGridPos)
+        {
+            gridPos = new Vector3Int(0, 0, -1000); //dummy number to make sure SPO movement for the special position only happens once
         }
     }
 }
