@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -30,6 +31,20 @@ public class PlayerController : MonoBehaviour
 
     private SPOManager spoManager;
     private GemManager gemManager;
+
+    //SAVING
+    private Vector3Int prev_pos;
+    private Vector3Int new_pos;
+    private float spo_selected;
+    private string movement_dir;
+    private bool special_pos;
+
+    // Public getters for save system
+    public Vector3Int PrevPos { get { return prev_pos; } }
+    public Vector3Int NewPos { get { return new_pos; } }
+    public float SpoSelected { get { return spo_selected; } }
+    public string MovementDir { get { return movement_dir; } }
+    public bool SpecialPos { get { return special_pos; } }
 
     private void Start()
     {
@@ -146,16 +161,41 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector2Int direction)
     {
         Vector3Int targetPos = currentGridPos + new Vector3Int(direction.x, direction.y, 0);
+
+        prev_pos = currentGridPos; //SAVING PREV POS
+
         if (CanMove(targetPos))
         {
             currentGridPos = targetPos;
+            new_pos = currentGridPos;  //SAVING NEW POS
             PlayerControllerManager.Instance.SavedGridPosition = currentGridPos;
 
             Vector3 cellCenter = ground_tilemap.GetCellCenterWorld(currentGridPos);
+
             if (gem_tilemap.HasTile(currentGridPos))
+            {
                 cellCenter.x -= 3f;
+                special_pos = true;
+            }
+            else
+                special_pos = false;
 
             transform.position = cellCenter;
+
+            //Get movement direction
+            if (direction == new Vector2Int(0, 1))
+                movement_dir = "topRight";
+            else if (direction == new Vector2Int(0, -1))
+                movement_dir = "bottomLeft";
+            else if (direction == new Vector2Int(1, 0))
+                movement_dir = "bottomRight";
+            else if (direction == new Vector2Int(-1, 0))
+                movement_dir = "topLeft";
+
+            //Save movement
+            //[prev tile, new tile, spo_selected(freq), movement_direction, special_pos(FLAG)]
+            spo_selected = 2.34f;
+            SavePlayerData();
 
             if (gem_tilemap.HasTile(currentGridPos))
                 gemManager?.TryCollectGem(currentGridPos);
@@ -192,4 +232,19 @@ public class PlayerController : MonoBehaviour
             gridPos = new Vector3Int(0, 0, -1000); //dummy number to make sure SPO movement for the special position only happens once
         }
     }
+    
+    private void SavePlayerData()
+    {
+        PlayerSaveData saveData = new PlayerSaveData();
+        saveData.FromPlayerController(this);
+
+        Dictionary<string, object> savedDict = saveData.ToDictionary();
+
+        // Example: Print or use savedDict as needed
+        foreach (var kvp in savedDict)
+        {
+            Debug.Log($"{kvp.Key}: {kvp.Value}");
+        }
+    }
+
 }

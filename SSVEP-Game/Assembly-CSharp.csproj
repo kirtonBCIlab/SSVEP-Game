@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\GemManager.cs" />
     <Compile Include="Assets\Scripts\Custom_ColorFlashEffect.cs" />
+    <Compile Include="Assets\Scripts\PlayerSaveData.cs" />
     <Compile Include="Assets\Scripts\SPOManager.cs" />
     <Compile Include="Assets\Scripts\PlayerControllerManager.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
