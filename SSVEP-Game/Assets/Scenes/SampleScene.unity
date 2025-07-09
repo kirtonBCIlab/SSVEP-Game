@@ -808,17 +808,17 @@ MonoBehaviour:
   shamFeedbackBuffer: 0.5
   trainBreak: 1
   trainTarget: -1
-  trainingEpochCount: 3
+  trainingEpochCount: 5
   epochLength: 1
   interEpochInterval: 0
   requestedFlashingFrequencies:
+  - 6
   - 10
-  - 15
-  - 20
-  - 25
+  - 11
+  - 14
   realFlashingFrequencies: []
-  _stimulusType: 0
-  _contrastLevel: 0
+  _stimulusType: 1
+  _contrastLevel: 3
   _size: 2
 --- !u!1 &592651988
 GameObject:

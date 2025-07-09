@@ -1,6 +1,7 @@
 using UnityEngine;
 using BCIEssentials.Controllers;
 using BCIEssentials.StimulusEffects;
+using System.Collections;
 
 
 namespace BCIEssentials.ControllerBehaviors
@@ -33,12 +34,27 @@ namespace BCIEssentials.ControllerBehaviors
         public ContrastLevel _contrastLevel;
         public Size _size;
 
+        void Update()
+        {
+            if (StimulusRunning)
+            {
+                UpdateStimulus(); //Flash stimuli
+            }
+        }
+
         protected override void Start()
         {
             SetStimType();
             base.ExecuteSelfRegistration(); //this is to keep the same behavior as BCIControllerBehavior
         }
 
+        protected override IEnumerator RunStimulusRoutine()
+        {
+            Debug.Log("Starting");
+            yield return new WaitForSecondsRealtime(5.0f);
+            Debug.Log("Ending");
+        }            
+        
         private void SetStimType()
         {
             Custom_ColorFlashEffect spoEffect;
@@ -71,9 +87,9 @@ namespace BCIEssentials.ControllerBehaviors
                     }
                     else if (_contrastLevel == ContrastLevel.Contrast4)
                     {
-                    spoEffect.SetContrast(Custom_ColorFlashEffect.ContrastLevel.Contrast4);
+                        spoEffect.SetContrast(Custom_ColorFlashEffect.ContrastLevel.Contrast4);
                     }
-                
+
                     if (_size == Size.Size1)
                     {
                         spoEffect.SetSize(Custom_ColorFlashEffect.Size.Size1);
