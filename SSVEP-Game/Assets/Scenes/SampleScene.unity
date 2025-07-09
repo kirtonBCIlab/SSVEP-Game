@@ -808,7 +808,7 @@ MonoBehaviour:
   shamFeedbackBuffer: 0.5
   trainBreak: 1
   trainTarget: -1
-  trainingEpochCount: 3
+  trainingEpochCount: 5
   epochLength: 1
   interEpochInterval: 0
   requestedFlashingFrequencies:
