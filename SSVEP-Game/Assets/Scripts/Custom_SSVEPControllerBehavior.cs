@@ -38,7 +38,7 @@ namespace BCIEssentials.ControllerBehaviors
         {
             if (StimulusRunning)
             {
-                UpdateStimulus();
+                UpdateStimulus(); //Flash stimuli
             }
         }
 
@@ -53,9 +53,7 @@ namespace BCIEssentials.ControllerBehaviors
             Debug.Log("Starting");
             yield return new WaitForSecondsRealtime(5.0f);
             Debug.Log("Ending");
-        }
-
-            
+        }            
         
         private void SetStimType()
         {
