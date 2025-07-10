@@ -12,10 +12,12 @@ public class PlayerSaveData
     public float spo_selected;
     public string movement_dir;
     public bool special_pos;
+    public bool failed_movement;
+    public bool gem_collected;
 
     public SaveStruct ToStruct()
     {
-        return new SaveStruct(prev_pos, new_pos, spo_selected, movement_dir, special_pos);
+        return new SaveStruct(prev_pos, new_pos, spo_selected, movement_dir, special_pos, failed_movement, gem_collected);
     }
 
     public void FromPlayerController(PlayerController controller)
@@ -25,6 +27,8 @@ public class PlayerSaveData
         spo_selected = controller.SpoSelected;
         movement_dir = controller.MovementDir;
         special_pos = controller.SpecialPos;
+        failed_movement = controller.FailedMovement;
+        gem_collected = controller.GemCollected;
     }
 
     public static void SaveListToCSV(List<SaveStruct> dataList)
@@ -33,7 +37,7 @@ public class PlayerSaveData
         StringBuilder csvContent = new StringBuilder();
 
         // Header
-        csvContent.AppendLine("prev_pos,new_pos,spo_selected,movement_dir,special_pos");
+        csvContent.AppendLine("prev_pos,new_pos,spo_selected,movement_dir,special_pos,failed_movement,gem_collected");
 
         // Data
         foreach (var data in dataList)

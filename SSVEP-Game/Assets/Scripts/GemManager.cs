@@ -104,8 +104,6 @@ public class GemManager : MonoBehaviour
 
         if (gemToCollectedMap.TryGetValue(gemTile, out TileBase smallTile))
         {
-            Debug.Log($"Gem tile '{gemTile.name}' collected. Will trigger SPO assignment.");
-
             Vector3 worldPos = gemTilemap.GetCellCenterWorld(gridPos);
             worldPos.z = -1f;
             GameObject effect = Instantiate(gemExplosionPrefab, worldPos, Quaternion.identity);
@@ -115,7 +113,9 @@ public class GemManager : MonoBehaviour
             Destroy(effect, 1f);
 
             collectedGemSet.Add(gemTile);
-
+            playerController.gem_collected = true;
+            Debug.Log("Saving gem collected");
+            
             // Notify SPOManager that the current SPO has completed a task
             spoManager?.AssignCurrentSPO(gemTile);
 
@@ -128,11 +128,11 @@ public class GemManager : MonoBehaviour
                 StartCoroutine(ShowEndScreenAfterDelay(2f));
                 eventTriggered = true;
                 playerController.EndGame();
-                Debug.Log("Calling End Game from Gem Manager");
             }
         }
         else
         {
+            playerController.gem_collected = false;
             Debug.LogWarning("Gem tile found, but no replacement defined.");
         }
     }

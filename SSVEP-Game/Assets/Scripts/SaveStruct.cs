@@ -9,14 +9,18 @@ public struct SaveStruct
     public float SpoSelected { get; set; }
     public string MovementDir { get; set; }
     public bool SpecialPos { get; set; }
+    public bool FailedMovement { get; set; }
+    public bool GemCollected { get; set; }
 
-    public SaveStruct(Vector3Int prev, Vector3Int next, float spo, string dir, bool special)
+    public SaveStruct(Vector3Int prev, Vector3Int next, float spo, string dir, bool special, bool failed, bool gem)
     {
         PrevPos = prev;
         NewPos = next;
         SpoSelected = spo;
         MovementDir = dir;
         SpecialPos = special;
+        FailedMovement = failed;
+        GemCollected = gem;
     }
 
     public override string ToString()
@@ -25,11 +29,13 @@ public struct SaveStruct
                $"{FormatVector3Int(NewPos)}," +
                $"{SpoSelected}," +
                $"{MovementDir}," +
-               $"{SpecialPos}";
+               $"{SpecialPos}," +
+               $"{FailedMovement}," +
+               $"{GemCollected}";
     }
 
     private static string FormatVector3Int(Vector3Int vec)
     {
-        return $"\"({vec.x},{vec.y},{vec.z})\"";
+        return $"\"({vec.x},{vec.y})\"";
     }
 }

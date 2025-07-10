@@ -34,6 +34,7 @@ public class MovementHandler
 
         if (CanMove(targetPos))
         {
+            player.failed_movement = false;
             player.currentGridPos = targetPos;
             player.new_pos = player.currentGridPos;
             PlayerControllerManager.Instance.SavedGridPosition = player.currentGridPos;
@@ -51,12 +52,20 @@ public class MovementHandler
             player.transform.position = cellCenter;
 
             SetDirectionFromInput(direction);
-            player.SavePlayerMovement();
 
             if (gemTilemap.HasTile(player.currentGridPos))
                 gemManager?.TryCollectGem(player.currentGridPos);
 
+            player.SavePlayerMovement();
+            player.gem_collected = false;
+
             player.CheckSPOTrigger();
+        }
+        else
+        {
+            //Tried to move into a wall
+            player.failed_movement = true;
+            player.SavePlayerMovement();
         }
     }
 
@@ -77,7 +86,6 @@ public class MovementHandler
         }
 
         string corner = spoManager.GetSPOCorner(spo);
-        Debug.Log($"{spoName} is in corner: {corner}");
 
         switch (corner)
         {
@@ -172,6 +180,4 @@ public class MovementHandler
             player.gridPos = new Vector3Int(0, 0, -1000); //dummy number to make sure SPO movement for the special position only happens once
         }
     }
-
-
 }

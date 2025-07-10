@@ -41,6 +41,9 @@ public class PlayerController : MonoBehaviour
     public float spo_selected = 199f;
     public string movement_dir;
     public bool special_pos;
+    public bool failed_movement;
+    public bool gem_collected;
+    public bool firstMoveCompleted = false;
 
     // Public getters for save system
     public Vector3Int PrevPos { get { return prev_pos; } }
@@ -48,7 +51,8 @@ public class PlayerController : MonoBehaviour
     public float SpoSelected { get { return spo_selected; } }
     public string MovementDir { get { return movement_dir; } }
     public bool SpecialPos { get { return special_pos; } }
-    public bool firstMoveCompleted = false;
+    public bool FailedMovement {get { return failed_movement; }}
+    public bool GemCollected {get { return gem_collected; }}
 
     private void Start()
     {
