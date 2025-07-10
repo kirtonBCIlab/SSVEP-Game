@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Tilemap gem_tilemap;
     [SerializeField] private Tilemap spawn_tilemap1;
     [SerializeField] private Tilemap spawn_tilemap2;
+    private Tilemap spawnTilemap;
 
     private SPOManager spoManager;
     private GemManager gemManager;
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         GameObject selectedGrid = selectedMap == MapSelection.Map1 ? grid1 : grid2;
-        Tilemap spawnTilemap = selectedMap == MapSelection.Map1 ? spawn_tilemap1 : spawn_tilemap2;
+        spawnTilemap = selectedMap == MapSelection.Map1 ? spawn_tilemap1 : spawn_tilemap2;
         gridPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 11, 0) : new Vector3Int(13, 6, 0);
         nextPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 10, 0) : new Vector3Int(12, 6, 0);
 
@@ -106,10 +108,16 @@ public class PlayerController : MonoBehaviour
             spoManager?.TryMoveSPO(tile, gemPos.Value - currentGridPos);
         }
 
-        if (Input.GetKeyDown(KeyCode.W)) MoveTopRight();
-        else if (Input.GetKeyDown(KeyCode.A)) MoveTopLeft();
-        else if (Input.GetKeyDown(KeyCode.S)) MoveBottomLeft();
-        else if (Input.GetKeyDown(KeyCode.D)) MoveBottomRight();
+        if (Input.GetKeyDown(KeyCode.W)) MoveTopRightKeyPress();
+        else if (Input.GetKeyDown(KeyCode.A)) MoveTopLeftKeyPress();
+        else if (Input.GetKeyDown(KeyCode.S)) MoveBottomLeftKeyPress();
+        else if (Input.GetKeyDown(KeyCode.D)) MoveBottomRightKeyPress();
+
+        if (spawnTilemap != null)
+        {
+            if (currentGridPos != GetStartTilePosition(spawnTilemap))
+                firstMoveCompleted = true;
+        }
 
         CheckSpecialMovement();
     }
@@ -173,11 +181,85 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void MoveTopRightKeyPress()
+    {
+        string spoName = spoManager.GetSPONameFromCorner("topright");
+        int spoInt = int.Parse(spoName.Split(' ')[1]);
+        if (spoInt == 1)
+            spo_selected = 6.25f;
+        else if (spoInt == 2)
+            spo_selected = 10.0f;
+        else if (spoInt == 3)
+            spo_selected = 11.11f;
+        else if (spoInt == 4)
+            spo_selected = 14.28f;
+        else
+            Debug.Log("Did not get SPO out");
+
+        Move(new Vector2Int(0, 1));
+    }
 
     public void MoveTopRight() => Move(new Vector2Int(0, 1));
     public void MoveBottomLeft() => Move(new Vector2Int(0, -1));
     public void MoveTopLeft() => Move(new Vector2Int(-1, 0));
     public void MoveBottomRight() => Move(new Vector2Int(1, 0));
+
+
+    
+
+    public void MoveBottomLeftKeyPress()
+    {
+        string spoName = spoManager.GetSPONameFromCorner("bottomleft");
+        int spoInt = int.Parse(spoName.Split(' ')[1]);
+        if (spoInt == 1)
+            spo_selected = 6.25f;
+        else if (spoInt == 2)
+            spo_selected = 10.0f;
+        else if (spoInt == 3)
+            spo_selected = 11.11f;
+        else if (spoInt == 4)
+            spo_selected = 14.28f;
+        else
+            Debug.Log("Did not get SPO out");
+
+        Move(new Vector2Int(0, -1));
+    }
+
+    public void MoveTopLeftKeyPress()
+    {
+        string spoName = spoManager.GetSPONameFromCorner("topleft");
+        int spoInt = int.Parse(spoName.Split(' ')[1]);
+        if (spoInt == 1)
+            spo_selected = 6.25f;
+        else if (spoInt == 2)
+            spo_selected = 10.0f;
+        else if (spoInt == 3)
+            spo_selected = 11.11f;
+        else if (spoInt == 4)
+            spo_selected = 14.28f;
+        else
+            Debug.Log("Did not get SPO out");
+
+        Move(new Vector2Int(-1, 0));
+    }
+
+    public void MoveBottomRightKeyPress()
+    {
+        string spoName = spoManager.GetSPONameFromCorner("bottomright");
+        int spoInt = int.Parse(spoName.Split(' ')[1]);
+        if (spoInt == 1)
+            spo_selected = 6.25f;
+        else if (spoInt == 2)
+            spo_selected = 10.0f;
+        else if (spoInt == 3)
+            spo_selected = 11.11f;
+        else if (spoInt == 4)
+            spo_selected = 14.28f;
+        else
+            Debug.Log("Did not get SPO out");
+
+        Move(new Vector2Int(1, 0));
+    }
 
     public void Move(Vector2Int direction)
     {

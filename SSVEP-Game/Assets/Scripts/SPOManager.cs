@@ -90,7 +90,7 @@ public class SPOManager : MonoBehaviour
         if (dir == "topright") // This is the starting step in both maps
         {
             Debug.Log("First position, SPO 1 to topright");
-            currentSPOName = null; 
+            currentSPOName = null;
             MoveSPOTo(spoName, dir);
         }
 
@@ -120,7 +120,7 @@ public class SPOManager : MonoBehaviour
             Vector3 temp = movingSPO.transform.position;
             movingSPO.transform.position = targetPos;
             swapSPO.transform.position = temp;
-           
+
             Debug.Log($"Moving SPO '{currentSPOName}' to {dir}");
         }
         else if (movingSPO)
@@ -161,4 +161,21 @@ public class SPOManager : MonoBehaviour
 
         return null;
     }
+     public string GetSPONameFromCorner(string corner)
+    {
+        if (!positions.ContainsKey(corner)) return null;
+
+        Vector3 targetPosition = positions[corner];
+
+        foreach (var name in new[] { "SPO 1", "SPO 2", "SPO 3", "SPO 4" })
+        {
+            GameObject spo = GameObject.Find(name);
+            if (spo != null && spo.transform.position == targetPosition)
+                return name;
+        }
+
+        return null; // No SPO found at that corner
+    }
+
+
 }
