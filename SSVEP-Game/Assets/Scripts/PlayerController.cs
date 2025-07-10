@@ -77,20 +77,14 @@ public class PlayerController : MonoBehaviour
 
         gemManager = GetComponent<GemManager>();
         if (gemManager != null)
-        {
-            gemManager.Initialize(gem_tilemap, transform, spoManager); // assume GemManager has this method
-        }
+            gemManager.Initialize(gem_tilemap, transform, spoManager);
 
         movementHandler = new MovementHandler(this, ground_tilemap, collision_tilemap, gem_tilemap, spoManager, gemManager);
 
         if (PlayerControllerManager.Instance != null && PlayerControllerManager.Instance.SavedGridPosition != Vector3Int.zero)
-        {
             currentGridPos = PlayerControllerManager.Instance.SavedGridPosition;
-        }
         else
-        {
             currentGridPos = GetStartTilePosition(spawnTilemap);
-        }
 
         transform.position = ground_tilemap.GetCellCenterWorld(currentGridPos);
         previousGridPos = gem_tilemap.WorldToCell(transform.position);
@@ -129,9 +123,7 @@ public class PlayerController : MonoBehaviour
         movementHandler.CheckSpecialMovement();
 
         if (gemManager.collectedGemSet.Count == 10)
-        {
             EndGame();
-        }
     }
 
     public void MoveToSPO1()
@@ -176,7 +168,7 @@ public class PlayerController : MonoBehaviour
             special_pos = true;
         }
 
-        if (prev_pos == new Vector3Int(8,11,0)) //hardcoded for map 1 special position
+        if (selectedMap == MapSelection.Map1 && prev_pos == new Vector3Int(8,11,0)) //hardcoded for map 1 special position
         {
             special_pos = true;
             Debug.Log("Setting special pos");
@@ -185,13 +177,6 @@ public class PlayerController : MonoBehaviour
         PlayerSaveData saveData = new PlayerSaveData();
         saveData.FromPlayerController(this);
 
-        // Print each variable (replace with actual property/field names)
-        //Debug.Log($"PrevPos: {saveData.prev_pos}");
-        //Debug.Log($"NewPos: {saveData.new_pos}");
-        //Debug.Log($"SpoSelected: {saveData.spo_selected}");
-        //Debug.Log($"MovementDir: {saveData.movement_dir}");
-        //Debug.Log($"SpecialPos: {saveData.special_pos}");
-
         SaveStruct savedStruct = saveData.ToStruct();
         PlayerControllerManager.Instance.LogMovement(savedStruct);
     }
@@ -199,10 +184,8 @@ public class PlayerController : MonoBehaviour
     public void EndGame()
     {
         if (PlayerControllerManager.Instance != null)
-        {
             PlayerControllerManager.Instance.EndGame();
-        }
         else
-            Debug.Log("Save failed becuase there is no playercontrollermanager instance");
+            Debug.Log("Save failed because there is no playercontrollermanager instance");
     }
 }

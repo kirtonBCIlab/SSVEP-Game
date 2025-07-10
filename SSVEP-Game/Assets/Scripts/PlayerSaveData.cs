@@ -41,10 +41,8 @@ public class PlayerSaveData
 
         // Data
         foreach (var data in dataList)
-        {
-            //SaveStruct s = data.ToStruct();
             csvContent.AppendLine(data.ToString());
-        }
+        
 
         File.WriteAllText(path, csvContent.ToString());
         Debug.Log($"CSV saved to: {path}");

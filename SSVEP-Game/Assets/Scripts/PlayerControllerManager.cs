@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerControllerManager : MonoBehaviour
@@ -23,13 +21,11 @@ public class PlayerControllerManager : MonoBehaviour
 
     public void LogMovement(SaveStruct movementData)
     {
-        movementLog.Add(movementData); // assuming movementLog is List<SaveStruct>
+        movementLog.Add(movementData); 
     }
-
 
     public void EndGame()
     {
         PlayerSaveData.SaveListToCSV(movementLog);
     }
-
 }
