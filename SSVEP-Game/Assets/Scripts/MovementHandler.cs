@@ -44,7 +44,8 @@ public class MovementHandler
             if (gemTilemap.HasTile(player.currentGridPos))
             {
                 cellCenter.x -= 3f;
-                player.special_pos = true;
+                gemManager?.TryCollectGem(player.currentGridPos);
+
             }
             else
                 player.special_pos = false;
@@ -53,8 +54,8 @@ public class MovementHandler
 
             SetDirectionFromInput(direction);
 
-            if (gemTilemap.HasTile(player.currentGridPos))
-                gemManager?.TryCollectGem(player.currentGridPos);
+            //if (gemTilemap.HasTile(player.currentGridPos))
+            //    gemManager?.TryCollectGem(player.currentGridPos);
 
             player.SavePlayerMovement();
             player.gem_collected = false;
@@ -169,11 +170,16 @@ public class MovementHandler
 
     public void CheckSpecialMovement()
     {
+        //if (player.prev_pos == player.gridPos && !player.usedGridPos)
+        //{
+        //    player.special_pos = true;
+        //}
         if (player.currentGridPos == player.nextPos && player.usedGridPos) //In the position after completing the special movement
         {
             // Tell SPO manager that the special movement SPO was used and now it can dequeue the next SPO
             spoManager?.AssignCurrentSpecialSPO();
-        }
+            player.special_pos = false;
+            }
 
         if (player.usedGridPos)
         {

@@ -22,7 +22,7 @@ public class GemManager : MonoBehaviour
     private Dictionary<TileBase, TileBase> collectedToSmallMap = new();
     private Dictionary<TileBase, TileBase> smallToCollectedMap = new();
 
-    private HashSet<TileBase> collectedGemSet = new();
+    public HashSet<TileBase> collectedGemSet = new();
 
     public static bool eventTriggered = false;
 
@@ -104,6 +104,9 @@ public class GemManager : MonoBehaviour
 
         if (gemToCollectedMap.TryGetValue(gemTile, out TileBase smallTile))
         {
+            playerController.gem_collected = true;
+            Debug.Log("Saving gem collected");
+
             Vector3 worldPos = gemTilemap.GetCellCenterWorld(gridPos);
             worldPos.z = -1f;
             GameObject effect = Instantiate(gemExplosionPrefab, worldPos, Quaternion.identity);
@@ -113,9 +116,9 @@ public class GemManager : MonoBehaviour
             Destroy(effect, 1f);
 
             collectedGemSet.Add(gemTile);
-            playerController.gem_collected = true;
-            Debug.Log("Saving gem collected");
-            
+            playerController.special_pos = true;
+            //Debug.Log("Saving gem collected");
+
             // Notify SPOManager that the current SPO has completed a task
             spoManager?.AssignCurrentSPO(gemTile);
 
@@ -127,7 +130,8 @@ public class GemManager : MonoBehaviour
             {
                 StartCoroutine(ShowEndScreenAfterDelay(2f));
                 eventTriggered = true;
-                playerController.EndGame();
+                playerController.gem_collected = true;
+                //playerController.EndGame();
             }
         }
         else

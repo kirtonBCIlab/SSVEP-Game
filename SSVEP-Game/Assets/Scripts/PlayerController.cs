@@ -127,6 +127,11 @@ public class PlayerController : MonoBehaviour
         }
 
         movementHandler.CheckSpecialMovement();
+
+        if (gemManager.collectedGemSet.Count == 10)
+        {
+            EndGame();
+        }
     }
 
     public void MoveToSPO1()
@@ -166,7 +171,16 @@ public class PlayerController : MonoBehaviour
     public void SavePlayerMovement()
     {
         if (!firstMoveCompleted)
+        {
             spo_selected = 6.25f; //first movement always uses SPO 0
+            special_pos = true;
+        }
+
+        if (prev_pos == new Vector3Int(8,11,0)) //hardcoded for map 1 special position
+        {
+            special_pos = true;
+            Debug.Log("Setting special pos");
+        }
 
         PlayerSaveData saveData = new PlayerSaveData();
         saveData.FromPlayerController(this);
