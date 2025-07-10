@@ -606,20 +606,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36603ce57a4a48343b7b6557e3225b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedMap: 0
+  selectedMap: 1
   grid1: {fileID: 1437642889}
   grid2: {fileID: 200940148}
+  spawnTilemap1: {fileID: 1719359411}
+  spawnTilemap2: {fileID: 1462346826}
+  currentGridPos: {x: 0, y: 0, z: 0}
   gridPos: {x: 0, y: 0, z: 0}
   nextPos: {x: 0, y: 0, z: 0}
   usedGridPos: 0
-  currentGridPos: {x: 0, y: 0, z: 0}
-  ground_tilemap: {fileID: 0}
-  collision_tilemap: {fileID: 0}
-  gem_tilemap: {fileID: 0}
-  spawn_tilemap1: {fileID: 1719359411}
-  spawn_tilemap2: {fileID: 1462346826}
-  spoManager: {fileID: 0}
-  gemManager: {fileID: 0}
   prev_pos: {x: 0, y: 0, z: 0}
   new_pos: {x: 0, y: 0, z: 0}
   spo_selected: 199
@@ -628,6 +623,8 @@ MonoBehaviour:
   failed_movement: 0
   gem_collected: 0
   firstMoveCompleted: 0
+  spoManager: {fileID: 0}
+  gemManager: {fileID: 0}
 --- !u!212 &577975706
 SpriteRenderer:
   m_ObjectHideFlags: 0
