@@ -168,7 +168,7 @@ public class PlayerController : MonoBehaviour
             special_pos = true;
         }
 
-        if (selectedMap == MapSelection.Map1 && prev_pos == new Vector3Int(8,11,0)) //hardcoded for map 1 special position
+        if ((selectedMap == MapSelection.Map1 && prev_pos == new Vector3Int(8,11,0)) ||(selectedMap == MapSelection.Map2 && prev_pos == new Vector3Int(13,6,0))) //hardcoded for map 1 special position
         {
             special_pos = true;
             Debug.Log("Setting special pos");
