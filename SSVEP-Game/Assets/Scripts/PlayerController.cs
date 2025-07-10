@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     //SAVING
     private Vector3Int prev_pos;
     private Vector3Int new_pos;
-    private float spo_selected;
+    private float spo_selected = 199f;
     private string movement_dir;
     private bool special_pos;
 
@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     public float SpoSelected { get { return spo_selected; } }
     public string MovementDir { get { return movement_dir; } }
     public bool SpecialPos { get { return special_pos; } }
+    public bool firstMoveCompleted = false;
 
     private void Start()
     {
@@ -113,10 +114,29 @@ public class PlayerController : MonoBehaviour
         CheckSpecialMovement();
     }
 
-    public void MoveToSPO1() => MoveToSPO("SPO 1");
-    public void MoveToSPO2() => MoveToSPO("SPO 2");
-    public void MoveToSPO3() => MoveToSPO("SPO 3");
-    public void MoveToSPO4() => MoveToSPO("SPO 4");
+    public void MoveToSPO1()
+    {
+        MoveToSPO("SPO 1");
+        spo_selected = 6.25f;
+    }
+
+    public void MoveToSPO2()
+    {
+        MoveToSPO("SPO 2");
+        spo_selected = 10.0f;
+    }
+
+    public void MoveToSPO3()
+    {
+        MoveToSPO("SPO 3");
+        spo_selected = 11.11f;
+    }
+
+    public void MoveToSPO4()
+    {
+        MoveToSPO("SPO 4");
+        spo_selected = 14.28f;
+    }
 
     private void MoveToSPO(string spoName)
     {
@@ -152,6 +172,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+
 
     public void MoveTopRight() => Move(new Vector2Int(0, 1));
     public void MoveBottomLeft() => Move(new Vector2Int(0, -1));
@@ -194,7 +215,6 @@ public class PlayerController : MonoBehaviour
 
             //Save movement
             //[prev tile, new tile, spo_selected(freq), movement_direction, special_pos(FLAG)]
-            spo_selected = 2.34f;
             SavePlayerData();
 
             if (gem_tilemap.HasTile(currentGridPos))
@@ -232,19 +252,33 @@ public class PlayerController : MonoBehaviour
             gridPos = new Vector3Int(0, 0, -1000); //dummy number to make sure SPO movement for the special position only happens once
         }
     }
-    
+
     private void SavePlayerData()
     {
+        if (!firstMoveCompleted)
+            spo_selected = 6.25f; //first movement always uses SPO 0
+
         PlayerSaveData saveData = new PlayerSaveData();
         saveData.FromPlayerController(this);
 
-        Dictionary<string, object> savedDict = saveData.ToDictionary();
+        // Print each variable (replace with actual property/field names)
+        Debug.Log($"PrevPos: {saveData.prev_pos}");
+        Debug.Log($"NewPos: {saveData.new_pos}");
+        Debug.Log($"SpoSelected: {saveData.spo_selected}");
+        Debug.Log($"MovementDir: {saveData.movement_dir}");
+        Debug.Log($"SpecialPos: {saveData.special_pos}");
 
-        // Example: Print or use savedDict as needed
-        foreach (var kvp in savedDict)
-        {
-            Debug.Log($"{kvp.Key}: {kvp.Value}");
-        }
+        SaveStruct savedStruct = saveData.ToStruct();
+        PlayerControllerManager.Instance.LogMovement(savedStruct);
     }
 
+    public void EndGame()
+    {
+        if (PlayerControllerManager.Instance != null)
+        {
+            PlayerControllerManager.Instance.EndGame();
+        }
+        else
+            Debug.Log("Save failed becuase there is no playercontrollermanager instance");
+    }
 }

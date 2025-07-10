@@ -15,7 +15,8 @@ public class GemManager : MonoBehaviour
 
     private Tilemap gemTilemap;
     private Transform playerTransform;
-    private SPOManager spoManager; 
+    private SPOManager spoManager;
+    private PlayerController playerController;
 
     private Dictionary<TileBase, TileBase> gemToCollectedMap = new();
     private Dictionary<TileBase, TileBase> collectedToSmallMap = new();
@@ -24,6 +25,14 @@ public class GemManager : MonoBehaviour
     private HashSet<TileBase> collectedGemSet = new();
 
     public static bool eventTriggered = false;
+
+    public void Start()
+    {
+        if (!TryGetComponent<PlayerController>(out playerController))
+        {
+            Debug.LogError("PlayerController component not found on GemManager GameObject.");
+        }
+    }
 
     public void Initialize(Tilemap tilemap, Transform player, SPOManager spo)
     {
@@ -118,6 +127,8 @@ public class GemManager : MonoBehaviour
             {
                 StartCoroutine(ShowEndScreenAfterDelay(2f));
                 eventTriggered = true;
+                playerController.EndGame();
+                Debug.Log("Calling End Game from Gem Manager");
             }
         }
         else

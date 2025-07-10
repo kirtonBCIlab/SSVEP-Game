@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 [Serializable]
 public class PlayerSaveData
@@ -11,16 +13,9 @@ public class PlayerSaveData
     public string movement_dir;
     public bool special_pos;
 
-    public Dictionary<string, object> ToDictionary()
+    public SaveStruct ToStruct()
     {
-        return new Dictionary<string, object>
-        {
-            { "prev_pos", prev_pos },
-            { "new_pos", new_pos },
-            { "spo_selected", spo_selected },
-            { "movement_dir", movement_dir },
-            { "special_pos", special_pos }
-        };
+        return new SaveStruct(prev_pos, new_pos, spo_selected, movement_dir, special_pos);
     }
 
     public void FromPlayerController(PlayerController controller)
@@ -30,5 +25,24 @@ public class PlayerSaveData
         spo_selected = controller.SpoSelected;
         movement_dir = controller.MovementDir;
         special_pos = controller.SpecialPos;
+    }
+
+    public static void SaveListToCSV(List<SaveStruct> dataList)
+    {
+        string path = "C:\\Users\\admin\\Documents\\SSVEP-Game\\SSVEP-Game\\Assets\\Saves\\movements.csv";
+        StringBuilder csvContent = new StringBuilder();
+
+        // Header
+        csvContent.AppendLine("prev_pos,new_pos,spo_selected,movement_dir,special_pos");
+
+        // Data
+        foreach (var data in dataList)
+        {
+            //SaveStruct s = data.ToStruct();
+            csvContent.AppendLine(data.ToString());
+        }
+
+        File.WriteAllText(path, csvContent.ToString());
+        Debug.Log($"CSV saved to: {path}");
     }
 }
