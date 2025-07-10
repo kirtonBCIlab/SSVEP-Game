@@ -16,10 +16,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject grid1;
     [SerializeField] private GameObject grid2;
 
-    private Vector3Int gridPos;
-    private Vector3Int nextPos;
-    private bool usedGridPos = false;
-    private Vector3Int currentGridPos;
+    public Vector3Int gridPos;
+    public Vector3Int nextPos;
+    public bool usedGridPos = false;
+    public Vector3Int currentGridPos;
 
     private Vector3Int previousGridPos;
 
@@ -31,15 +31,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Tilemap spawn_tilemap2;
     private Tilemap spawnTilemap;
 
-    private SPOManager spoManager;
-    private GemManager gemManager;
+    public SPOManager spoManager;
+    public GemManager gemManager;
+    private MovementHandler movementHandler;
 
     //SAVING
-    private Vector3Int prev_pos;
-    private Vector3Int new_pos;
-    private float spo_selected = 199f;
-    private string movement_dir;
-    private bool special_pos;
+    public Vector3Int prev_pos;
+    public Vector3Int new_pos;
+    public float spo_selected = 199f;
+    public string movement_dir;
+    public bool special_pos;
 
     // Public getters for save system
     public Vector3Int PrevPos { get { return prev_pos; } }
@@ -76,6 +77,8 @@ public class PlayerController : MonoBehaviour
             gemManager.Initialize(gem_tilemap, transform, spoManager); // assume GemManager has this method
         }
 
+        movementHandler = new MovementHandler(this, ground_tilemap, collision_tilemap, gem_tilemap, spoManager, gemManager);
+
         if (PlayerControllerManager.Instance != null && PlayerControllerManager.Instance.SavedGridPosition != Vector3Int.zero)
         {
             currentGridPos = PlayerControllerManager.Instance.SavedGridPosition;
@@ -108,10 +111,10 @@ public class PlayerController : MonoBehaviour
             spoManager?.TryMoveSPO(tile, gemPos.Value - currentGridPos);
         }
 
-        if (Input.GetKeyDown(KeyCode.W)) MoveTopRightKeyPress();
-        else if (Input.GetKeyDown(KeyCode.A)) MoveTopLeftKeyPress();
-        else if (Input.GetKeyDown(KeyCode.S)) MoveBottomLeftKeyPress();
-        else if (Input.GetKeyDown(KeyCode.D)) MoveBottomRightKeyPress();
+        if (Input.GetKeyDown(KeyCode.W)) movementHandler.MoveTopRightKeyPress();
+        else if (Input.GetKeyDown(KeyCode.A)) movementHandler.MoveTopLeftKeyPress();
+        else if (Input.GetKeyDown(KeyCode.S)) movementHandler.MoveBottomLeftKeyPress();
+        else if (Input.GetKeyDown(KeyCode.D)) movementHandler.MoveBottomRightKeyPress();
 
         if (spawnTilemap != null)
         {
@@ -119,199 +122,34 @@ public class PlayerController : MonoBehaviour
                 firstMoveCompleted = true;
         }
 
-        CheckSpecialMovement();
+        movementHandler.CheckSpecialMovement();
     }
 
     public void MoveToSPO1()
     {
-        MoveToSPO("SPO 1");
+        movementHandler.MoveToSPO("SPO 1");
         spo_selected = 6.25f;
     }
 
     public void MoveToSPO2()
     {
-        MoveToSPO("SPO 2");
+        movementHandler.MoveToSPO("SPO 2");
         spo_selected = 10.0f;
     }
 
     public void MoveToSPO3()
     {
-        MoveToSPO("SPO 3");
+        movementHandler.MoveToSPO("SPO 3");
         spo_selected = 11.11f;
     }
 
     public void MoveToSPO4()
     {
-        MoveToSPO("SPO 4");
+        movementHandler.MoveToSPO("SPO 4");
         spo_selected = 14.28f;
     }
 
-    private void MoveToSPO(string spoName)
-    {
-        if (spoManager == null) return;
-
-        GameObject spo = GameObject.Find(spoName);
-        if (spo == null)
-        {
-            Debug.LogWarning($"{spoName} not found.");
-            return;
-        }
-
-        string corner = spoManager.GetSPOCorner(spo);
-        Debug.Log($"{spoName} is in corner: {corner}");
-
-        switch (corner)
-        {
-            case "topright":
-                MoveTopRight();
-                break;
-            case "bottomright":
-                MoveBottomRight();
-                break;
-            case "topleft":
-                MoveTopLeft();
-                break;
-            case "bottomleft":
-                MoveBottomLeft();
-                break;
-            default:
-                Debug.LogWarning($"Unknown corner for {spoName}. Defaulting to TopRight.");
-                MoveTopRight();
-                break;
-        }
-    }
-
-    public void MoveTopRightKeyPress()
-    {
-        string spoName = spoManager.GetSPONameFromCorner("topright");
-        int spoInt = int.Parse(spoName.Split(' ')[1]);
-        if (spoInt == 1)
-            spo_selected = 6.25f;
-        else if (spoInt == 2)
-            spo_selected = 10.0f;
-        else if (spoInt == 3)
-            spo_selected = 11.11f;
-        else if (spoInt == 4)
-            spo_selected = 14.28f;
-        else
-            Debug.Log("Did not get SPO out");
-
-        Move(new Vector2Int(0, 1));
-    }
-
-    public void MoveTopRight() => Move(new Vector2Int(0, 1));
-    public void MoveBottomLeft() => Move(new Vector2Int(0, -1));
-    public void MoveTopLeft() => Move(new Vector2Int(-1, 0));
-    public void MoveBottomRight() => Move(new Vector2Int(1, 0));
-
-
-    
-
-    public void MoveBottomLeftKeyPress()
-    {
-        string spoName = spoManager.GetSPONameFromCorner("bottomleft");
-        int spoInt = int.Parse(spoName.Split(' ')[1]);
-        if (spoInt == 1)
-            spo_selected = 6.25f;
-        else if (spoInt == 2)
-            spo_selected = 10.0f;
-        else if (spoInt == 3)
-            spo_selected = 11.11f;
-        else if (spoInt == 4)
-            spo_selected = 14.28f;
-        else
-            Debug.Log("Did not get SPO out");
-
-        Move(new Vector2Int(0, -1));
-    }
-
-    public void MoveTopLeftKeyPress()
-    {
-        string spoName = spoManager.GetSPONameFromCorner("topleft");
-        int spoInt = int.Parse(spoName.Split(' ')[1]);
-        if (spoInt == 1)
-            spo_selected = 6.25f;
-        else if (spoInt == 2)
-            spo_selected = 10.0f;
-        else if (spoInt == 3)
-            spo_selected = 11.11f;
-        else if (spoInt == 4)
-            spo_selected = 14.28f;
-        else
-            Debug.Log("Did not get SPO out");
-
-        Move(new Vector2Int(-1, 0));
-    }
-
-    public void MoveBottomRightKeyPress()
-    {
-        string spoName = spoManager.GetSPONameFromCorner("bottomright");
-        int spoInt = int.Parse(spoName.Split(' ')[1]);
-        if (spoInt == 1)
-            spo_selected = 6.25f;
-        else if (spoInt == 2)
-            spo_selected = 10.0f;
-        else if (spoInt == 3)
-            spo_selected = 11.11f;
-        else if (spoInt == 4)
-            spo_selected = 14.28f;
-        else
-            Debug.Log("Did not get SPO out");
-
-        Move(new Vector2Int(1, 0));
-    }
-
-    public void Move(Vector2Int direction)
-    {
-        Vector3Int targetPos = currentGridPos + new Vector3Int(direction.x, direction.y, 0);
-
-        prev_pos = currentGridPos; //SAVING PREV POS
-
-        if (CanMove(targetPos))
-        {
-            currentGridPos = targetPos;
-            new_pos = currentGridPos;  //SAVING NEW POS
-            PlayerControllerManager.Instance.SavedGridPosition = currentGridPos;
-
-            Vector3 cellCenter = ground_tilemap.GetCellCenterWorld(currentGridPos);
-
-            if (gem_tilemap.HasTile(currentGridPos))
-            {
-                cellCenter.x -= 3f;
-                special_pos = true;
-            }
-            else
-                special_pos = false;
-
-            transform.position = cellCenter;
-
-            //Get movement direction
-            if (direction == new Vector2Int(0, 1))
-                movement_dir = "topRight";
-            else if (direction == new Vector2Int(0, -1))
-                movement_dir = "bottomLeft";
-            else if (direction == new Vector2Int(1, 0))
-                movement_dir = "bottomRight";
-            else if (direction == new Vector2Int(-1, 0))
-                movement_dir = "topLeft";
-
-            //Save movement
-            //[prev tile, new tile, spo_selected(freq), movement_direction, special_pos(FLAG)]
-            SavePlayerData();
-
-            if (gem_tilemap.HasTile(currentGridPos))
-                gemManager?.TryCollectGem(currentGridPos);
-
-            CheckSPOTrigger();
-        }
-    }
-
-    private bool CanMove(Vector3Int targetGridPos)
-    {
-        return ground_tilemap.HasTile(targetGridPos) && !collision_tilemap.HasTile(targetGridPos);
-    }
-
-    private void CheckSPOTrigger()
+    public void CheckSPOTrigger()
     {
         if (currentGridPos == gridPos)
         {
@@ -321,21 +159,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CheckSpecialMovement()
-    {
-        if (currentGridPos == nextPos && usedGridPos) //In the position after completing the special movement
-        {
-            // Tell SPO manager that the special movement SPO was used and now it can dequeue the next SPO
-            spoManager?.AssignCurrentSpecialSPO();
-        }
-
-        if (usedGridPos)
-        {
-            gridPos = new Vector3Int(0, 0, -1000); //dummy number to make sure SPO movement for the special position only happens once
-        }
-    }
-
-    private void SavePlayerData()
+    public void SavePlayerMovement()
     {
         if (!firstMoveCompleted)
             spo_selected = 6.25f; //first movement always uses SPO 0
@@ -344,11 +168,11 @@ public class PlayerController : MonoBehaviour
         saveData.FromPlayerController(this);
 
         // Print each variable (replace with actual property/field names)
-        Debug.Log($"PrevPos: {saveData.prev_pos}");
-        Debug.Log($"NewPos: {saveData.new_pos}");
-        Debug.Log($"SpoSelected: {saveData.spo_selected}");
-        Debug.Log($"MovementDir: {saveData.movement_dir}");
-        Debug.Log($"SpecialPos: {saveData.special_pos}");
+        //Debug.Log($"PrevPos: {saveData.prev_pos}");
+        //Debug.Log($"NewPos: {saveData.new_pos}");
+        //Debug.Log($"SpoSelected: {saveData.spo_selected}");
+        //Debug.Log($"MovementDir: {saveData.movement_dir}");
+        //Debug.Log($"SpecialPos: {saveData.special_pos}");
 
         SaveStruct savedStruct = saveData.ToStruct();
         PlayerControllerManager.Instance.LogMovement(savedStruct);
