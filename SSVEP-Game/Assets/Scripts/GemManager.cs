@@ -15,15 +15,22 @@ public class GemManager : MonoBehaviour
 
     private Tilemap gemTilemap;
     private Transform playerTransform;
-    private SPOManager spoManager; 
+    private SPOManager spoManager;
+    private PlayerController playerController;
 
     private Dictionary<TileBase, TileBase> gemToCollectedMap = new();
     private Dictionary<TileBase, TileBase> collectedToSmallMap = new();
     private Dictionary<TileBase, TileBase> smallToCollectedMap = new();
 
-    private HashSet<TileBase> collectedGemSet = new();
-
+    public HashSet<TileBase> collectedGemSet = new();
+    
     public static bool eventTriggered = false;
+
+    public void Start()
+    {
+        if (!TryGetComponent<PlayerController>(out playerController))
+            Debug.LogError("PlayerController component not found on GemManager GameObject.");
+    }
 
     public void Initialize(Tilemap tilemap, Transform player, SPOManager spo)
     {
@@ -75,16 +82,12 @@ public class GemManager : MonoBehaviour
             if (gridPos == playerGridPos)
             {
                 if (collectedToSmallMap.TryGetValue(currentTile, out TileBase smallTile))
-                {
                     gemTilemap.SetTile(gridPos, smallTile);
-                }
             }
             else
             {
                 if (smallToCollectedMap.TryGetValue(currentTile, out TileBase collectedTile))
-                {
                     gemTilemap.SetTile(gridPos, collectedTile);
-                }
             }
         }
     }
@@ -95,7 +98,8 @@ public class GemManager : MonoBehaviour
 
         if (gemToCollectedMap.TryGetValue(gemTile, out TileBase smallTile))
         {
-            Debug.Log($"Gem tile '{gemTile.name}' collected. Will trigger SPO assignment.");
+            playerController.gem_collected = true;
+            Debug.Log("Saving gem collected");
 
             Vector3 worldPos = gemTilemap.GetCellCenterWorld(gridPos);
             worldPos.z = -1f;
@@ -106,6 +110,7 @@ public class GemManager : MonoBehaviour
             Destroy(effect, 1f);
 
             collectedGemSet.Add(gemTile);
+            playerController.special_pos = true;
 
             // Notify SPOManager that the current SPO has completed a task
             spoManager?.AssignCurrentSPO(gemTile);
@@ -118,10 +123,12 @@ public class GemManager : MonoBehaviour
             {
                 StartCoroutine(ShowEndScreenAfterDelay(2f));
                 eventTriggered = true;
+                playerController.gem_collected = true;
             }
         }
         else
         {
+            playerController.gem_collected = false;
             Debug.LogWarning("Gem tile found, but no replacement defined.");
         }
     }
@@ -132,9 +139,7 @@ public class GemManager : MonoBehaviour
         gemTilemap.SetTile(gridPos, smallTile);
 
         if (index >= 0 && index < stickers.Count && stickers[index] != null)
-        {
             stickers[index].SetActive(true);
-        }
     }
 
     private IEnumerator ShowEndScreenAfterDelay(float delay)

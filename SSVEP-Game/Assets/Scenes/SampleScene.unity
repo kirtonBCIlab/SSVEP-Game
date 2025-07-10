@@ -606,14 +606,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36603ce57a4a48343b7b6557e3225b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedMap: 0
+  selectedMap: 1
   grid1: {fileID: 1437642889}
   grid2: {fileID: 200940148}
-  ground_tilemap: {fileID: 0}
-  collision_tilemap: {fileID: 0}
-  gem_tilemap: {fileID: 0}
-  spawn_tilemap1: {fileID: 1719359411}
-  spawn_tilemap2: {fileID: 1462346826}
+  spawnTilemap1: {fileID: 1719359411}
+  spawnTilemap2: {fileID: 1462346826}
+  currentGridPos: {x: 0, y: 0, z: 0}
+  gridPos: {x: 0, y: 0, z: 0}
+  nextPos: {x: 0, y: 0, z: 0}
+  usedGridPos: 0
+  prev_pos: {x: 0, y: 0, z: 0}
+  new_pos: {x: 0, y: 0, z: 0}
+  spo_selected: 199
+  movement_dir: 
+  special_pos: 0
+  failed_movement: 0
+  gem_collected: 0
+  firstMoveCompleted: 0
+  spoManager: {fileID: 0}
+  gemManager: {fileID: 0}
 --- !u!212 &577975706
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -789,7 +800,7 @@ MonoBehaviour:
   _selfRegister: 1
   _selfRegisterAsActive: 1
   _selfRegistrationTarget: {fileID: 0}
-  ObjectListPopulationMethod: 1
+  ObjectListPopulationMethod: 3
   ObjectListPopulationScope: 0
   SPOTag: BCI
   _selectableSPOs:
@@ -4684,7 +4695,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -423128877, guid: aa91c92f9317f164f948b6f907e49992, type: 3}
-  m_Color: {r: 0.7924528, g: 0.5049057, b: 0.23549305, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -7048,7 +7059,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -423128877, guid: aa91c92f9317f164f948b6f907e49992, type: 3}
-  m_Color: {r: 0.29178533, g: 0.40382954, b: 0.7830189, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -7376,7 +7387,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -423128877, guid: aa91c92f9317f164f948b6f907e49992, type: 3}
-  m_Color: {r: 0.2503821, g: 0.9056604, b: 0.17515129, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -7433,7 +7444,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 100
   m_Sprite: {fileID: -423128877, guid: aa91c92f9317f164f948b6f907e49992, type: 3}
-  m_Color: {r: 0.7075472, g: 0.21026166, b: 0.21026166, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

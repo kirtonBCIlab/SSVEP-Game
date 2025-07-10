@@ -6,35 +6,71 @@ public enum MapSelection
     Map1,
     Map2
 }
-
 public class PlayerController : MonoBehaviour
 {
+    #region Inspector Fields
     [Header("Map Selection")]
     [SerializeField] private MapSelection selectedMap;
     [SerializeField] private GameObject grid1;
     [SerializeField] private GameObject grid2;
 
-    private Vector3Int gridPos;
-    private Vector3Int nextPos;
-    private bool usedGridPos = false;
-    private Vector3Int currentGridPos;
-
-    private Vector3Int previousGridPos;
-
     [Header("Tilemaps")]
-    [SerializeField] private Tilemap ground_tilemap;
-    [SerializeField] private Tilemap collision_tilemap;
-    [SerializeField] private Tilemap gem_tilemap;
-    [SerializeField] private Tilemap spawn_tilemap1;
-    [SerializeField] private Tilemap spawn_tilemap2;
+    [SerializeField] private Tilemap spawnTilemap1;
+    [SerializeField] private Tilemap spawnTilemap2;
+    #endregion
 
-    private SPOManager spoManager;
-    private GemManager gemManager;
+    #region Tilemaps
+    private Tilemap groundTilemap;
+    private Tilemap collisionTilemap;
+    private Tilemap gemTilemap;
+    private Tilemap spawnTilemap;
+    #endregion
+
+    #region Position State
+    public Vector3Int currentGridPos;
+    private Vector3Int previousGridPos;
+    public Vector3Int gridPos;
+    public Vector3Int nextPos;
+    public bool usedGridPos = false;
+    #endregion
+
+    #region Save Data
+    public Vector3Int prev_pos;
+    public Vector3Int new_pos;
+    public float spo_selected = 199f;
+    public string movement_dir;
+    public bool special_pos;
+    public bool failed_movement;
+    public bool gem_collected;
+    public bool firstMoveCompleted = false;
+
+    // Public getters for save system
+    public Vector3Int PrevPos => prev_pos;
+    public Vector3Int NewPos => new_pos;
+    public float SpoSelected => spo_selected;
+    public string MovementDir => movement_dir;
+    public bool SpecialPos => special_pos;
+    public bool FailedMovement => failed_movement;
+    public bool GemCollected => gem_collected;
+    #endregion
+
+    #region Managers
+    public SPOManager spoManager;
+    public GemManager gemManager;
+    private MovementHandler movementHandler;
+    #endregion
 
     private void Start()
     {
+        InitializeMap();
+        InitializeManagers();
+        InitializePlayerPosition();
+    }
+
+    private void InitializeMap()
+    {
         GameObject selectedGrid = selectedMap == MapSelection.Map1 ? grid1 : grid2;
-        Tilemap spawnTilemap = selectedMap == MapSelection.Map1 ? spawn_tilemap1 : spawn_tilemap2;
+        spawnTilemap = selectedMap == MapSelection.Map1 ? spawnTilemap1 : spawnTilemap2;
         gridPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 11, 0) : new Vector3Int(13, 6, 0);
         nextPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 10, 0) : new Vector3Int(12, 6, 0);
 
@@ -45,131 +81,90 @@ public class PlayerController : MonoBehaviour
         }
 
         selectedGrid.SetActive(true);
-        ground_tilemap = selectedGrid.transform.Find("Tilemap Ground").GetComponent<Tilemap>();
-        collision_tilemap = selectedGrid.transform.Find("Tilemap Collision").GetComponent<Tilemap>();
-        gem_tilemap = selectedGrid.transform.Find("Tilemap Gems").GetComponent<Tilemap>();
+        groundTilemap = selectedGrid.transform.Find("Tilemap Ground").GetComponent<Tilemap>();
+        collisionTilemap = selectedGrid.transform.Find("Tilemap Collision").GetComponent<Tilemap>();
+        gemTilemap = selectedGrid.transform.Find("Tilemap Gems").GetComponent<Tilemap>();
+    }
 
+    private void InitializeManagers()
+    {
         spoManager = GetComponent<SPOManager>();
         spoManager?.Initialize();
 
         gemManager = GetComponent<GemManager>();
-        if (gemManager != null)
-        {
-            gemManager.Initialize(gem_tilemap, transform, spoManager); // assume GemManager has this method
-        }
+        gemManager?.Initialize(gemTilemap, transform, spoManager);
 
-        if (PlayerControllerManager.Instance != null && PlayerControllerManager.Instance.SavedGridPosition != Vector3Int.zero)
-        {
-            currentGridPos = PlayerControllerManager.Instance.SavedGridPosition;
-        }
-        else
-        {
-            currentGridPos = GetStartTilePosition(spawnTilemap);
-        }
-
-        transform.position = ground_tilemap.GetCellCenterWorld(currentGridPos);
-        previousGridPos = gem_tilemap.WorldToCell(transform.position);
+        movementHandler = new MovementHandler(this, groundTilemap, collisionTilemap, gemTilemap, spoManager, gemManager);
     }
 
-    private Vector3Int GetStartTilePosition(Tilemap spawnTilemap)
+    private void InitializePlayerPosition()
     {
-        foreach (Vector3Int pos in spawnTilemap.cellBounds.allPositionsWithin)
-        {
-            if (spawnTilemap.HasTile(pos)) return pos;
-        }
-        Debug.LogWarning("No tile found in Start Tilemap — using origin.");
-        return Vector3Int.zero;
+        if (PlayerControllerManager.Instance != null && PlayerControllerManager.Instance.SavedGridPosition != Vector3Int.zero)
+            currentGridPos = PlayerControllerManager.Instance.SavedGridPosition;
+        else
+            currentGridPos = GetStartTilePosition(spawnTilemap);
+
+        transform.position = groundTilemap.GetCellCenterWorld(currentGridPos);
+        previousGridPos = gemTilemap.WorldToCell(transform.position);
     }
 
     private void Update()
     {
+        HandleGemTrigger();
+        HandleMovementInput();
+        movementHandler.CheckSpecialMovement();
+
+        if (spawnTilemap != null && currentGridPos != GetStartTilePosition(spawnTilemap))
+            firstMoveCompleted = true;
+
+        if (gemManager.collectedGemSet.Count == 10)
+            EndGame();
+    }
+
+    private void HandleGemTrigger()
+    {
         Vector3Int? gemPos = gemManager?.GetUncollectedAdjacentGem(currentGridPos);
         if (gemPos.HasValue)
         {
-            TileBase tile = gem_tilemap.GetTile(gemPos.Value);
+            TileBase tile = gemTilemap.GetTile(gemPos.Value);
             spoManager?.TryMoveSPO(tile, gemPos.Value - currentGridPos);
         }
-
-        if (Input.GetKeyDown(KeyCode.W)) MoveTopRight();
-        else if (Input.GetKeyDown(KeyCode.A)) MoveTopLeft();
-        else if (Input.GetKeyDown(KeyCode.S)) MoveBottomLeft();
-        else if (Input.GetKeyDown(KeyCode.D)) MoveBottomRight();
-
-        CheckSpecialMovement();
     }
 
-    public void MoveToSPO1() => MoveToSPO("SPO 1");
-    public void MoveToSPO2() => MoveToSPO("SPO 2");
-    public void MoveToSPO3() => MoveToSPO("SPO 3");
-    public void MoveToSPO4() => MoveToSPO("SPO 4");
-
-    private void MoveToSPO(string spoName)
+    private void HandleMovementInput()
     {
-        if (spoManager == null) return;
+        if (Input.GetKeyDown(KeyCode.W)) movementHandler.MoveTopRightKeyPress();
+        else if (Input.GetKeyDown(KeyCode.A)) movementHandler.MoveTopLeftKeyPress();
+        else if (Input.GetKeyDown(KeyCode.S)) movementHandler.MoveBottomLeftKeyPress();
+        else if (Input.GetKeyDown(KeyCode.D)) movementHandler.MoveBottomRightKeyPress();
+    }
 
-        GameObject spo = GameObject.Find(spoName);
-        if (spo == null)
+    private Vector3Int GetStartTilePosition(Tilemap tilemap)
+    {
+        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
         {
-            Debug.LogWarning($"{spoName} not found.");
-            return;
+            if (tilemap.HasTile(pos))
+                return pos;
         }
 
-        string corner = spoManager.GetSPOCorner(spo);
-        Debug.Log($"{spoName} is in corner: {corner}");
-
-        switch (corner)
-        {
-            case "topright":
-                MoveTopRight();
-                break;
-            case "bottomright":
-                MoveBottomRight();
-                break;
-            case "topleft":
-                MoveTopLeft();
-                break;
-            case "bottomleft":
-                MoveBottomLeft();
-                break;
-            default:
-                Debug.LogWarning($"Unknown corner for {spoName}. Defaulting to TopRight.");
-                MoveTopRight();
-                break;
-        }
+        Debug.LogWarning("No tile found in Start Tilemap — using origin.");
+        return Vector3Int.zero;
     }
 
-    public void MoveTopRight() => Move(new Vector2Int(0, 1));
-    public void MoveBottomLeft() => Move(new Vector2Int(0, -1));
-    public void MoveTopLeft() => Move(new Vector2Int(-1, 0));
-    public void MoveBottomRight() => Move(new Vector2Int(1, 0));
+    #region SPO Movement Methods
+    public void MoveToSPO1() => MoveToSPO("SPO 1", 6.25f);
+    public void MoveToSPO2() => MoveToSPO("SPO 2", 10.0f);
+    public void MoveToSPO3() => MoveToSPO("SPO 3", 11.11f);
+    public void MoveToSPO4() => MoveToSPO("SPO 4", 14.28f);
 
-    public void Move(Vector2Int direction)
+    private void MoveToSPO(string name, float spoValue)
     {
-        Vector3Int targetPos = currentGridPos + new Vector3Int(direction.x, direction.y, 0);
-        if (CanMove(targetPos))
-        {
-            currentGridPos = targetPos;
-            PlayerControllerManager.Instance.SavedGridPosition = currentGridPos;
-
-            Vector3 cellCenter = ground_tilemap.GetCellCenterWorld(currentGridPos);
-            if (gem_tilemap.HasTile(currentGridPos))
-                cellCenter.x -= 3f;
-
-            transform.position = cellCenter;
-
-            if (gem_tilemap.HasTile(currentGridPos))
-                gemManager?.TryCollectGem(currentGridPos);
-
-            CheckSPOTrigger();
-        }
+        movementHandler.MoveToSPO(name);
+        spo_selected = spoValue;
     }
+    #endregion
 
-    private bool CanMove(Vector3Int targetGridPos)
-    {
-        return ground_tilemap.HasTile(targetGridPos) && !collision_tilemap.HasTile(targetGridPos);
-    }
-
-    private void CheckSPOTrigger()
+    public void CheckSPOTrigger()
     {
         if (currentGridPos == gridPos)
         {
@@ -179,17 +174,33 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void CheckSpecialMovement()
+    public void SavePlayerMovement()
     {
-        if (currentGridPos == nextPos && usedGridPos) //In the position after completing the special movement
+        if (!firstMoveCompleted)
         {
-            // Tell SPO manager that the special movement SPO was used and now it can dequeue the next SPO
-            spoManager?.AssignCurrentSpecialSPO();
+            spo_selected = 6.25f;
+            special_pos = true;
         }
 
-        if (usedGridPos)
+        Vector3Int specialStartPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 11, 0) : new Vector3Int(13, 6, 0);
+        if (prev_pos == specialStartPos)
         {
-            gridPos = new Vector3Int(0, 0, -1000); //dummy number to make sure SPO movement for the special position only happens once
+            special_pos = true;
+            Debug.Log("Setting special pos");
         }
+
+        PlayerSaveData saveData = new PlayerSaveData();
+        saveData.FromPlayerController(this);
+
+        SaveStruct savedStruct = saveData.ToStruct();
+        PlayerControllerManager.Instance?.LogMovement(savedStruct);
+    }
+
+    public void EndGame()
+    {
+        if (PlayerControllerManager.Instance != null)
+            PlayerControllerManager.Instance.EndGame();
+        else
+            Debug.Log("Save failed because there is no PlayerControllerManager instance.");
     }
 }
