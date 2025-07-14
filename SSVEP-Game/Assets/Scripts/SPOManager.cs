@@ -31,12 +31,10 @@ public class SPOManager : MonoBehaviour
             spoQueue.Enqueue("SPO 4");
         }
 
-        positions["topleft"] = new Vector3(-0.643f, 0.277f, -0.01f);
-        //positions["topleft"] = new Vector3(137.3f, 39.7f, -1);
-        positions["topright"] = new Vector3(0.67f, 0.277f, -0.01f);
-        positions["bottomleft"] = new Vector3(-0.643f, -0.277f, -0.01f);
-        //positions["bottomleft"] = new Vector3(137.3f, -39.7f, -1);
-        positions["bottomright"] = new Vector3(0.67f, -0.277f, -0.01f);
+        positions["topleft"] = new Vector3(-0.5f, 0.28f, -0.1f);
+        positions["topright"] = new Vector3(0.5f, 0.28f, -0.1f);
+        positions["bottomleft"] = new Vector3(-0.5f, -0.28f, -0.1f);
+        positions["bottomright"] = new Vector3(0.5f, -0.28f, -0.1f);
 
         ForceMoveSPO("topright"); // First position for both maps
     }
