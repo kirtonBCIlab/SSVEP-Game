@@ -43,7 +43,7 @@ public class MovementHandler
 
             if (gemTilemap.HasTile(player.currentGridPos))
             {
-                cellCenter.x -= 3f;
+                cellCenter.x -= 0.025f;
                 gemManager?.TryCollectGem(player.currentGridPos);
             }
             else

@@ -107,7 +107,7 @@ public class GemManager : MonoBehaviour
 
             ParticleSystem ps = effect.GetComponentInChildren<ParticleSystem>();
             if (ps != null) ps.Play();
-            Destroy(effect, 1f);
+            Destroy(effect, 1.5f);
 
             collectedGemSet.Add(gemTile);
             playerController.special_pos = true;

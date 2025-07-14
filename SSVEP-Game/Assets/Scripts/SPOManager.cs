@@ -31,10 +31,10 @@ public class SPOManager : MonoBehaviour
             spoQueue.Enqueue("SPO 4");
         }
 
-        positions["topleft"] = new Vector3(16, 16, 0);
-        positions["topright"] = new Vector3(130, 16, 0);
-        positions["bottomleft"] = new Vector3(16, -36, 0);
-        positions["bottomright"] = new Vector3(130, -36, 0);
+        positions["topleft"] = new Vector3(-0.5f, 0.28f, -0.1f);
+        positions["topright"] = new Vector3(0.5f, 0.28f, -0.1f);
+        positions["bottomleft"] = new Vector3(-0.5f, -0.28f, -0.1f);
+        positions["bottomright"] = new Vector3(0.5f, -0.28f, -0.1f);
 
         ForceMoveSPO("topright"); // First position for both maps
     }
@@ -82,9 +82,11 @@ public class SPOManager : MonoBehaviour
 
         string spoName = spoQueue.Dequeue();
 
+        //FOR TESTING
+        GameObject currSPO = GameObject.Find(spoName);
+
         if (dir == "topright") // This is the starting step in both maps
         {
-            Debug.Log("First position, SPO 1 to topright");
             currentSPOName = null;
             MoveSPOTo(spoName, dir);
         }
