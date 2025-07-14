@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - BCI
   layers:
   - Default
   - TransparentFX
@@ -43,4 +44,7 @@ TagManager:
     locked: 0
   - name: Front
     uniqueID: 2314844509
+    locked: 0
+  - name: Stickers
+    uniqueID: 3843596833
     locked: 0

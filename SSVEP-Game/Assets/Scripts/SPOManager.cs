@@ -87,7 +87,6 @@ public class SPOManager : MonoBehaviour
 
         if (dir == "topright") // This is the starting step in both maps
         {
-            //Debug.Log($"First position, trying to move SPO 1 to topright, current position: {currSPO.transform.position}");
             currentSPOName = null;
             MoveSPOTo(spoName, dir);
         }
@@ -121,8 +120,6 @@ public class SPOManager : MonoBehaviour
         }
         else if (movingSPO)
             movingSPO.transform.position = targetPos;
-            Debug.Log($"First position,  moved SPO 1 to topright, current position: {movingSPO.transform.position}");
-
     }
 
     private GameObject FindSPOAt(Vector3 pos)
