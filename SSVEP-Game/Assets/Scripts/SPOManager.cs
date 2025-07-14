@@ -31,10 +31,12 @@ public class SPOManager : MonoBehaviour
             spoQueue.Enqueue("SPO 4");
         }
 
-        positions["topleft"] = new Vector3(16, 16, 0);
-        positions["topright"] = new Vector3(130, 16, 0);
-        positions["bottomleft"] = new Vector3(16, -36, 0);
-        positions["bottomright"] = new Vector3(130, -36, 0);
+        positions["topleft"] = new Vector3(-0.643f, 0.277f, -0.01f);
+        //positions["topleft"] = new Vector3(137.3f, 39.7f, -1);
+        positions["topright"] = new Vector3(0.67f, 0.277f, -0.01f);
+        positions["bottomleft"] = new Vector3(-0.643f, -0.277f, -0.01f);
+        //positions["bottomleft"] = new Vector3(137.3f, -39.7f, -1);
+        positions["bottomright"] = new Vector3(0.67f, -0.277f, -0.01f);
 
         ForceMoveSPO("topright"); // First position for both maps
     }
@@ -82,9 +84,12 @@ public class SPOManager : MonoBehaviour
 
         string spoName = spoQueue.Dequeue();
 
+        //FOR TESTING
+        GameObject currSPO = GameObject.Find(spoName);
+
         if (dir == "topright") // This is the starting step in both maps
         {
-            Debug.Log("First position, SPO 1 to topright");
+            //Debug.Log($"First position, trying to move SPO 1 to topright, current position: {currSPO.transform.position}");
             currentSPOName = null;
             MoveSPOTo(spoName, dir);
         }
@@ -118,6 +123,8 @@ public class SPOManager : MonoBehaviour
         }
         else if (movingSPO)
             movingSPO.transform.position = targetPos;
+            Debug.Log($"First position,  moved SPO 1 to topright, current position: {movingSPO.transform.position}");
+
     }
 
     private GameObject FindSPOAt(Vector3 pos)
