@@ -22,7 +22,6 @@ prev_pos,new_pos,spo_selected,movement_dir,special_pos,failed_movement,gem_colle
 "(8,3)","(8,2)",6.25,bottomLeft,True,False,True
 "(8,2)","(7,2)",14.28,topLeft,False,False,False
 "(7,2)","(7,3)",11.11,topRight,False,False,False
-"(7,3)","(7,3)",11.11,topRight,False,True,False
 "(7,3)","(6,3)",14.28,topLeft,False,False,False
 "(6,3)","(6,4)",11.11,topRight,False,False,False
 "(6,4)","(6,5)",10,topRight,True,False,True
