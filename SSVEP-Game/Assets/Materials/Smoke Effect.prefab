@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8242376996330821633}
   - component: {fileID: 5265907344904555861}
   - component: {fileID: 7917162269325185737}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Smoke Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4839173952069198473}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 260, y: 146, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4795,9 +4795,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1980122787
-  m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingLayerID: -451370463
+  m_SortingLayer: -1
+  m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
