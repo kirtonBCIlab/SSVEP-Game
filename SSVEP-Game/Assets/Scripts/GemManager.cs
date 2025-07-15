@@ -145,6 +145,11 @@ public class GemManager : MonoBehaviour
     private IEnumerator ShowEndScreenAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
+        //Deactivate grid
+        playerController.selectedGrid.SetActive(false);
+
+        //Set active
         if (endScreenCanvas != null)
             endScreenCanvas.SetActive(true);
     }

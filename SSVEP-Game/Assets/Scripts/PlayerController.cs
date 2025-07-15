@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject grid1;
     [SerializeField] private GameObject grid2;
 
+    //public int gridActive;
+    public GameObject selectedGrid;
+
     [Header("Tilemaps")]
     [SerializeField] private Tilemap spawnTilemap1;
     [SerializeField] private Tilemap spawnTilemap2;
@@ -69,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     private void InitializeMap()
     {
-        GameObject selectedGrid = selectedMap == MapSelection.Map1 ? grid1 : grid2;
+        selectedGrid = selectedMap == MapSelection.Map1 ? grid1 : grid2;
         spawnTilemap = selectedMap == MapSelection.Map1 ? spawnTilemap1 : spawnTilemap2;
         gridPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 11, 0) : new Vector3Int(13, 6, 0);
         nextPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 10, 0) : new Vector3Int(12, 6, 0);

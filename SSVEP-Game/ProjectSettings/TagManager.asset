@@ -39,12 +39,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Fog
+    uniqueID: 3843596833
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Front
     uniqueID: 2314844509
-    locked: 0
-  - name: Stickers
-    uniqueID: 3843596833
     locked: 0
