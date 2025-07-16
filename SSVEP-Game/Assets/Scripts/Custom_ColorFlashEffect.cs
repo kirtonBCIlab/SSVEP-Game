@@ -142,18 +142,18 @@ namespace BCIEssentials.StimulusEffects
             switch (_size)
             {
                 case Size.Size1:
-                    //1.95cm on my laptop (approx)
+                    //3.6 cm
                     newSize = new Vector3(0.0007f, 0.0007f, 0); // this scaling gives stim of 3.6cm on the screen
                     break;
 
                 case Size.Size2:
-                    //3.3cm on my laptop (approx)
-                    newSize = new Vector3(0.00122f, 0.00122f, 0); // this scaling gives stim of 6.1cm on the screen
-                    //newSize = new Vector3(1,1,1);
+                    // 6.1cm
+                    newSize = new Vector3(0.00119f, 0.00119f, 0); // this scaling gives stim of 6.1cm on the screen
+                    //newSize = new Vector3(1,1,1); 
                     break;
 
                 case Size.Size3:
-                    //4.6cm on my laptop (approx)
+                    //8.5 cm
                     newSize = new Vector3(0.00168f, 0.00168f, 0); // this scaling gives stim of 3.6cm on the screen
                     // newSize = new Vector3(1,1,1);
                     break;

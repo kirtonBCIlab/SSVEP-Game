@@ -216,7 +216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &182133980
 RectTransform:
   m_ObjectHideFlags: 0
@@ -610,6 +610,7 @@ MonoBehaviour:
   selectedMap: 0
   grid1: {fileID: 1437642889}
   grid2: {fileID: 200940148}
+  selectedGrid: {fileID: 0}
   spawnTilemap1: {fileID: 1719359411}
   spawnTilemap2: {fileID: 1462346826}
   currentGridPos: {x: 0, y: 0, z: 0}
@@ -801,7 +802,7 @@ MonoBehaviour:
   _selfRegister: 1
   _selfRegisterAsActive: 1
   _selfRegistrationTarget: {fileID: 0}
-  ObjectListPopulationMethod: 3
+  ObjectListPopulationMethod: 1
   ObjectListPopulationScope: 0
   SPOTag: BCI
   _selectableSPOs:
@@ -810,8 +811,8 @@ MonoBehaviour:
   - {fileID: 1970587572}
   - {fileID: 913608664}
   _spoFactory: {fileID: 0}
-  FactorySetupRequired: 0
-  numTrainingSelections: 0
+  FactorySetupRequired: 1
+  numTrainingSelections: 4
   trainTargetPresentationTime: 3
   trainTargetPersistent: 0
   preStimulusBuffer: 0.5
@@ -824,14 +825,18 @@ MonoBehaviour:
   epochLength: 1
   interEpochInterval: 0
   requestedFlashingFrequencies:
-  - 6
+  - 6.25
   - 10
   - 11
   - 14
-  realFlashingFrequencies: []
-  _stimulusType: 0
+  realFlashingFrequencies:
+  - 0
+  - 0
+  - 0
+  - 0
+  _stimulusType: 1
   _contrastLevel: 0
-  _size: 1
+  _size: 0
 --- !u!1 &592651988
 GameObject:
   m_ObjectHideFlags: 0
@@ -3037,6 +3042,10 @@ PrefabInstance:
     - target: {fileID: 1048484350530938663, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048484350530938663, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1898853191072348654, guid: b9c6f9c35efb1934dbfbcd51cf36d69a, type: 3}
       propertyPath: _startOn
@@ -5637,7 +5646,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1442618760
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5892,7 +5901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1581769806
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6497,7 +6506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1758535433
 RectTransform:
   m_ObjectHideFlags: 0

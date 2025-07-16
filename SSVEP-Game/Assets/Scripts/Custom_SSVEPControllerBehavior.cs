@@ -50,9 +50,9 @@ namespace BCIEssentials.ControllerBehaviors
 
         protected override IEnumerator RunStimulusRoutine()
         {
-            Debug.Log("Starting");
+            //Debug.Log("Starting");
             yield return new WaitForSecondsRealtime(5.0f);
-            Debug.Log("Ending");
+            //Debug.Log("Ending");
         }            
         
         private void SetStimType()
