@@ -45,14 +45,13 @@ namespace BCIEssentials.ControllerBehaviors
         protected override void Start()
         {
             SetStimType();
-            base.ExecuteSelfRegistration(); //this is to keep the same behavior as BCIControllerBehavior
+            base.ExecuteSelfRegistration(); //this is to keep the same behavior as BCIControllerBehavior (base = BCI)
+            base.UpdateObjectListConfiguration(); //this is so the realFlashFrequencies get set (base = SSVEP)
         }
 
         protected override IEnumerator RunStimulusRoutine()
         {
-            //Debug.Log("Starting");
             yield return new WaitForSecondsRealtime(5.0f);
-            //Debug.Log("Ending");
         }            
         
         private void SetStimType()
