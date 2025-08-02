@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 {
     #region Inspector Fields
     [Header("Map Selection")]
-    [SerializeField] private MapSelection selectedMap;
+    [SerializeField] public MapSelection selectedMap;
     [SerializeField] private GameObject grid1;
     [SerializeField] private GameObject grid2;
 
