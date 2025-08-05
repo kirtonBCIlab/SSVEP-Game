@@ -627,6 +627,7 @@ MonoBehaviour:
   - {fileID: 1051012377}
   - {fileID: 711306159}
   endScreenCanvas: {fileID: 2026660369}
+  confettiPrefab: {fileID: 3762209508384047476, guid: 012ae3b48e206e1478937764d695aca2, type: 3}
   gemExplosionPrefab: {fileID: 4839173952069198473, guid: 6e39ec55f4f561e4fb96412b7faff310, type: 3}
 --- !u!114 &577975704
 MonoBehaviour:
@@ -650,6 +651,7 @@ MonoBehaviour:
   gridPos: {x: 0, y: 0, z: 0}
   nextPos: {x: 0, y: 0, z: 0}
   usedGridPos: 0
+  firstMoveCompleted: 0
   prev_pos: {x: 0, y: 0, z: 0}
   new_pos: {x: 0, y: 0, z: 0}
   spo_selected: 199
@@ -657,7 +659,6 @@ MonoBehaviour:
   special_pos: 0
   failed_movement: 0
   gem_collected: 0
-  firstMoveCompleted: 0
   spoManager: {fileID: 0}
   gemManager: {fileID: 0}
 --- !u!212 &577975706

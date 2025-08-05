@@ -25,6 +25,8 @@ public class GemManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> stickers;           // Sticker visuals for collected gems
     [SerializeField] private GameObject endScreenCanvas;          // UI shown when all gems are collected
+
+    [SerializeField] private GameObject confettiPrefab;
     [SerializeField] private GameObject gemExplosionPrefab;       // Particle effect prefab for gem collection
 
     // === Dependencies ===
@@ -207,6 +209,14 @@ public class GemManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
+        // Show confetti
+        Vector3 confetti_loc = new Vector3(0, 0, -4.5f);
+        GameObject confetti = Instantiate(confettiPrefab, confetti_loc, confettiPrefab.transform.rotation);
+        ParticleSystem con = confetti.GetComponentInChildren<ParticleSystem>();
+        if (con != null) con.Play();
+
+        Destroy(confetti, 10f);
+
         // Deactivate current grid
         playerController.selectedGrid.SetActive(false);
 
@@ -232,7 +242,7 @@ public class GemManager : MonoBehaviour
             if (tile != null && gemTiles.Contains(tile) && !collectedGemSet.Contains(tile))
                 return currentGridPos + offset;
         } 
-        
+
         return null; // No adjacent gem found
     }
 }
