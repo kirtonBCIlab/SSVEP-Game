@@ -6,9 +6,18 @@ using UnityEngine.Tilemaps;
 public class GemManager : MonoBehaviour
 {
     [Header("Gem Settings")]
-    [SerializeField] private List<TileBase> gemTiles;
-    [SerializeField] private List<TileBase> collectedTiles;
-    [SerializeField] private List<TileBase> smallTiles;
+    [SerializeField] private List<TileBase> gemTilesMap1;
+    [SerializeField] private List<TileBase> collectedTilesMap1;
+    [SerializeField] private List<TileBase> smallTilesMap1;
+
+    [SerializeField] private List<TileBase> gemTilesMap2;
+    [SerializeField] private List<TileBase> collectedTilesMap2;
+    [SerializeField] private List<TileBase> smallTilesMap2;
+
+    private List<TileBase> gemTiles;
+    private List<TileBase> collectedTiles;
+    private List<TileBase> smallTiles;
+
     [SerializeField] private List<GameObject> stickers;
     [SerializeField] private GameObject endScreenCanvas;
     [SerializeField] private GameObject gemExplosionPrefab;
@@ -23,7 +32,7 @@ public class GemManager : MonoBehaviour
     private Dictionary<TileBase, TileBase> smallToCollectedMap = new();
 
     public HashSet<TileBase> collectedGemSet = new();
-    
+
     public static bool eventTriggered = false;
 
     public void Start()
@@ -38,15 +47,39 @@ public class GemManager : MonoBehaviour
         playerTransform = player;
         spoManager = spo;
 
+        // Get selected map from PlayerController
+        if (playerController != null)
+        {
+            switch (playerController.selectedMap)
+            {
+                case MapSelection.Map1:
+                    gemTiles = gemTilesMap1;
+                    collectedTiles = collectedTilesMap1;
+                    smallTiles = smallTilesMap1;
+                    break;
+                case MapSelection.Map2:
+                    gemTiles = gemTilesMap2;
+                    collectedTiles = collectedTilesMap2;
+                    smallTiles = smallTilesMap2;
+                    break;
+            }
+        }
+
+        if (!ValidateTileListLengths())
+        {
+            Debug.LogError("GemManager: Tile lists do not match in size.");
+            return;
+        }
+
         gemToCollectedMap.Clear();
         collectedToSmallMap.Clear();
         smallToCollectedMap.Clear();
         collectedGemSet.Clear();
 
-        for (int i = 0; i < gemTiles.Count && i < collectedTiles.Count; i++)
+        for (int i = 0; i < gemTiles.Count; i++)
             gemToCollectedMap[gemTiles[i]] = collectedTiles[i];
 
-        for (int i = 0; i < collectedTiles.Count && i < smallTiles.Count; i++)
+        for (int i = 0; i < collectedTiles.Count; i++)
         {
             collectedToSmallMap[collectedTiles[i]] = smallTiles[i];
             smallToCollectedMap[smallTiles[i]] = collectedTiles[i];
@@ -56,6 +89,12 @@ public class GemManager : MonoBehaviour
             endScreenCanvas.SetActive(false);
 
         StartCoroutine(UpdateTilesCoroutine());
+    }
+
+    private bool ValidateTileListLengths()
+    {
+        return gemTiles.Count == collectedTiles.Count &&
+               collectedTiles.Count == smallTiles.Count;
     }
 
     private IEnumerator UpdateTilesCoroutine()
@@ -145,6 +184,11 @@ public class GemManager : MonoBehaviour
     private IEnumerator ShowEndScreenAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
+        //Deactivate grid
+        playerController.selectedGrid.SetActive(false);
+
+        //Set active
         if (endScreenCanvas != null)
             endScreenCanvas.SetActive(true);
     }

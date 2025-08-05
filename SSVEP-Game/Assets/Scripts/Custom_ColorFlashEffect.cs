@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using BCIEssentials.Utilities;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace BCIEssentials.StimulusEffects
 {
@@ -136,28 +137,31 @@ namespace BCIEssentials.StimulusEffects
 
         private void SizeController()
         {
-            Vector3 newSize = Vector3.one; // Default size is (1, 1, 1)
+            Vector3 newSize = new Vector3(0.001f, 0.001f, 0); // Default size is (1, 1, 1)
 
             switch (_size)
             {
                 case Size.Size1:
-                    //newSize = new Vector3(150 / 325f, 150f / 325f, 150f / 325f); // this scaling gives stim of 3.6cm on the screen
-                   // newSize = new Vector3(1,1,1);
+                    //3.6 cm
+                    newSize = new Vector3(0.0007f, 0.0007f, 0); // this scaling gives stim of 3.6cm on the screen
                     break;
 
                 case Size.Size2:
-                    //newSize = new Vector3(255f / 325f, 255f / 325f, 255f / 325f); // this scaling gives stim of 6.1cm on the screen
-                    //newSize = new Vector3(1,1,1);
+                    // 6.1cm
+                    newSize = new Vector3(0.00119f, 0.00119f, 0); // this scaling gives stim of 6.1cm on the screen
+                    //newSize = new Vector3(1,1,1); 
                     break;
 
                 case Size.Size3:
-                    //newSize = new Vector3(355f / 325f, 355f / 325f, 355f / 325f); // this scaling gives stim of 8.5cm on the screen
-                   // newSize = new Vector3(1,1,1);
+                    //8.5 cm
+                    newSize = new Vector3(0.00168f, 0.00168f, 0); // this scaling gives stim of 3.6cm on the screen
+                    // newSize = new Vector3(1,1,1);
                     break;
             }
 
             // Apply the size change
-           // transform.localScale = newSize;
+            transform.localScale = newSize;
+            Debug.Log("size changes");
         }
 
         public int ConvertContrastLevel(ContrastLevel _contrastLevel)
