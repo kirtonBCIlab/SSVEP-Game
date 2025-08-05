@@ -215,7 +215,7 @@ public class GemManager : MonoBehaviour
         ParticleSystem con = confetti.GetComponentInChildren<ParticleSystem>();
         if (con != null) con.Play();
 
-        Destroy(confetti, 10f);
+        Destroy(confetti, 3f);
 
         // Deactivate current grid
         playerController.selectedGrid.SetActive(false);
