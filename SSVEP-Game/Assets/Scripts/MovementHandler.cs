@@ -10,6 +10,7 @@ public class MovementHandler
     private SPOManager spoManager;
     private GemManager gemManager;
 
+    // Constructor to initialize the movement handler with necessary references
     public MovementHandler(
         PlayerController player,
         Tilemap ground,
@@ -19,58 +20,68 @@ public class MovementHandler
         GemManager gemMan)
     {
         this.player = player;
-        this.groundTilemap = ground;
-        this.collisionTilemap = collision;
-        this.gemTilemap = gem;
-        this.spoManager = spo;
-        this.gemManager = gemMan;
+        groundTilemap = ground;
+        collisionTilemap = collision;
+        gemTilemap = gem;
+        spoManager = spo;
+        gemManager = gemMan;
     }
 
+    // Attempts to move the player in the given direction if the move is valid
     public void Move(Vector2Int direction)
     {
         Vector3Int targetPos = player.currentGridPos + new Vector3Int(direction.x, direction.y, 0);
 
+        // Save current position for saving
         player.prev_pos = player.currentGridPos;
 
         if (CanMove(targetPos))
         {
+            // Saving parameters
             player.failed_movement = false;
             player.currentGridPos = targetPos;
             player.new_pos = player.currentGridPos;
             PlayerControllerManager.Instance.SavedGridPosition = player.currentGridPos;
 
+            // Get the center of the target tile
             Vector3 cellCenter = groundTilemap.GetCellCenterWorld(player.currentGridPos);
 
+            // Handle gem collection
             if (gemTilemap.HasTile(player.currentGridPos))
             {
-                cellCenter.x -= 0.025f;
+                cellCenter.x -= 0.025f; // Edit cell center so the animal tile is visible
                 gemManager?.TryCollectGem(player.currentGridPos);
             }
             else
                 player.special_pos = false;
 
+            // Move player to the center of the target tile
             player.transform.position = cellCenter;
 
+            // Using WASD or SPOs
             SetDirectionFromInput(direction);
 
             player.SavePlayerMovement();
-            player.gem_collected = false;
+            player.gem_collected = false; // Reset this flag
 
+            // Check if player is now on the 2nd special position
             player.CheckSPOTrigger();
         }
         else
         {
-            //Tried to move into a wall
+            // Move failed due to collision or invalid tile
             player.failed_movement = true;
             player.SavePlayerMovement();
         }
     }
 
+    // Checks if the player can move to the target grid position.
     private bool CanMove(Vector3Int targetGridPos)
     {
         return groundTilemap.HasTile(targetGridPos) && !collisionTilemap.HasTile(targetGridPos);
     }
 
+    // Moves the player toward an SPO location by its name.
     public void MoveToSPO(string spoName)
     {
         if (spoManager == null) return;
@@ -82,22 +93,12 @@ public class MovementHandler
             return;
         }
 
-        string corner = spoManager.GetSPOCorner(spo);
-
-        switch (corner)
+        switch  (spoManager.GetSPOCorner(spo))
         {
-            case "topright":
-                MoveTopRight();
-                break;
-            case "bottomright":
-                MoveBottomRight();
-                break;
-            case "topleft":
-                MoveTopLeft();
-                break;
-            case "bottomleft":
-                MoveBottomLeft();
-                break;
+            case "topright":    MoveTopRight();    break;
+            case "bottomright": MoveBottomRight(); break;
+            case "topleft":     MoveTopLeft();     break;
+            case "bottomleft":  MoveBottomLeft();  break;
             default:
                 Debug.LogWarning($"Unknown corner for {spoName}. Defaulting to TopRight.");
                 MoveTopRight();
@@ -105,6 +106,7 @@ public class MovementHandler
         }
     }
 
+    // Input-triggered movement methods
     public void MoveTopRightKeyPress()
     {
         CheckSPONameFromCorner("topright");
@@ -129,15 +131,17 @@ public class MovementHandler
         Move(new Vector2Int(1, 0));
     }
 
+    // Directional movement shortcuts
     public void MoveTopRight() => Move(new Vector2Int(0, 1));
     public void MoveBottomLeft() => Move(new Vector2Int(0, -1));
     public void MoveTopLeft() => Move(new Vector2Int(-1, 0));
     public void MoveBottomRight() => Move(new Vector2Int(1, 0));
 
+    // Sets the SPO frequency value based on the selected direction/corner.
     private void CheckSPONameFromCorner(string dir)
     {
-        string spoName = spoManager.GetSPONameFromCorner(dir);
-        int spoInt = int.Parse(spoName.Split(' ')[1]);
+        int spoInt = int.Parse(spoManager.GetSPONameFromCorner(dir).Split(' ')[1]);
+        
         if (spoInt == 1)
             player.spo_selected = 6.25f;
         else if (spoInt == 2)
@@ -150,6 +154,7 @@ public class MovementHandler
             Debug.Log("Did not get SPO out");
     }
 
+    // Sets the movement direction string for saving/logging based on the input vector.
     private void SetDirectionFromInput(Vector2Int direction)
     {
         if (direction == new Vector2Int(0, 1))
@@ -164,18 +169,17 @@ public class MovementHandler
             Debug.Log("Could not set direction");
     }
 
+    // Handles post-special-movement logic, ensuring SPO tasks complete properly.
     public void CheckSpecialMovement()
     {
-        if (player.currentGridPos == player.nextPos && player.usedGridPos) //In the position after completing the special movement
+        if (player.currentGridPos == player.nextPos && player.usedGridPos)
         {
-            // Tell SPO manager that the special movement SPO was used and now it can dequeue the next SPO
-            spoManager?.AssignCurrentSpecialSPO();
+            spoManager?.AssignCurrentSpecialSPO(); // Notify SPO manager
             player.special_pos = false;
         }
 
+        // Prevent repeat processing of the same special movement
         if (player.usedGridPos)
-        {
-            player.gridPos = new Vector3Int(0, 0, -1000); //dummy number to make sure SPO movement for the special position only happens once
-        }
+            player.gridPos = new Vector3Int(0, 0, -1000); // Dummy value
     }
 }

@@ -43,7 +43,6 @@ public class PlayerSaveData
         foreach (var data in dataList)
             csvContent.AppendLine(data.ToString());
         
-
         File.WriteAllText(path, csvContent.ToString());
         Debug.Log($"CSV saved to: {path}");
     }
