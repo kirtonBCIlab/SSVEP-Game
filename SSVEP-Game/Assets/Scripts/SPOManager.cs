@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -61,7 +62,7 @@ public class SPOManager : MonoBehaviour
         }
 
         // Move the active SPO to the correct corner
-        MoveCurrentSPOTo(DirectionToName(direction));
+        StartCoroutine(MoveCurrentSPOTo(DirectionToName(direction)));
     }
 
     // Assign the current SPO to a collected tile and reset current SPO tracking
@@ -100,15 +101,17 @@ public class SPOManager : MonoBehaviour
         if (dir == "bottomleft" || dir == "topleft")
         {
             currentSPOName = spoQueue.Dequeue();
-            MoveCurrentSPOTo(dir);
+            StartCoroutine(MoveCurrentSPOTo(dir));
         }
     }
 
     // Move the current SPO to a direction
-    private void MoveCurrentSPOTo(string dir)
+    private IEnumerator MoveCurrentSPOTo(string dir)
     {
-        if (string.IsNullOrEmpty(currentSPOName)) return;
+        if (string.IsNullOrEmpty(currentSPOName)) Debug.Log("Current SPO Name is Null");
 
+        // Wait for 1 second before moving the SPOs so that the correct feedback is visible
+        yield return new WaitForSecondsRealtime(1f);
         MoveSPOTo(currentSPOName, dir);
     }
 
