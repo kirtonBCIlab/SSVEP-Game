@@ -109,26 +109,34 @@ public class MovementHandler
     // Input-triggered movement methods
     public void MoveTopRightKeyPress()
     {
+        player.keypress_used = true;
         CheckSPONameFromCorner("topright");
         Move(new Vector2Int(0, 1));
+        player.keypress_used = false;
     }
 
     public void MoveBottomLeftKeyPress()
     {
+        player.keypress_used = true;
         CheckSPONameFromCorner("bottomleft");
         Move(new Vector2Int(0, -1));
+        player.keypress_used = false;
     }
 
     public void MoveTopLeftKeyPress()
     {
+        player.keypress_used = true;
         CheckSPONameFromCorner("topleft");
         Move(new Vector2Int(-1, 0));
+        player.keypress_used = false;
     }
 
     public void MoveBottomRightKeyPress()
     {
+        player.keypress_used = true;
         CheckSPONameFromCorner("bottomright");
         Move(new Vector2Int(1, 0));
+        player.keypress_used = false;
     }
 
     // Directional movement shortcuts

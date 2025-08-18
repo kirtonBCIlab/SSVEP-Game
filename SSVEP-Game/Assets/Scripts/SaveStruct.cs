@@ -4,15 +4,16 @@ using UnityEngine;
 [Serializable]
 public struct SaveStruct
 {
-    public Vector3Int PrevPos { get; set; }
-    public Vector3Int NewPos { get; set; }
-    public float SpoSelected { get; set; }
-    public string MovementDir { get; set; }
-    public bool SpecialPos { get; set; }
+    public Vector3Int PrevPos  { get; set; }
+    public Vector3Int NewPos   { get; set; }
+    public float SpoSelected   { get; set; }
+    public string MovementDir  { get; set; }
+    public bool SpecialPos     { get; set; }
     public bool FailedMovement { get; set; }
-    public bool GemCollected { get; set; }
+    public bool GemCollected   { get; set; }
+    public bool KeypressUsed   { get; set; }
 
-    public SaveStruct(Vector3Int prev, Vector3Int next, float spo, string dir, bool special, bool failed, bool gem)
+    public SaveStruct(Vector3Int prev, Vector3Int next, float spo, string dir, bool special, bool failed, bool gem, bool keypress)
     {
         PrevPos = prev;
         NewPos = next;
@@ -21,6 +22,7 @@ public struct SaveStruct
         SpecialPos = special;
         FailedMovement = failed;
         GemCollected = gem;
+        KeypressUsed = keypress;
     }
 
     public override string ToString()
@@ -31,7 +33,8 @@ public struct SaveStruct
                $"{MovementDir}," +
                $"{SpecialPos}," +
                $"{FailedMovement}," +
-               $"{GemCollected}";
+               $"{GemCollected}," + 
+               $"{KeypressUsed}";
     }
 
     private static string FormatVector3Int(Vector3Int vec)
