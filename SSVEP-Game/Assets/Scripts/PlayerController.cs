@@ -152,10 +152,6 @@ public class PlayerController : MonoBehaviour
     // Listen for movement key input (WASD mapped to SPO-style diagonals)
     private void HandleMovementInput()
     {
-        // Log that this movment used the keyboard
-       // keypress_used = true;
-        //Debug.Log("Keypress = true");
-
         if      (Input.GetKeyDown(KeyCode.W)) movementHandler.MoveTopRightKeyPress();
         else if (Input.GetKeyDown(KeyCode.A)) movementHandler.MoveTopLeftKeyPress();
         else if (Input.GetKeyDown(KeyCode.S)) movementHandler.MoveBottomLeftKeyPress();
@@ -217,9 +213,6 @@ public class PlayerController : MonoBehaviour
         saveData.FromPlayerController(this);
         SaveStruct savedStruct = saveData.ToStruct();
         PlayerControllerManager.Instance?.LogMovement(savedStruct);
-
-        // Reset keypress
-        //keypress_used = false;
     }
 
     // Handle end of game
