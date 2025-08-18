@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     public bool special_pos;          // Whether movement was a special SPO move
     public bool failed_movement;      // Whether the movement attempt failed
     public bool gem_collected;        // Whether a gem was collected in the move
+    public bool keypress_used;        // Whether the keyboard was used to make a movement
 
     // Public property accessors for save system
     public Vector3Int PrevPos => prev_pos;
@@ -54,6 +55,7 @@ public class PlayerController : MonoBehaviour
     public bool SpecialPos => special_pos;
     public bool FailedMovement => failed_movement;
     public bool GemCollected => gem_collected;
+    public bool KeypressUsed => keypress_used;
     #endregion
 
     #region Managers
@@ -150,6 +152,10 @@ public class PlayerController : MonoBehaviour
     // Listen for movement key input (WASD mapped to SPO-style diagonals)
     private void HandleMovementInput()
     {
+        // Log that this movment used the keyboard
+       // keypress_used = true;
+        //Debug.Log("Keypress = true");
+
         if      (Input.GetKeyDown(KeyCode.W)) movementHandler.MoveTopRightKeyPress();
         else if (Input.GetKeyDown(KeyCode.A)) movementHandler.MoveTopLeftKeyPress();
         else if (Input.GetKeyDown(KeyCode.S)) movementHandler.MoveBottomLeftKeyPress();
@@ -211,6 +217,9 @@ public class PlayerController : MonoBehaviour
         saveData.FromPlayerController(this);
         SaveStruct savedStruct = saveData.ToStruct();
         PlayerControllerManager.Instance?.LogMovement(savedStruct);
+
+        // Reset keypress
+        //keypress_used = false;
     }
 
     // Handle end of game
