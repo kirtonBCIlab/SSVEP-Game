@@ -22,9 +22,16 @@ public class GemManager : MonoBehaviour
     private List<TileBase> gemTiles;
     private List<TileBase> collectedTiles;
     private List<TileBase> smallTiles;
+    private List<GameObject> stickers;
 
-    [SerializeField] private List<GameObject> stickers;           // Sticker visuals for collected gems
-    [SerializeField] private GameObject endScreenCanvas;          // UI shown when all gems are collected
+    private GameObject endScreenCanvas;
+
+    [SerializeField] private List<GameObject> stickersMap1;           // Sticker visuals for collected gems
+    [SerializeField] private List<GameObject> stickersMap2;           // Sticker visuals for collected gems
+
+    [SerializeField] private GameObject endScreenCanvas1;          // UI shown when all gems are collected
+    [SerializeField] private GameObject endScreenCanvas2;
+
 
     [SerializeField] private GameObject confettiPrefab;
     [SerializeField] private GameObject gemExplosionPrefab;       // Particle effect prefab for gem collection
@@ -67,11 +74,15 @@ public class GemManager : MonoBehaviour
                     gemTiles = gemTilesMap1;
                     collectedTiles = collectedTilesMap1;
                     smallTiles = smallTilesMap1;
+                    stickers = stickersMap1;
+                    endScreenCanvas = endScreenCanvas1;
                     break;
                 case MapSelection.Map2:
                     gemTiles = gemTilesMap2;
                     collectedTiles = collectedTilesMap2;
                     smallTiles = smallTilesMap2;
+                    stickers = stickersMap2;
+                    endScreenCanvas = endScreenCanvas2;
                     break;
             }
         }
