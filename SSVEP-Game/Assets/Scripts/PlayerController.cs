@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     public bool special_pos;          // Whether movement was a special SPO move
     public bool failed_movement;      // Whether the movement attempt failed
     public bool gem_collected;        // Whether a gem was collected in the move
+    public bool keypress_used;        // Whether the keyboard was used to make a movement
 
     // Public property accessors for save system
     public Vector3Int PrevPos => prev_pos;
@@ -57,6 +58,7 @@ public class PlayerController : MonoBehaviour
     public bool SpecialPos => special_pos;
     public bool FailedMovement => failed_movement;
     public bool GemCollected => gem_collected;
+    public bool KeypressUsed => keypress_used;
     #endregion
 
     #region Managers
