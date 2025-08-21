@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public MapSelection selectedMap; // Chosen map (Map1 or Map2)
     [SerializeField] private GameObject grid1;        // GameObject representing Grid for Map1
     [SerializeField] private GameObject grid2;        // GameObject representing Grid for Map2
+
+    [SerializeField] private Sprite cape;             // Sprite for character with cape (forest map)
+    [SerializeField] private Sprite scuba;            // Sprite for character with scuba goggles (underwater map)
     public GameObject selectedGrid;                   // The grid that is currently active based on selectedMap
 
     [Header("Tilemaps")]
@@ -62,9 +65,14 @@ public class PlayerController : MonoBehaviour
     private MovementHandler movementHandler; // Handles player movement logic
     #endregion
 
+    private SpriteRenderer playerRenderer;  // Player sprite renderer
+
     private void Start()
     {
+        playerRenderer = GetComponent<SpriteRenderer>();    // Get the player sprite renderer
+
         InitializeMap();             // Setup map tiles and position
+        InitializePlayer();          // Initialize player sprite
         InitializeManagers();        // Initialize SPO and Gem Managers
         InitializePlayerPosition();  // Set player starting position
     }
@@ -94,6 +102,14 @@ public class PlayerController : MonoBehaviour
         groundTilemap = selectedGrid.transform.Find("Tilemap Ground").GetComponent<Tilemap>();
         collisionTilemap = selectedGrid.transform.Find("Tilemap Collision").GetComponent<Tilemap>();
         gemTilemap = selectedGrid.transform.Find("Tilemap Gems").GetComponent<Tilemap>();
+    }
+
+    private void InitializePlayer()
+    {
+        if (selectedGrid == grid1)
+            playerRenderer.sprite = cape;
+        else
+            playerRenderer.sprite = scuba;
     }
 
     // Initialize game managers and movement logic

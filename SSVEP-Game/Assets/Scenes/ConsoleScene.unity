@@ -825,6 +825,8 @@ MonoBehaviour:
   selectedMap: 0
   grid1: {fileID: 1437642889}
   grid2: {fileID: 200940148}
+  cape: {fileID: 21300000, guid: 6247bf1e21b8dcf44950e0e9f23a131e, type: 3}
+  scuba: {fileID: 21300000, guid: 0b29007cad728e64b94efc11697d2e7a, type: 3}
   selectedGrid: {fileID: 0}
   spawnTilemap1: {fileID: 1719359411}
   spawnTilemap2: {fileID: 1462346826}
