@@ -835,13 +835,6 @@ MonoBehaviour:
   nextPos: {x: 0, y: 0, z: 0}
   usedGridPos: 0
   firstMoveCompleted: 0
-  prev_pos: {x: 0, y: 0, z: 0}
-  new_pos: {x: 0, y: 0, z: 0}
-  spo_selected: 199
-  movement_dir: 
-  special_pos: 0
-  failed_movement: 0
-  gem_collected: 0
   spoManager: {fileID: 0}
   gemManager: {fileID: 0}
 --- !u!212 &577975706
@@ -7115,50 +7108,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &1751985504
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1751985506}
-  - component: {fileID: 1751985505}
-  m_Layer: 0
-  m_Name: PlayerManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1751985505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751985504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f54652d81d76c694bae88dfdca4302d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1751985506
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751985504}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 350, y: -250, z: -998}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1758535432
 GameObject:
   m_ObjectHideFlags: 0
@@ -8915,7 +8864,6 @@ SceneRoots:
   - {fileID: 1627927356}
   - {fileID: 963194228}
   - {fileID: 578684631}
-  - {fileID: 1751985506}
   - {fileID: 795697682}
   - {fileID: 1405081609}
   - {fileID: 1986752096}

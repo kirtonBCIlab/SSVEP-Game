@@ -172,9 +172,6 @@ public class GemManager : MonoBehaviour
         // If standing on a gem tile, swap the gem tile out for the small tile associated with it
         if (gemToCollectedMap.TryGetValue(gemTile, out TileBase smallTile))
         {
-            // Update player state
-            playerController.gem_collected = true;
-
             // Play visual effect
             Vector3 worldPos = gemTilemap.GetCellCenterWorld(gridPos);
             worldPos.z = -1f;
@@ -185,7 +182,7 @@ public class GemManager : MonoBehaviour
 
             // Record gem collection
             collectedGemSet.Add(gemTile);
-            playerController.special_pos = true;
+            MovementLogger.SpecialMovementAchieved = true;
 
             // Notify SPO manager that the SPO was used for a movement, and the next SPO in the queue can be assigned to the next special position
             spoManager?.AssignCurrentSPO(gemTile);
@@ -198,11 +195,9 @@ public class GemManager : MonoBehaviour
             {
                 StartCoroutine(ShowEndScreenAfterDelay(2f));
                 eventTriggered = true;
-                playerController.gem_collected = true;
             }
         }
-        else // Player is standing on a gem tile that has already been collected
-            playerController.gem_collected = false;
+        // else Player is standing on a gem tile that has already been collected
     }
 
     // Delays replacement of a tile and shows a sticker on the game console
