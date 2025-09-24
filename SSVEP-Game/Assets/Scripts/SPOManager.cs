@@ -78,9 +78,8 @@ public class SPOManager : MonoBehaviour
     }
 
     // Special assignment (e.g. manually triggered)
-    public void AssignCurrentSpecialSPO()
+    public void ClearCurrentSPO()
     {
-        if (currentSPOName == null) return;
         currentSPOName = null;
     }
 

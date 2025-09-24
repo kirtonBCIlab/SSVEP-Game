@@ -182,7 +182,7 @@ public class GemManager : MonoBehaviour
 
             // Record gem collection
             collectedGemSet.Add(gemTile);
-            MovementLogger.SpecialMovementAchieved = true;
+            MovementLogger.RegisterGemCollection();
 
             // Notify SPO manager that the SPO was used for a movement, and the next SPO in the queue can be assigned to the next special position
             spoManager?.AssignCurrentSPO(gemTile);

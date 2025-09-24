@@ -1,29 +1,25 @@
 using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class MovementHandler
 {
     private PlayerController player;
-    private Tilemap groundTilemap;
-    private Tilemap collisionTilemap;
-    private Tilemap gemTilemap;
+    private MapGrid mapGrid;
     private SPOManager spoManager;
     private GemManager gemManager;
+
+    private bool firstMoveCompleted = false;
+
 
     // Constructor to initialize the movement handler with necessary references
     public MovementHandler(
         PlayerController player,
-        Tilemap ground,
-        Tilemap collision,
-        Tilemap gem,
+        MapGrid selectedMap,
         SPOManager spo,
         GemManager gemMan)
     {
         this.player = player;
-        groundTilemap = ground;
-        collisionTilemap = collision;
-        gemTilemap = gem;
+        mapGrid = selectedMap;
         spoManager = spo;
         gemManager = gemMan;
     }
@@ -31,20 +27,41 @@ public class MovementHandler
     // Attempts to move the player in the given direction if the move is valid
     public void Move(Vector2Int direction)
     {
+        if (!firstMoveCompleted)
+        {
+            MovementLogger.SpecialMovementPossible = true;
+        }
+
         MovementLogger.IntendedMovementDirection = direction;
         Vector3Int targetPos = player.currentGridPos + new Vector3Int(direction.x, direction.y, 0);
 
-        if (CanMove(targetPos))
+        if (mapGrid.CanMoveTo(targetPos))
         {
+            // Handle First Movement
+            if (!firstMoveCompleted)
+            {
+                firstMoveCompleted = true;
+                MovementLogger.RegisterFirstMovement();
+            }
+
+            // Handle "special" dead-end movement
+            Vector3Int currentPosition = player.currentGridPos;
+            if (mapGrid.HasMarkedTile(currentPosition))
+            {
+                MovementLogger.RegisterSpecialTileMovement();
+                spoManager.ClearCurrentSPO();
+                mapGrid.ClearMarkedTile(currentPosition);
+            }
+
             // Saving parameters
             player.currentGridPos = targetPos;
             MovementLogger.NewPosition = targetPos;
 
             // Get the center of the target tile
-            Vector3 cellCenter = groundTilemap.GetCellCenterWorld(player.currentGridPos);
+            Vector3 cellCenter = mapGrid.GetCellCentre(targetPos);
 
             // Handle gem collection
-            if (gemTilemap.HasTile(player.currentGridPos))
+            if (mapGrid.HasGem(targetPos))
             {
                 cellCenter.x -= 0.025f; // Edit cell center so the animal tile is visible
                 gemManager?.TryCollectGem(player.currentGridPos);
@@ -59,15 +76,6 @@ public class MovementHandler
             MovementLogger.MovementBlocked = true;
         }
         MovementLogger.LogCurrentMovement();
-        
-        // Check if player is now on the 2nd special position
-        player.CheckSPOTrigger();
-    }
-
-    // Checks if the player can move to the target grid position.
-    private bool CanMove(Vector3Int targetGridPos)
-    {
-        return groundTilemap.HasTile(targetGridPos) && !collisionTilemap.HasTile(targetGridPos);
     }
 
     // Moves the player toward an SPO location by its name.
@@ -124,19 +132,5 @@ public class MovementHandler
         string spoName = spoManager.GetSPONameFromCorner(dir);
         int spoIndex = int.Parse(spoName.Split(' ')[1]);
         MovementLogger.SelectedSPOIndex = spoIndex;
-    }
-
-    // Handles post-special-movement logic, ensuring SPO tasks complete properly.
-    public void CheckSpecialMovement()
-    {
-        if (player.currentGridPos == player.nextPos && player.usedGridPos)
-        {
-            spoManager?.AssignCurrentSpecialSPO(); // Notify SPO manager
-            MovementLogger.SpecialMovementPossible = false;
-        }
-
-        // Prevent repeat processing of the same special movement
-        if (player.usedGridPos)
-            player.gridPos = new Vector3Int(0, 0, -1000); // Dummy value
     }
 }

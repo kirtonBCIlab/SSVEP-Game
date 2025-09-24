@@ -1,12 +1,22 @@
 using UnityEngine;
 
+public enum MovementType
+{
+    None,
+    FirstMovement,
+    Collection,
+    MarkedLocation
+}
+
 public class MovementData
 {
     public static readonly string CSVHeader = string.Join(',',
         "Old Position", "New Position",
         "Intended Movement Direction",
         "Selected SPO", "Movement Blocked", "Keypress Used",
-        "Special Movement Possible", "Special Movement Achieved"
+        "Special Movement Possible",
+        "Special Movement Achieved",
+        "Special Movement Type"
     );
 
     public Vector2Int OldPosition;
@@ -17,6 +27,7 @@ public class MovementData
     public bool KeypressUsed = false;
     public bool SpecialMovementPossible = false;
     public bool SpecialMovementAchieved = false;
+    public MovementType SpecialMovementType = MovementType.None;
 
 
     public MovementData(Vector2Int oldPosition)
@@ -28,9 +39,11 @@ public class MovementData
         FormatVector2Int(OldPosition),
         FormatVector2Int(NewPosition),
         FormatVector2Int(IntendedMovementDirection),
-        $"{SelectedSPO:F2}", 
+        $"{SelectedSPO:F2}",
         MovementBlocked, KeypressUsed,
-        SpecialMovementPossible, SpecialMovementAchieved
+        SpecialMovementPossible,
+        SpecialMovementAchieved,
+        SpecialMovementType
     );
 
     private static string FormatVector2Int(Vector2Int v)

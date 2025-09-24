@@ -38,6 +38,19 @@ public static class MovementLogger
     private static Queue<MovementData> _movementLog = new();
 
 
+    public static void RegisterFirstMovement()
+    => RegisterSpecialMovement(MovementType.FirstMovement);
+    public static void RegisterGemCollection()
+    => RegisterSpecialMovement(MovementType.Collection);
+    public static void RegisterSpecialTileMovement()
+    => RegisterSpecialMovement(MovementType.MarkedLocation);
+    public static void RegisterSpecialMovement(MovementType type)
+    {
+        _current.SpecialMovementType = type;
+        _current.SpecialMovementAchieved = true;
+    }
+
+
     public static void LogCurrentMovement()
     {
         _movementLog.Enqueue(_current);
