@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     #region Position State
     [HideInInspector] public Vector3Int currentGridPos;         // Player's current tile position
     [HideInInspector] public bool firstMoveCompleted = false;   // Tracks if the first move has occurred
+    private bool markedTileEntered = false;
     #endregion
 
     #region Managers
@@ -74,7 +75,7 @@ public class PlayerController : MonoBehaviour
     private void InitializeManagers()
     {
         spoManager = GetComponent<SPOManager>();
-        spoManager?.Initialize(); // Initialize the SPO system
+        spoManager?.Initialize(selectedGrid.StartingDirection.ToString()); // Initialize the SPO system
 
         gemManager = GetComponent<GemManager>();
         gemManager?.Initialize(selectedGrid.Gems, transform, spoManager); // Setup gem system
@@ -94,9 +95,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!firstMoveCompleted) MovementLogger.SpecialMovementPossible = true;
         HandleGemTrigger();                     // Check for adjacent gems and move SPOs if needed
-        HandleMovementInput();                  // Listen for player input (WASD)
         HandleMarkedTileTrigger();
+        HandleMovementInput();                  // Listen for player input (WASD)
 
         // End game condition: all gems collected
         if (gemManager.collectedGemSet.Count == 10)
@@ -153,8 +155,11 @@ public class PlayerController : MonoBehaviour
         if (selectedGrid.HasMarkedTile(currentGridPos))
         {
             MovementLogger.SpecialMovementPossible = true;
-            string dir = selectedMap == MapSelection.Map1 ? "bottomleft" : "topleft";
-            spoManager?.ForceMoveSPO(dir);
+            if (!markedTileEntered)
+            {
+                markedTileEntered = true;
+                spoManager?.ForceMoveSPO(selectedGrid.MarkedTileExitDirection.ToString());
+            }
         }
     }
 

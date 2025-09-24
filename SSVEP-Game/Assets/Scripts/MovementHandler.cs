@@ -8,8 +8,6 @@ public class MovementHandler
     private SPOManager spoManager;
     private GemManager gemManager;
 
-    private bool firstMoveCompleted = false;
-
 
     // Constructor to initialize the movement handler with necessary references
     public MovementHandler(
@@ -27,20 +25,15 @@ public class MovementHandler
     // Attempts to move the player in the given direction if the move is valid
     public void Move(Vector2Int direction)
     {
-        if (!firstMoveCompleted)
-        {
-            MovementLogger.SpecialMovementPossible = true;
-        }
-
         MovementLogger.IntendedMovementDirection = direction;
         Vector3Int targetPos = player.currentGridPos + new Vector3Int(direction.x, direction.y, 0);
 
         if (mapGrid.CanMoveTo(targetPos))
         {
             // Handle First Movement
-            if (!firstMoveCompleted)
+            if (!player.firstMoveCompleted)
             {
-                firstMoveCompleted = true;
+                player.firstMoveCompleted = true;
                 MovementLogger.RegisterFirstMovement();
             }
 

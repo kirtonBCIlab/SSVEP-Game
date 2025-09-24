@@ -451,6 +451,8 @@ MonoBehaviour:
   Spawn: {fileID: 1462346826}
   Gems: {fileID: 1289440137}
   MarkedTiles: {fileID: 2078723468}
+  StartingDirection: 0
+  MarkedTileExitDirection: 1
 --- !u!1 &217793102
 GameObject:
   m_ObjectHideFlags: 0
@@ -6588,6 +6590,8 @@ MonoBehaviour:
   Spawn: {fileID: 1719359411}
   Gems: {fileID: 592651991}
   MarkedTiles: {fileID: 980500138}
+  StartingDirection: 0
+  MarkedTileExitDirection: 2
 --- !u!1 &1442618759
 GameObject:
   m_ObjectHideFlags: 0
@@ -7529,7 +7533,7 @@ Sprite:
         format: 0
         dimension: 0
       m_DataSize: 80
-      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf000000000000000000000000000000000000000000000000000000000000000000000000
+      _typelessdata: 000000bf0000003f000000000000003f0000003f00000000000000bf000000bf000000000000003f000000bf00000000000000000000803f0000803f0000803f00000000000000000000803f00000000
     m_Bindpose: []
     textureRect:
       serializedVersion: 2

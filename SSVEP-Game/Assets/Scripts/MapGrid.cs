@@ -1,13 +1,19 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+
 public class MapGrid : MonoBehaviour
 {
+    public enum DirectionName
+    { topright, topleft, bottomleft, bottomright }
+
     public Tilemap Ground;
     public Tilemap Collision;
     public Tilemap Spawn;
     public Tilemap Gems;
     public Tilemap MarkedTiles;
+    public DirectionName StartingDirection;
+    public DirectionName MarkedTileExitDirection;
 
 
     private void Start()
