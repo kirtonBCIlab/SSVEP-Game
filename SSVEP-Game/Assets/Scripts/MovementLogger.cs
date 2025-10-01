@@ -59,6 +59,7 @@ public static class MovementLogger
 
     public static void SaveToFile()
     {
+        Debug.Log("Saving movement log to file...");
         StringBuilder csvContentBuilder = new();
         csvContentBuilder.AppendLine(MovementData.CSVHeader);
 
