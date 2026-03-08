@@ -12,62 +12,29 @@ public class PlayerController : MonoBehaviour
     #region Inspector Fields
     [Header("Map Selection")]
     [SerializeField] public MapSelection selectedMap; // Chosen map (Map1 or Map2)
-    [SerializeField] private GameObject grid1;        // GameObject representing Grid for Map1
-    [SerializeField] private GameObject grid2;        // GameObject representing Grid for Map2
+    [SerializeField] private MapGrid grid1;
+    [SerializeField] private MapGrid grid2;
 
     [SerializeField] private Sprite cape;             // Sprite for character with cape (forest map)
     [SerializeField] private Sprite scuba;            // Sprite for character with scuba goggles (underwater map)
-    public GameObject selectedGrid;                   // The grid that is currently active based on selectedMap
-
-    [Header("Tilemaps")]
-    [SerializeField] private Tilemap spawnTilemap1;   // Spawn tilemap for Map1
-    [SerializeField] private Tilemap spawnTilemap2;   // Spawn tilemap for Map2
-    #endregion
-
-    #region Tilemaps
-    private Tilemap groundTilemap;     // Walkable ground layer
-    private Tilemap collisionTilemap;  // Non-walkable (obstacle) layer
-    private Tilemap gemTilemap;        // Gem locations
-    private Tilemap spawnTilemap;      // Starting tile for player based on map
+    [HideInInspector] public MapGrid selectedGrid;    // The grid that is currently active based on selectedMap
     #endregion
 
     #region Position State
-    public Vector3Int currentGridPos;     // Player's current tile position
-    private Vector3Int previousGridPos;   // Last recorded tile position, necessary for working together with PlayerControllerManager (position won't save if this isn't here)
-    public Vector3Int gridPos;            // Trigger position to check for SPO movement
-    public Vector3Int nextPos;            // Target position after first movement
-    public bool usedGridPos = false;      // Whether SPO trigger tile has already been used
-    public bool firstMoveCompleted = false; // Tracks if the first move has occurred
-    #endregion
-
-    #region Save Data
-    public Vector3Int prev_pos;       // Position before a movement (used for saving)
-    public Vector3Int new_pos;        // Position after a movement (used for saving)
-    public float spo_selected = 199f; // ID or value representing which SPO was selected (default: 199)
-    public string movement_dir;       // Direction the player moved
-    public bool special_pos;          // Whether movement was a special SPO move
-    public bool failed_movement;      // Whether the movement attempt failed
-    public bool gem_collected;        // Whether a gem was collected in the move
-    public bool keypress_used;        // Whether the keyboard was used to make a movement
-
-    // Public property accessors for save system
-    public Vector3Int PrevPos => prev_pos;
-    public Vector3Int NewPos => new_pos;
-    public float SpoSelected => spo_selected;
-    public string MovementDir => movement_dir;
-    public bool SpecialPos => special_pos;
-    public bool FailedMovement => failed_movement;
-    public bool GemCollected => gem_collected;
-    public bool KeypressUsed => keypress_used;
+    [HideInInspector] public Vector3Int currentGridPos;         // Player's current tile position
+    [HideInInspector] public bool firstMoveCompleted = false;   // Tracks if the first move has occurred
+    private bool markedTileEntered = false;
     #endregion
 
     #region Managers
-    public SPOManager spoManager;         // Manages SPOs 
-    public GemManager gemManager;         // Manages gem collection
+    [HideInInspector] public SPOManager spoManager;     // Manages SPOs 
+    [HideInInspector] public GemManager gemManager;     // Manages gem collection
     private MovementHandler movementHandler; // Handles player movement logic
     #endregion
 
     private SpriteRenderer playerRenderer;  // Player sprite renderer
+    private bool gameEnded = false;
+
 
     private void Start()
     {
@@ -84,26 +51,16 @@ public class PlayerController : MonoBehaviour
     {
         // Select the grid and spawn tilemap based on map choice
         selectedGrid = selectedMap == MapSelection.Map1 ? grid1 : grid2;
-        spawnTilemap = selectedMap == MapSelection.Map1 ? spawnTilemap1 : spawnTilemap2;
-
-        // Define trigger tile for SPO movement and the next step to move the player to
-        gridPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 11, 0) : new Vector3Int(13, 6, 0);
-        nextPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 10, 0) : new Vector3Int(12, 6, 0);
 
         // Safety check: make sure selected objects are not null
-        if (selectedGrid == null || spawnTilemap == null)
+        if (selectedGrid == null)
         {
-            Debug.LogError("Grid or spawn tilemap not assigned!");
+            Debug.LogError("Grid not assigned!");
             return;
         }
 
         // Enable the selected grid
         selectedGrid.SetActive(true);
-
-        // Get references to tilemaps within the selected grid
-        groundTilemap = selectedGrid.transform.Find("Tilemap Ground").GetComponent<Tilemap>();
-        collisionTilemap = selectedGrid.transform.Find("Tilemap Collision").GetComponent<Tilemap>();
-        gemTilemap = selectedGrid.transform.Find("Tilemap Gems").GetComponent<Tilemap>();
     }
 
     private void InitializePlayer()
@@ -118,36 +75,30 @@ public class PlayerController : MonoBehaviour
     private void InitializeManagers()
     {
         spoManager = GetComponent<SPOManager>();
-        spoManager?.Initialize(); // Initialize the SPO system
+        spoManager?.Initialize(selectedGrid.StartingDirection.ToString()); // Initialize the SPO system
 
         gemManager = GetComponent<GemManager>();
-        gemManager?.Initialize(gemTilemap, transform, spoManager); // Setup gem system
+        gemManager?.Initialize(selectedGrid.Gems, transform, spoManager); // Setup gem system
 
-        movementHandler = new MovementHandler(this, groundTilemap, collisionTilemap, gemTilemap, spoManager, gemManager); // Create movement handler
+        movementHandler = new MovementHandler(this, selectedGrid, spoManager, gemManager); // Create movement handler
     }
 
     // Set player position on the start tile or load from save if available
     private void InitializePlayerPosition()
     {
-        if (PlayerControllerManager.Instance != null && PlayerControllerManager.Instance.SavedGridPosition != Vector3Int.zero)
-            currentGridPos = PlayerControllerManager.Instance.SavedGridPosition;
-        else
-            currentGridPos = GetStartTilePosition(spawnTilemap);
+        currentGridPos = GetStartTilePosition(selectedGrid.Spawn);
+        MovementLogger.InitialPosition = currentGridPos;
 
         // Move player GameObject to the center of the spawn tile
-        transform.position = groundTilemap.GetCellCenterWorld(currentGridPos);
-        previousGridPos = gemTilemap.WorldToCell(transform.position);
+        transform.position = selectedGrid.GetCellCentre(currentGridPos);
     }
 
     private void Update()
     {
+        if (!firstMoveCompleted) MovementLogger.SpecialMovementPossible = true;
         HandleGemTrigger();                     // Check for adjacent gems and move SPOs if needed
+        HandleMarkedTileTrigger();
         HandleMovementInput();                  // Listen for player input (WASD)
-        movementHandler.CheckSpecialMovement(); // Handle special corner movement
-
-        // Mark that the first movement has occurred (used for special state handling)
-        if (spawnTilemap != null && currentGridPos != GetStartTilePosition(spawnTilemap))
-            firstMoveCompleted = true;
 
         // End game condition: all gems collected
         if (gemManager.collectedGemSet.Count == 10)
@@ -160,7 +111,8 @@ public class PlayerController : MonoBehaviour
         Vector3Int? gemPos = gemManager?.GetUncollectedAdjacentGem(currentGridPos);
         if (gemPos.HasValue)
         {
-            TileBase tile = gemTilemap.GetTile(gemPos.Value);
+            MovementLogger.SpecialMovementPossible = true;
+            TileBase tile = selectedGrid.GetGemTile(gemPos.Value);
             spoManager?.TryMoveSPO(tile, gemPos.Value - currentGridPos);
         }
     }
@@ -185,58 +137,39 @@ public class PlayerController : MonoBehaviour
     }
 
     // These functions are called to move to a specific SPO and set the appropriate value for tracking
-    public void MoveToSPO1() => MoveToSPO("SPO 1", 6.25f);
-    public void MoveToSPO2() => MoveToSPO("SPO 2", 10.0f);
-    public void MoveToSPO3() => MoveToSPO("SPO 3", 11.11f);
-    public void MoveToSPO4() => MoveToSPO("SPO 4", 14.28f);
+    public void MoveToSPO1() => MoveToSPOByIndex(1);
+    public void MoveToSPO2() => MoveToSPOByIndex(2);
+    public void MoveToSPO3() => MoveToSPOByIndex(3);
+    public void MoveToSPO4() => MoveToSPOByIndex(4);
 
     // Internal function to move player to the given SPO GameObject
-    private void MoveToSPO(string name, float spoValue)
+    private void MoveToSPOByIndex(int index)
     {
-        movementHandler.MoveToSPO(name);
-        spo_selected = spoValue; // Save the SPO ID/value for logging or scoring
+        MovementLogger.SelectedSPOIndex = index;
+        movementHandler.MoveToSPOByName($"SPO {index}");
     }
 
     // Check if the player is on a trigger tile for SPO movement and initiate it
-    public void CheckSPOTrigger()
+    public void HandleMarkedTileTrigger()
     {
-        if (currentGridPos == gridPos)
+        if (selectedGrid.HasMarkedTile(currentGridPos))
         {
-            string dir = selectedMap == MapSelection.Map1 ? "bottomleft" : "topleft";
-            spoManager?.ForceMoveSPO(dir);
-            usedGridPos = true;
+            MovementLogger.SpecialMovementPossible = true;
+            if (!markedTileEntered)
+            {
+                markedTileEntered = true;
+                spoManager?.ForceMoveSPO(selectedGrid.MarkedTileExitDirection.ToString());
+            }
         }
-    }
-
-    // Save the player’s movement
-    public void SavePlayerMovement()
-    {
-        // If first movement hasn't occurred, force special position flag
-        if (!firstMoveCompleted)
-        {
-            spo_selected = 6.25f;
-            special_pos = true;
-        }
-
-        // Determine if player moved from the initial SPO trigger tile
-        Vector3Int specialStartPos = selectedMap == MapSelection.Map1 ? new Vector3Int(8, 11, 0) : new Vector3Int(13, 6, 0);
-
-        if (prev_pos == specialStartPos)
-            special_pos = true;
-
-        // Construct save data and log the movement to the controller manager
-        PlayerSaveData saveData = new PlayerSaveData();
-        saveData.FromPlayerController(this);
-        SaveStruct savedStruct = saveData.ToStruct();
-        PlayerControllerManager.Instance?.LogMovement(savedStruct);
     }
 
     // Handle end of game
     public void EndGame()
     {
-        if (PlayerControllerManager.Instance != null)
-            PlayerControllerManager.Instance.EndGame();
-        else
-            Debug.Log("Save failed because there is no PlayerControllerManager instance.");
+        if (!gameEnded)
+        {
+            MovementLogger.SaveToFile();
+            gameEnded = true;
+        }
     }
 }

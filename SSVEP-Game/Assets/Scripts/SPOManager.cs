@@ -17,7 +17,7 @@ public class SPOManager : MonoBehaviour
     // The currently active SPO that is to be placed in a corner
     private string currentSPOName = null;
 
-    public void Initialize()
+    public void Initialize(string startingDirection)
     {
         // Find and assign references to each SPO GameObject in the scene
         SPO1 = GameObject.Find("SPO 1");
@@ -42,7 +42,7 @@ public class SPOManager : MonoBehaviour
         positions["bottomright"] = new Vector3(0.5f, -0.28f, -0.1f);
 
         // Move the first SPO in the queue to the "topright" corner
-        ForceMoveSPO("topright"); 
+        ForceMoveSPO(startingDirection, true); 
     }
 
     // Attempt to move the current SPO to the direction based on the given tile and direction
@@ -78,27 +78,23 @@ public class SPOManager : MonoBehaviour
     }
 
     // Special assignment (e.g. manually triggered)
-    public void AssignCurrentSpecialSPO()
+    public void ClearCurrentSPO()
     {
-        if (currentSPOName == null) return;
         currentSPOName = null;
     }
 
     // Forcefully move the next SPO in the queue to a specific corner
-    public void ForceMoveSPO(string dir)
+    public void ForceMoveSPO(string dir, bool bypassDelay = false)
     {
         // Skip if the queue is empty or the direction is invalid
         if (spoQueue.Count == 0 || !positions.ContainsKey(dir)) return;
 
-        // Move the next SPO in the queue directly to "topright" as the starting position for both maps
-        if (dir == "topright")
+        if (bypassDelay)
         {
             currentSPOName = null;
             MoveSPOTo(spoQueue.Dequeue(), dir);
         }
-
-        // If this is a special movement corner, set it as the current SPO and move it
-        if (dir == "bottomleft" || dir == "topleft")
+        else
         {
             currentSPOName = spoQueue.Dequeue();
             StartCoroutine(MoveCurrentSPOTo(dir));
