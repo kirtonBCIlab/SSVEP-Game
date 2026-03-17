@@ -8,11 +8,6 @@ def create_custom_colormap():
     colors = [(46/225, 37/255, 133/255), (221/255, 221/255, 221/255),  (93/255, 168/255, 153/255), (159/255, 74/255, 150/255)]
     return ListedColormap(colors)
 
-#Okabe and Ito
-#(0.33735, 0.70588235, 0.913725) light blue
-#(0.8, 0.4745, 0.6549) pink
-#(0.83529, 0.368627, 0) dark orange
-
 def visualize_map(MapClass):
     width = MapClass.width
     height = MapClass.height
