@@ -51,17 +51,11 @@ SSVEP-Game
 
 ## Usage
 1. Install the Python dependencies listed in the notebooks (pandas, numpy,
-   scipy, matplotlib, etc.).
+    matplotlib, etc.).
     * Use dependencies.yml
 2. Set up data in the suggested structure
-3. Open `preprocess.ipynb` in VS Code and execute all cells to generate the
-   `.npz`/`.json` files.
-4. Run `zscore.ipynb` to compute and save the z‑scores.
-5. Finally run `get-best-stim.ipynb` to derive each participant’s personal
-   stimulus.
-6. To replicate the processing for comparison of SSVEP datasets, use data from
-   step 2 and open `batch-dataset-snr.ipynb`. Execute all cells.
-
-Modify the list of files/subjects at the top of each notebook to process different sets of participants.
-
+3. Open `movement_counter.ipynb` in VS Code and execute all cells to generate the
+   `participant_movements_summary.csv` file.
+4. Open `movement_videos.ipynb` in VS Code and execute all cells to generate the
+   `.mp4` file for each game playthrough.  
 ---
